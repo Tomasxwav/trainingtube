@@ -1,4 +1,4 @@
-import EmployeeDashboard from '@/components/employee/Dashboard'
+import EmployeeDashboard from '@/partials/employee/EmployeeDashboard'
 
 export default function Home() {
   return (
