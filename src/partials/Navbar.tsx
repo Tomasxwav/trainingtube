@@ -3,21 +3,27 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, Bell, Menu, User, LogOut } from 'lucide-react';
+import { Search, Bell, Menu, User, LogOut, Sun } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user, logout } = useAuthStore();
   const router = useRouter();
+  const { setTheme } = useTheme();
   
   const handleLogout = () => {
     logout();
     router.push('/login');
   };
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
+  }
   
   return (
     <header className="bg-background border-b border-sidebar-border shadow-sm  z-10">
@@ -57,15 +63,6 @@ export default function Navbar() {
           </button>
           
           <div className="relative">
-            {/* <button 
-              className="flex items-center space-x-2 focus:outline-none"
-              onClick={() => setIsProfileOpen(!isProfileOpen)}
-            >
-              <div className="w-9 h-9 bg-primary-500 text-white rounded-full flex items-center justify-center">
-                <span className="font-medium">{user?.name.charAt(0)}</span>
-              </div>
-              <span className="hidden md:inline font-medium text-dark-900">{user?.name}</span>
-            </button> */}
             <span className="flex items-center space-x-2 focus:outline-none cursor-pointer"  onClick={() => setIsProfileOpen(!isProfileOpen)}>
               <Avatar >
                 <AvatarImage src="https://github.com/shadcn.png" />
@@ -81,13 +78,17 @@ export default function Navbar() {
                   <p className="text-sm font-medium text-dark-900">{user?.name}</p>
                   <p className="text-xs text-dark-500">{user?.email}</p>
                 </div>
+                <button className="flex items-center px-4 py-2 text-sm text-dark-900 hover:bg-dark-50 cursor-pointer" onClick={toggleTheme}>
+                  <Sun size={16} className="mr-2" />
+                  Toggle Theme
+                </button>
                 <Link href="/profile" className="flex items-center px-4 py-2 text-sm text-dark-900 hover:bg-dark-50">
                   <User size={16} className="mr-2" />
                   Profile
                 </Link>
                 <button 
                   onClick={handleLogout}
-                  className="flex items-center w-full text-left px-4 py-2 text-sm text-dark-900 hover:bg-dark-50"
+                  className="flex items-center w-full text-left px-4 py-2 text-sm text-dark-900 hover:bg-dark-50 cursor-pointer"
                 >
                   <LogOut size={16} className="mr-2" />
                   Sign out

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image'
 import { Star, Clock } from 'lucide-react';
 import { Video } from '@/stores/videoStore';
+import { Card } from './ui/card';
 
 type VideoCardProps = {
   video: Video;
@@ -23,10 +24,9 @@ export default function VideoCard({ video, showCategory = true, averageRating }:
   
   return (
     <Link href={`/video/${id}`} className="group">
-      <div className="overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 bg-white animate-fade-in">
+      <Card className="overflow-hidden animate-fade-in py-0">
         <div className="relative">
           <Image 
-
             src={thumbnailUrl} 
             alt={title}
             width={400}
@@ -74,7 +74,7 @@ export default function VideoCard({ video, showCategory = true, averageRating }:
             </div>
           )}
         </div>
-      </div>
+      </Card>
     </Link>
   );
 }
