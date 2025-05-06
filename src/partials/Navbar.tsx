@@ -26,7 +26,7 @@ export default function Navbar() {
   }
   
   return (
-    <header className="bg-background border-b border-sidebar-border shadow-sm  z-10">
+    <header className="bg-background border-b border-sidebar-border shadow-sm z-10 w-full">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center md:hidden">
           <button 
