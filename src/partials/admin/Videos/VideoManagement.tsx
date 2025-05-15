@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import Image from 'next/image';
 
 export default function VideoManagement() {
   const { videos, addVideo, updateVideo, deleteVideo, getAverageRating } = useVideoStore();
@@ -98,18 +99,6 @@ export default function VideoManagement() {
           
           <div className="flex items-center gap-2">
             <Filter size={18} className="text-dark-500" />
-            {/* <select
-              value={categoryFilter || ''}
-              onChange={(e) => setCategoryFilter(e.target.value || null)}
-              className="border border-dark-200 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
-            >
-              <option value="">All Categories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select> */}
 
             <Select onValueChange={(value) => setCategoryFilter(value)}>
               <SelectTrigger className="w-[180px]">
@@ -152,10 +141,12 @@ export default function VideoManagement() {
                   <tr key={video.id} className="border-b border-dark-50 hover:bg-dark-50 transition-colors">
                     <td className="py-3 px-4">
                       <div className="flex items-center">
-                        <img
+                        <Image
                           src={video.thumbnailUrl}
                           alt={video.title}
                           className="w-16 h-9 object-cover rounded mr-3"
+                          width={16}
+                          height={9}
                         />
                         <div>
                           <p className="font-medium text-dark-900">{video.title}</p>
@@ -203,9 +194,7 @@ export default function VideoManagement() {
         </div>
       </div>
       
-      {/* Modals would be implemented here */}
-      {/* For simplicity, we're not implementing the full forms */}
-      {isDeleteModalOpen && currentVideo && (
+     {/*  {isDeleteModalOpen && currentVideo && (
         <div className="fixed inset-0 bg-dark-900 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full animate-fade-in">
             <h3 className="text-lg font-bold text-dark-900 mb-4">Delete Video</h3>
@@ -228,7 +217,7 @@ export default function VideoManagement() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
