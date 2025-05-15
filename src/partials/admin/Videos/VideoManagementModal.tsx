@@ -13,6 +13,9 @@ import { z } from "zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { useVideosActions } from '@/actions/useVideosActions';
+import { useActionState } from 'react';
+
 
 interface ChildComponentProps {
   isOpen: boolean;
@@ -20,7 +23,8 @@ interface ChildComponentProps {
 }
 
 export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComponentProps) {
-    
+    const { addVideo } = useVideosActions();
+
     const form = useForm<z.infer<typeof videoSchema>>({
         resolver: zodResolver(videoSchema),
         defaultValues: {
@@ -32,7 +36,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
       })
 
       function onSubmit(values: z.infer<typeof videoSchema>) {
-        console.log(values)
+        addVideo(values);
       }
       
     return (
@@ -119,13 +123,13 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                             <FormLabel>Video</FormLabel>
                             <FormControl>
                                 <Input
-                                        type='file'
-                                        placeholder=""
-                                        onChange={(e) => field.onChange(e.target.files?.[0])}
-                                        onBlur={field.onBlur}
-                                        name={field.name}
-                                        ref={field.ref}
-                                    />
+                                    type='file'
+                                    placeholder=""
+                                    onChange={(e) => field.onChange(e.target.files?.[0])}
+                                    onBlur={field.onBlur}
+                                    name={field.name}
+                                    ref={field.ref}
+                                />
                             </FormControl>
                             {/* <FormDescription>
                                 This is your public display name.
