@@ -1,3 +1,4 @@
+import Navbar from '@/partials/Navbar'
 import Sidebar from '@/partials/Sidebar'
 import React from 'react'
 
@@ -8,10 +9,12 @@ export default function DashboardLayout( {
 }) {
   return (
     <div className='flex flex-row'>
-    <div>
         <Sidebar />
-    </div>
+      <div className='flex-1 '>
+        <Navbar />
         {children}
+      </div>
+        
     </div>
   )
 }
