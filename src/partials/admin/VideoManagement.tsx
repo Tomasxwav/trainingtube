@@ -4,6 +4,16 @@ import { useState } from 'react';
 import { useVideoStore, Video } from '@/stores/videoStore';
 import { Plus, Pencil, Trash2, Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import VideoManagementModal from './VideoManagementModal';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 export default function VideoManagement() {
   const { videos, addVideo, updateVideo, deleteVideo, getAverageRating } = useVideoStore();
@@ -22,7 +32,7 @@ export default function VideoManagement() {
     const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       video.description.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesCategory = categoryFilter === null || video.categories.includes(categoryFilter);
+    const matchesCategory = categoryFilter === null || video.categories.includes(categoryFilter) || categoryFilter === 'all';
     
     return matchesSearch && matchesCategory;
   });
@@ -69,6 +79,8 @@ export default function VideoManagement() {
           <Plus size={18} className="mr-1" />
           Add New Video
         </Button>
+
+        <VideoManagementModal isOpen={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
       </div>
       
       <div className="bg-background p-4 rounded-lg shadow-sm mb-6">
@@ -86,7 +98,7 @@ export default function VideoManagement() {
           
           <div className="flex items-center gap-2">
             <Filter size={18} className="text-dark-500" />
-            <select
+            {/* <select
               value={categoryFilter || ''}
               onChange={(e) => setCategoryFilter(e.target.value || null)}
               className="border border-dark-200 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
@@ -97,7 +109,26 @@ export default function VideoManagement() {
                   {category}
                 </option>
               ))}
-            </select>
+            </select> */}
+
+            <Select onValueChange={(value) => setCategoryFilter(value)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Categories</SelectLabel>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+
           </div>
         </div>
       </div>
