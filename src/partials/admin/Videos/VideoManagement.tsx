@@ -19,7 +19,7 @@ import { toast } from 'sonner';
 import { Video } from '@/types/videos';
 
 export default function VideoManagement() {
-  const { videos, addVideo, updateVideo, deleteVideo, fetchVideos} = useVideoStore();
+  const { videos, addVideo, updateVideo, deleteVideo, fetchVideos, isLoading } = useVideoStore();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -33,7 +33,7 @@ export default function VideoManagement() {
 
   useEffect(() => {
     fetchVideos();
-  }, [fetchVideos]);
+  }, []);
 
   const filteredVideos = videos.filter((video) => {
     const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -44,7 +44,7 @@ export default function VideoManagement() {
     return matchesSearch && matchesCategory;
   });
   
-  const formatDate = (dateString: string) => {
+/*   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
@@ -52,7 +52,7 @@ export default function VideoManagement() {
       day: 'numeric',
     }).format(date);
   };
-  
+   */
   const handleEdit = (video: Video) => {
     setCurrentVideo(video);
     setIsEditModalOpen(true);
@@ -142,7 +142,15 @@ export default function VideoManagement() {
               </tr>
             </thead>
             <tbody>
-              {filteredVideos.length > 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan={6} className="py-6 text-center text-dark-600">
+                  Loading videos...
+                </td>
+              </tr>
+            ) : 
+              
+              filteredVideos.length > 0 ? (
                 filteredVideos.map((video) => (
                   <tr key={video.id} className="border-b border-dark-50 hover:bg-dark-50 transition-colors">
                     <td className="py-3 px-4">
@@ -165,10 +173,10 @@ export default function VideoManagement() {
                     <td className="py-3 px-4 text-center text-dark-900">{video.duration}</td>
                     <td className="py-3 px-4 text-center text-dark-900">{video.views}</td>
                     <td className="py-3 px-4 text-center text-dark-900">
-                      {video.rating.toFixed(1)}
+                      {video.rating}
                     </td>
                     <td className="py-3 px-4 text-center text-dark-900">
-                      {formatDate(video.uploadedAt)}
+                      {video.uploadedAt}
                     </td>
                     <td className="py-3 px-4 text-center">
                       <div className="flex items-center justify-center space-x-2">

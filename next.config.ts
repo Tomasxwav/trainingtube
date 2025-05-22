@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: 'images.pexels.com',
+        hostname: 'storage.googleapis.com',
       },
     ],
   },

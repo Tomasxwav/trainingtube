@@ -11,8 +11,7 @@ export const useAuthActions = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-      if (!res.ok) throw new Error('Error logging in');
-      const data = await res.json();
+      const data = await res.data
       console.log('Login successful:', data);
       return data;
     } catch (error) {
@@ -30,7 +29,7 @@ export const useAuthActions = () => {
         body: JSON.stringify({ name, email, password, role }),
       });
       if (!res.ok) throw new Error('Error registering');
-      const data = await res.json();
+      const data = await res.data;
       return data;
     } catch (error) {
       console.error(error);
