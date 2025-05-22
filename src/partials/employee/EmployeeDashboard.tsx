@@ -2,14 +2,12 @@
 /* 
 import { useState } from 'react'; */
 import { useVideoStore } from '@/stores/videoStore';
-import { useAuthStore } from '@/stores/authStore';
 import VideoCard from '@/components/VideoCard';
 import { Film, Flame, BookOpen } from 'lucide-react';
 /* import { Button } from '@/components/ui/button'; */
 
 export default function EmployeeDashboard() {
-  const { videos, getAverageRating } = useVideoStore();
-  const { user } = useAuthStore();
+  const { videos,  } = useVideoStore();
 /*   const [selectedCategory, setSelectedCategory] = useState<string | null>(null); */
   
 /*   const categories = Array.from(
@@ -20,18 +18,18 @@ export default function EmployeeDashboard() {
     ? videos.filter((video) => video.categories.includes(selectedCategory))
     : videos; */
   
-  const departmentVideos = user?.department
+ /*  const departmentVideos = user?.department
     ? videos.filter((v) => v.requiredFor?.includes(user.department!))
-    : [];
+    : []; */
   
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-dark-900 mb-2">Welcome back, {user?.name}</h1>
+        <h1 className="text-2xl font-bold text-dark-900 mb-2">Welcome back, </h1>
         <p className="text-dark-600">Access your training materials and track your progress</p>
       </div>
       
-      {departmentVideos.length > 0 && (
+     {/*  {departmentVideos.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center mb-4">
             <BookOpen size={20} className="text-primary-500 mr-2" />
@@ -48,7 +46,7 @@ export default function EmployeeDashboard() {
             ))}
           </div>
         </div>
-      )}
+      )} */}
       
       <div className="mb-8">
         <div className="flex items-center mb-4">
@@ -64,7 +62,7 @@ export default function EmployeeDashboard() {
               <VideoCard 
                 key={video.id} 
                 video={video} 
-                averageRating={getAverageRating(video.id)}
+                averageRating={video.rating}
               />
             ))}
         </div>

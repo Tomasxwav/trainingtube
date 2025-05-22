@@ -14,8 +14,17 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useVideosActions } from '@/actions/useVideosActions';
+import { DialogDescription } from '@radix-ui/react-dialog';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 import { useActionState } from 'react';
-
 
 interface ChildComponentProps {
   isOpen: boolean;
@@ -24,7 +33,34 @@ interface ChildComponentProps {
 
 export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComponentProps) {
     const { addVideo } = useVideosActions();
-
+    const [state, action, pending] = useActionState<
+        boolean,
+        z.infer<typeof videoSchema> 
+        >(
+        async (prevState, values) => {
+            try {
+            await addVideo(values);
+            return true; 
+            } catch {
+            return false; 
+            }
+        },
+        false
+        );
+    const categories = [
+        'All',
+        'Customer Service',
+        'Sales',
+        'Marketing',
+        'Product',
+        'Finance',
+        'HR',
+        'Support',
+        'Engineering',
+        'Design',
+        'Development',
+        'IT',
+      ];
     const form = useForm<z.infer<typeof videoSchema>>({
         resolver: zodResolver(videoSchema),
         defaultValues: {
@@ -36,7 +72,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
       })
 
       function onSubmit(values: z.infer<typeof videoSchema>) {
-        addVideo(values);
+        action(values)
       }
       
     return (
@@ -45,6 +81,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
         <DialogHeader className="w-full items-center justify-center border-b border-dark-200 pb-4">
           <DialogTitle>Upload tutorial</DialogTitle>
         </DialogHeader>
+        <DialogDescription/>
         <div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -59,9 +96,6 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                             <FormControl>
                                 <Input placeholder="Insert title" {...field} />
                             </FormControl>
-                            {/* <FormDescription>
-                                This is your public display name.
-                            </FormDescription> */}
                             <FormMessage />
                             </FormItem>
                         )}
@@ -81,9 +115,6 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                                     {...field}
                                     />
                             </FormControl>
-                            {/* <FormDescription>
-                                This is your public display name.
-                            </FormDescription> */}
                             <FormMessage />
                             </FormItem>
                         )}
@@ -106,9 +137,6 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                                     ref={field.ref}
                                 />
                             </FormControl>
-                            {/* <FormDescription>
-                                This is your public display name.
-                            </FormDescription> */}
                             <FormMessage />
                             </FormItem>
                         )}
@@ -131,14 +159,40 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                                     ref={field.ref}
                                 />
                             </FormControl>
-                            {/* <FormDescription>
-                                This is your public display name.
-                            </FormDescription> */}
                             <FormMessage />
                             </FormItem>
                         )}
                         />
-                    <Button type="submit" variant={'secondary'} className="w-full py-2 px-4 cursor-pointer "> Upload </Button> 
+                    <FormField
+                        control={form.control}
+                        name="categories"
+                        render={({ field }) => (
+                            <FormItem
+                                className="mb-4"
+                            >
+                            <FormLabel>Categories</FormLabel>
+                            <FormControl>
+                                <Select>
+                                    <SelectTrigger className="w-full mb-4">
+                                        <SelectValue placeholder="Select a category" />
+                                    </SelectTrigger>
+                                    <SelectContent className="h-[300px]">
+                                        <SelectGroup>
+                                        <SelectLabel>Category</SelectLabel>
+                                        {categories.map((category) => (
+                                            <SelectItem key={category} value={category}>
+                                                {category}
+                                            </SelectItem>
+                                        ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                    <Button disabled={pending} type="submit" variant={'secondary'} className="w-full py-2 px-4 cursor-pointer "> { pending ? 'Uploading...' : "Upload video"} </Button>  
 
                 </form>
             </Form>

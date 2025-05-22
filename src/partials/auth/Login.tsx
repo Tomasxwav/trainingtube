@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'
 import { Film, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
-import { useAuthStore } from '@/stores/authStore';
 import { useTheme } from "next-themes"
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useAuthActions } from '@/actions/useAuthActions';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -21,7 +21,7 @@ export default function Login() {
     setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
   }
   
-  const { login } = useAuthStore();
+  const { login } = useAuthActions();
   
   
   const handleLogin = async (e: React.FormEvent) => {
@@ -30,9 +30,9 @@ export default function Login() {
     setIsLoading(true);
     
     try {
-      const success = await login({ email, password });
+      const response = await login(email, password ); 
       
-      if (success) {
+      if (response) {
         router.push('/home');
       } else {
         setError('Invalid email or password');

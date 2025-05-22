@@ -2,11 +2,8 @@
 
 import Link from 'next/link'
 import { Home, Film, Users, PlayCircle, ThumbsUp, Clock, Settings, HelpCircle } from 'lucide-react';
-import { useAuthStore } from '@/stores/authStore';
 
 export default function Sidebar() {
-  const { user } = useAuthStore();
-  const isAdmin = user?.role === 'admin';
   
   const navItems = [
     {
@@ -66,7 +63,7 @@ export default function Sidebar() {
   ];
   
   const filteredNavItems = navItems.filter(item => 
-    item.showFor.includes(user?.role || '')
+    item.showFor.includes('')
   );
   
   return (
@@ -76,11 +73,11 @@ export default function Sidebar() {
           <Film size={18} className="text-foreground" />
         </div>
         <span className="ml-2 text-xl font-bold text-dark-900">TrainTube</span>
-        {isAdmin && (
+        {/* {isAdmin && (
           <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-primary-100 text-primary-700 rounded-full">
             Admin
           </span>
-        )}
+        )} */}
       </div>
       
       <nav className="flex-1 pt-4">

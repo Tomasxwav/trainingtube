@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useVideoStore, Video } from '@/stores/videoStore';
+import { useVideoStore } from '@/stores/videoStore';
 import { Plus, Pencil, Trash2, Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import VideoManagementModal from './VideoManagementModal';
@@ -16,9 +16,10 @@ import {
 } from "@/components/ui/select"
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { Video } from '@/types/videos';
 
 export default function VideoManagement() {
-  const { videos, addVideo, updateVideo, deleteVideo, getAverageRating } = useVideoStore();
+  const { videos, addVideo, updateVideo, deleteVideo } = useVideoStore();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -160,7 +161,7 @@ export default function VideoManagement() {
                     <td className="py-3 px-4 text-center text-dark-900">{video.duration}</td>
                     <td className="py-3 px-4 text-center text-dark-900">{video.views}</td>
                     <td className="py-3 px-4 text-center text-dark-900">
-                      {getAverageRating(video.id).toFixed(1)}
+                      {video.rating.toFixed(1)}
                     </td>
                     <td className="py-3 px-4 text-center text-dark-900">
                       {formatDate(video.uploadedAt)}
@@ -193,6 +194,7 @@ export default function VideoManagement() {
             </tbody>
           </table>
         </div>
+
       </div>
       
      {/*  {isDeleteModalOpen && currentVideo && (
