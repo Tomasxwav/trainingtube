@@ -12,7 +12,7 @@ export const useVideoStore = create<VideoState>((set, get) => ({
   fetchVideos: async () => {
     set({ isLoading: true, error: null });
     try {
-      const response = await fetchWithToken('/videos');
+      const response = await fetchWithToken('http://localhost:8080/videos');
       if (!response.ok) throw new Error('Error fetching videos');
       const data: Video[] = await response.json();
       set({ videos: data, isLoading: false });

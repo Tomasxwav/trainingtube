@@ -41,9 +41,11 @@ export async function fetchWithToken(url: string, options: RequestInit = {}) {
     });
   
     if (!res.ok) {
+      const errorText = await res.text();
+      console.error('Error en la solicitud:', errorText);
       throw new Error('Error en la solicitud');
     }
   
-    return res.json();
+    return res;
   }
   

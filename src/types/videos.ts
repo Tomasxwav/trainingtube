@@ -7,7 +7,7 @@ export interface Video {
   duration: number;
   views: number;
   uploadedAt: string;
-  categories: string[];
+  category: string;
   rating: number;
   requiredFor?: string[];
 }
@@ -17,6 +17,7 @@ export interface VideoUpload {
   description: string;
   thumbnail: File;
   video: File;
+  category?: string;
 }
 
 export type Comment = {

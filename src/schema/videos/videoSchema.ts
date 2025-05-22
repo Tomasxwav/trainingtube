@@ -36,6 +36,6 @@ export const videoSchema = z.object({
       (file) => !file || ACCEPTED_VIDEO_TYPES.includes(file.type),
       "Only .mp4, .webm and .ogg video formats are supported"
     ),
-  categories: z.array(z.string()).optional(),
+  category: z.string().optional(),
   tags: z.array(z.string()).optional(),
 });

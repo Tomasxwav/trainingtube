@@ -68,11 +68,13 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
           description: '',
           thumbnail: {} as File,
           video: {} as File,
+          category: '',
         },
       })
 
       function onSubmit(values: z.infer<typeof videoSchema>) {
-        action(values)
+        console.log('onSubmit', values);
+        addVideo(values)
       }
       
     return (
@@ -165,14 +167,14 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                         />
                     <FormField
                         control={form.control}
-                        name="categories"
+                        name="category"
                         render={({ field }) => (
                             <FormItem
                                 className="mb-4"
                             >
                             <FormLabel>Categories</FormLabel>
                             <FormControl>
-                                <Select>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <SelectTrigger className="w-full mb-4">
                                         <SelectValue placeholder="Select a category" />
                                     </SelectTrigger>

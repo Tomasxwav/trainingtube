@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useVideoStore } from '@/stores/videoStore';
 import { Plus, Pencil, Trash2, Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,7 @@ import { toast } from 'sonner';
 import { Video } from '@/types/videos';
 
 export default function VideoManagement() {
-  const { videos, addVideo, updateVideo, deleteVideo } = useVideoStore();
+  const { videos, addVideo, updateVideo, deleteVideo, fetchVideos} = useVideoStore();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -28,14 +28,18 @@ export default function VideoManagement() {
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   
   const categories = Array.from(
-    new Set(videos.flatMap((video) => video.categories))
+    new Set(videos.flatMap((video) => video.category))
   );
-  
+
+  useEffect(() => {
+    fetchVideos();
+  }, [fetchVideos]);
+
   const filteredVideos = videos.filter((video) => {
     const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       video.description.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesCategory = categoryFilter === null || video.categories.includes(categoryFilter) || categoryFilter === 'all';
+    const matchesCategory = categoryFilter === null || video.category.includes(categoryFilter) || categoryFilter === 'all';
     
     return matchesSearch && matchesCategory;
   });
@@ -153,7 +157,7 @@ export default function VideoManagement() {
                         <div>
                           <p className="font-medium text-dark-900">{video.title}</p>
                           <p className="text-xs text-dark-500 mt-1 line-clamp-1">
-                            {video.categories.join(', ')}
+                            {video.category}
                           </p>
                         </div>
                       </div>
