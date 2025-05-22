@@ -1,5 +1,4 @@
 'use server';
-
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
@@ -11,7 +10,11 @@ export async function fetchWithToken(url: string, options: RequestInit = {}) {
     const response = await fetch(url, options);
 
     if (!response.ok) {
-      redirect('/login'); 
+      if (response.status === 401) {
+        redirect('/login');
+      }
+      const errorMessage = await response.text();
+      return { ok: false, error: errorMessage, status: response.status };
     }
 
     const data = await response.json();

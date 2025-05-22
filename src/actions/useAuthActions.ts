@@ -1,5 +1,6 @@
 import { Role } from '@/types/employees';
 import { fetchWithToken } from '@/utils/fetchWithToken';
+import { redirect } from 'next/navigation';
 
 export const useAuthActions = () => {
   const login = async (email: string, password: string) => {
@@ -11,9 +12,11 @@ export const useAuthActions = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-      const data = await res.data
-      console.log('Login successful:', data);
-      return data;
+
+      if (!res.ok) {
+        return res;
+      }
+      redirect('/home');
     } catch (error) {
       console.error(error);
     }

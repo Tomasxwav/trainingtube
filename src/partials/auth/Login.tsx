@@ -23,7 +23,6 @@ export default function Login() {
   
   const { login } = useAuthActions();
   
-  
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -32,11 +31,9 @@ export default function Login() {
     try {
       const response = await login(email, password ); 
       
-      if (response) {
-        router.push('/home');
-      } else {
-        setError('Invalid email or password');
-      }
+      if (!response?.ok) {
+        setError(response?.error || '');
+      } 
     } catch (err) {
       setError('An error occurred. Please try again.' + err);
     } finally {
