@@ -1,74 +1,58 @@
-import { Video, VideoState, Comment } from '@/types/videos';
+import { Video } from '@/types/videos';
 import { fetchWithToken } from '@/utils/fetchWithToken';
-import {create} from 'zustand';
+import { create } from 'zustand';
 
-export const useVideoStore = create<VideoState>((set, get) => ({
+
+
+type VideosStore = {
+  videos: Video[];
+  loading: boolean;
+  error: string | null;
+  fetchVideos: () => Promise<void>;
+  addVideo: (video: Video) => void;
+  updateVideo: (id: string, updatedVideo: Partial<Video>) => void;
+  deleteVideo: (id: string) => void;
+};
+
+export const useVideosStore = create<VideosStore>((set) => ({
   videos: [],
-  comments: [],
-  ratings: [],
-  isLoading: false,
+  loading: false,
   error: null,
-
+  
   fetchVideos: async () => {
-    set({ isLoading: true, error: null });
+    set({ loading: true, error: null });
     try {
       const response = await fetchWithToken('http://localhost:8080/videos');
-      if (!response.ok) {
+      if (!response.ok) throw new Error('Error fetching videos');
+      const data = await response.data;
 
-        throw new Error(`Error fetching videos: ${response.error}`); 
-      }
+      
 
-      const data: Video[] = await response.data;
-      console.log('Fetched videos:', data);
+      const videos = data ;
+      set({ videos: videos, loading: false });
+    } catch (error) {
 
-      set({ videos: data, isLoading: false });
-    } catch (error: any) {
       console.log('Error fetching videos:', error);
       
-      set({ error: error.message, isLoading: false });
+      set({ 
+        error: error instanceof Error ? error.message : 'Unknown error',
+        loading: false,
+        videos: [] 
+         });
     }
   },
-
-  addVideo: (video) => {
-    const newVideo: Video = {
-      ...video,
-      id: crypto.randomUUID(), 
-      uploadedAt: new Date().toISOString(),
-      views: 0,
-    };
-    set((state) => ({ videos: [...state.videos, newVideo] }));
-  },
-
-  updateVideo: (id, updates) => {
+  
+  addVideo: (video) => set((state) => ({ videos: [...state.videos, video] })),
+  
+  updateVideo: (id, updatedVideo) => 
     set((state) => ({
       videos: state.videos.map((video) =>
-        video.id === id ? { ...video, ...updates } : video
+        video.id === id ? { ...video, ...updatedVideo } : video
       ),
-    }));
-  },
-
-  deleteVideo: (id) => {
+    })),
+    
+  deleteVideo: (id) => 
     set((state) => ({
       videos: state.videos.filter((video) => video.id !== id),
-    }));
-  },
-
-  addComment: (comment) => {
-    const newComment: Comment = {
-      ...comment,
-      id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-    };
-    set((state) => ({
-      comments: [...state.comments, newComment],
-    }));
-  },
-
-  deleteComment: (id) => {
-    set((state) => ({
-      comments: state.comments.filter((comment) => comment.id !== id),
-    }));
-  },
-
-  
+    })),
 }));

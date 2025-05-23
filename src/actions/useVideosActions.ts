@@ -21,7 +21,7 @@ export const useVideosActions = () => {
         method: 'POST',
         body: formData,
       });
-      toast.success(`Video uploaded successfully ${JSON.stringify(video)}`)
+      toast.success(`Video uploaded successfully`)
     } catch (error) {
       toast.error(`Error uploading video ${error}`)
     }

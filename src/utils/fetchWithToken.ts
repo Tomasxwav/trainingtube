@@ -2,7 +2,7 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
-export async function fetchWithToken(url: string, options: RequestInit = {}) {
+export async function fetchWithToken(url: string, options: RequestInit = { method: 'GET' }) {
   const cookieStore = await cookies();
   let accessToken = cookieStore.get('access_token')?.value;
 
@@ -42,7 +42,14 @@ export async function fetchWithToken(url: string, options: RequestInit = {}) {
     return {ok: false, error: 'Unauthorized', status: response.status };
   }
 
-  const data = await response.json();
+  let data;
+  if (options.method !== 'GET') {
+    data = await response.text();
+  } else {
+    data = await response.json();
+  }
+
+
 
   return {ok: true, status: response.status, data: data}; 
 }

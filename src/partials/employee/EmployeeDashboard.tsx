@@ -1,13 +1,13 @@
 'use client';
 /* 
 import { useState } from 'react'; */
-import { useVideoStore } from '@/stores/videoStore';
+import { useVideosStore } from '@/stores/videoStore';
 import VideoCard from '@/components/VideoCard';
 import { Film, Flame, BookOpen } from 'lucide-react';
 /* import { Button } from '@/components/ui/button'; */
 
 export default function EmployeeDashboard() {
-  const { videos,  } = useVideoStore();
+  const { videos  } = useVideosStore();
 /*   const [selectedCategory, setSelectedCategory] = useState<string | null>(null); */
   
 /*   const categories = Array.from(

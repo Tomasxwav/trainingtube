@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useVideoStore } from '@/stores/videoStore';
 import { Plus, Pencil, Trash2, Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import VideoManagementModal from './VideoManagementModal';
@@ -17,9 +16,11 @@ import {
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { Video } from '@/types/videos';
+import { useVideosStore } from '@/stores/videoStore';
 
 export default function VideoManagement() {
-  const { videos, addVideo, updateVideo, deleteVideo, fetchVideos, isLoading } = useVideoStore();
+  const {fetchVideos, deleteVideo, loading } = useVideosStore();
+  const videos = useVideosStore((state) => state.videos);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -27,22 +28,26 @@ export default function VideoManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   
-  const categories = Array.from(
-    new Set(videos.flatMap((video) => video.category))
-  );
 
-  useEffect(() => {
-    fetchVideos();
-  }, []);
+  const Allcategories =  videos.filter((video) => video.category).map((video) => video.category);  
+  const categories = Array.from(new Set(Allcategories));
 
-  const filteredVideos = videos.filter((video) => {
+  const filteredVideos =  videos.filter((video) => {
     const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      video.description.toLowerCase().includes(searchTerm.toLowerCase());
+      video.description.toLowerCase().includes(searchTerm.toLowerCase()) 
     
     const matchesCategory = categoryFilter === null || video.category.includes(categoryFilter) || categoryFilter === 'all';
     
     return matchesSearch && matchesCategory;
   });
+
+  useEffect(() => {
+    fetchVideos();
+
+  }, []);
+
+  console.log('videos', videos);
+
   
 /*   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -70,6 +75,7 @@ export default function VideoManagement() {
       setCurrentVideo(null);
     }
   };
+
   
   return (
     <div className="animate-fade-in">
@@ -142,7 +148,7 @@ export default function VideoManagement() {
               </tr>
             </thead>
             <tbody>
-            {isLoading ? (
+            {loading ? (
               <tr>
                 <td colSpan={6} className="py-6 text-center text-dark-600">
                   Loading videos...
