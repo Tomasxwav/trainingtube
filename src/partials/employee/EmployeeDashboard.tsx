@@ -1,13 +1,13 @@
 'use client';
 /* 
 import { useState } from 'react'; */
-import { useVideosStore } from '@/stores/videoStore';
+/* import { useVideosStore } from '@/stores/videoStore'; */
 import VideoCard from '@/components/VideoCard';
 import { Film, Flame, BookOpen } from 'lucide-react';
 /* import { Button } from '@/components/ui/button'; */
 
 export default function EmployeeDashboard() {
-  const { videos  } = useVideosStore();
+ /*  const { videos  } = useVideosStore(); */
 /*   const [selectedCategory, setSelectedCategory] = useState<string | null>(null); */
   
 /*   const categories = Array.from(
@@ -55,7 +55,7 @@ export default function EmployeeDashboard() {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {videos
+          {/* {videos
             .sort((a, b) => b.views - a.views)
             .slice(0, 4)
             .map((video) => (
@@ -64,7 +64,7 @@ export default function EmployeeDashboard() {
                 video={video} 
                 averageRating={video.rating}
               />
-            ))}
+            ))} */}
         </div>
       </div>
       
