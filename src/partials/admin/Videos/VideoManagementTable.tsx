@@ -20,16 +20,9 @@ import { useVideosActions } from "@/actions/useVideosActions"
 import { useEffect, useState } from 'react'
 
 export default function VideoManagementTable() {
-  const { getVideos } = useVideosActions()
-  const [videosData, setVideosData] = useState<{ videos: Video[]; isLoading: boolean; error: string | null } | null>(null)
+  const { videos } = useVideosActions()
+  const [videosData, setVideosData] = useState/*< { videos: Video[]; isLoading: boolean; error: string | null } | null >*/({videos}) 
 
-  const loadVideos = async () => {
-    const result = await getVideos()
-    setVideosData(result)
-  };
-  useEffect(() => {
-    loadVideos()
-  }, [])
 
   interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -41,6 +34,8 @@ export default function VideoManagementTable() {
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
+
+
  
   return (
     <Table className="border-b border-dark-50 hover:bg-dark-50 transition-colors">

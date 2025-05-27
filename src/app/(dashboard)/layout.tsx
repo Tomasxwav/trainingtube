@@ -1,12 +1,22 @@
+'use client'
+
 import Navbar from '@/partials/Navbar'
 import Sidebar from '@/partials/Sidebar'
-import React from 'react'
+import useVideoStore from '@/stores/videoStore';
+import React, { useEffect } from 'react'
 
 export default function DashboardLayout( {
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  const { fetchVideos } = useVideoStore();
+  
+  useEffect(() => {
+    fetchVideos();
+  }, [fetchVideos]);
+
   return (
     <div className='flex flex-row'>
         <Sidebar />
@@ -18,3 +28,4 @@ export default function DashboardLayout( {
     </div>
   )
 }
+  

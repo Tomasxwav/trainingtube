@@ -6,42 +6,44 @@ import { create } from 'zustand';
 
 type VideosStore = {
   videos: Video[];
-  loading: boolean;
+  lastUpdated: string | null;
+  isLoading: boolean;
   error: string | null;
-  fetchVideos: () => Promise<void>;
+  fetchVideos: (forceUpdate?: boolean) => Promise<void>;
   addVideo: (video: Video) => void;
   updateVideo: (id: string, updatedVideo: Partial<Video>) => void;
   deleteVideo: (id: string) => void;
-};
-
-export const useVideosStore = create<VideosStore>((set) => ({
-  videos: [],
-  loading: false,
-  error: null,
-  
-  fetchVideos: async () => {
-    set({ loading: true, error: null });
-    try {
-      const response = await fetchWithToken('http://localhost:8080/videos');
-      if (!response.ok) throw new Error('Error fetching videos');
-      const data = await response.data;
-
-      
-
-      const videos = data ;
-      set({ videos: videos, loading: false });
-    } catch (error) {
-
-      console.log('Error fetching videos:', error);
-      
-      set({ 
-        error: error instanceof Error ? error.message : 'Unknown error',
-        loading: false,
-        videos: [] 
-         });
-    }
-  },
-  
+  clearCache: () => void;
+}
+export const useVideoStore = create<VideosStore>()(
+    (set) => ({
+      videos: [],
+      lastUpdated: null,
+      isLoading: false,
+      error: null,
+      fetchVideos: async (forceUpdate = false) => {
+        if (useVideoStore.getState().isLoading) return;
+        
+        try {
+          set({ isLoading: true, error: null });
+          
+          if (forceUpdate || !useVideoStore.getState().lastUpdated) {
+            const response = await fetchWithToken('http://localhost:8080/videos');
+            const data = await response.data;
+            
+            set({
+              videos: data,
+              lastUpdated: new Date().toISOString(),
+              isLoading: false
+            });
+          }
+        } catch (err) {
+          set({ 
+            error: 'Failed to fetch videos', 
+            isLoading: false 
+          });
+        }
+      },
   addVideo: (video) => set((state) => ({ videos: [...state.videos, video] })),
   
   updateVideo: (id, updatedVideo) => 
@@ -55,4 +57,8 @@ export const useVideosStore = create<VideosStore>((set) => ({
     set((state) => ({
       videos: state.videos.filter((video) => video.id !== id),
     })),
-}));
+      clearCache: () => set({ videos: [], lastUpdated: null })
+    })
+);
+
+export default useVideoStore;
