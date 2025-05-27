@@ -33,13 +33,13 @@ export default function Sidebar() {
     {
       name: 'Dashboard',
       icon: Home,
-      path: '/admin',
+      path: '/home',
       showFor: ['admin'],
     },
     {
       name: 'Videos',
       icon: Film,
-      path: '/admin/videos',
+      path: '/videos',
       showFor: ['admin'],
     },
     {
@@ -62,9 +62,9 @@ export default function Sidebar() {
     },
   ];
   
-  const filteredNavItems = navItems.filter(item => 
+  /* const filteredNavItems = navItems.filter(item => 
     item.showFor.includes('')
-  );
+  ); */
   
   return (
     <aside className="hidden md:flex md:flex-col w-64 min-h-screen h-full bg-background border-r border-dark-100 overflow-hidden">
@@ -82,17 +82,13 @@ export default function Sidebar() {
       
       <nav className="flex-1 pt-4">
         <ul>
-          {filteredNavItems.map((item) => (
+          {navItems.map((item) => (
             <li key={item.path}>
               <Link
                 href={item.path}
-                className={`flex items-center px-4 py-3 text-dark-800 hover:bg-dark-50 transition-colors ${
-                  location.pathname === item.path ? 'bg-dark-50 text-primary-600 font-medium' : ''
-                }`}
+                className={`flex items-center px-4 py-3 text-dark-800 hover:bg-dark-50 transition-colors `}
               >
-                <item.icon size={20} className={`${
-                  location.pathname === item.path ? 'text-primary-500' : 'text-dark-600'
-                }`} />
+                <item.icon size={20} />
                 <span className="ml-3">{item.name}</span>
               </Link>
             </li>
