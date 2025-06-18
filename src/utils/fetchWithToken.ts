@@ -1,12 +1,13 @@
 'use server';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
+import { SessionData } from '@/types/auth';
 
 export async function fetchWithToken(url: string, options: RequestInit = { method: 'GET' }) {
   const cookieStore = await cookies();
-  let accessToken = cookieStore.get('access_token')?.value;
+  const sessionCookie = cookieStore.get('session')?.value 
 
-  if (!accessToken) {
+  if (!sessionCookie) {
     const response = await fetch(url, options);
 
     if (!response.ok) {
@@ -18,8 +19,8 @@ export async function fetchWithToken(url: string, options: RequestInit = { metho
     }
 
     const data = await response.json();
-
-    cookieStore.set('access_token', data.accessToken, {
+    
+    cookieStore.set('session', JSON.stringify(data), {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
@@ -29,12 +30,13 @@ export async function fetchWithToken(url: string, options: RequestInit = { metho
 
     redirect('/home'); 
   }
-
+  const session: SessionData = JSON.parse(sessionCookie);
+  
   const response = await fetch(url, {
     ...options,
     headers: {
       ...options.headers,
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${session.access_token}`,
     },
   });
 
