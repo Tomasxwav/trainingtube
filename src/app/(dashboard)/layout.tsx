@@ -2,7 +2,7 @@
 
 import Navbar from '@/partials/Navbar'
 import Sidebar from '@/partials/Sidebar'
-import useVideoStore from '@/stores/videoStore';
+import {useVideoStore} from '@/stores/videoStore';
 import React, { useEffect } from 'react'
 
 export default function DashboardLayout( {

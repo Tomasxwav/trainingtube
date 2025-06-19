@@ -16,12 +16,10 @@ import {
 
 import { Video } from "@/types/videos"
 import { columns } from "./VideoManagementColumns"
-import { useVideosActions } from "@/actions/useVideosActions"
-import { useEffect, useState } from 'react'
+import { useVideoStore } from '@/stores/videoStore'
 
 export default function VideoManagementTable() {
-  const { videos } = useVideosActions()
-  const [videosData, setVideosData] = useState/*< { videos: Video[]; isLoading: boolean; error: string | null } | null >*/({videos}) 
+  const { videos, fetchVideos } = useVideoStore()
 
 
   interface DataTableProps<TData, TValue> {
@@ -30,13 +28,11 @@ export default function VideoManagementTable() {
 }
 
   const table = useReactTable({
-    data: videosData?.videos || [],
+    data: videos || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
 
-
- 
   return (
     <Table className="border-b border-dark-50 hover:bg-dark-50 transition-colors">
       <TableHeader>

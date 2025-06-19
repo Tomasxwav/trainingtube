@@ -12,7 +12,7 @@ export const columns: ColumnDef<Video>[] = [
         enableColumnFilter: true,
         cell: ({ row }) => (
           <div className="flex items-center space-x-2 w-[20vw]"> 
-              <Image src={row.original.thumbnailUrl} alt={row.original.title} width={150} height={100} className="rounded" />    
+              <Image src={row.original.thumbnailUrl} alt={row.original.title} width={150} height={100} className="rounded w-38 h-24" />    
               <span>{row.original.title}</span>
           </div>
       ),

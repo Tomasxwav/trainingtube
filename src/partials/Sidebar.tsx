@@ -9,7 +9,7 @@ export default function Sidebar() {
     {
       name: 'Home',
       icon: Home,
-      path: '/',
+      path: '/home',
       showFor: ['admin', 'employee'],
     },
     {
@@ -33,7 +33,7 @@ export default function Sidebar() {
     {
       name: 'Dashboard',
       icon: Home,
-      path: '/home',
+      path: '/home2',
       showFor: ['admin'],
     },
     {

@@ -1,11 +1,11 @@
-import useVideoStore from '@/stores/videoStore';
+import {useVideoStore} from '@/stores/videoStore';
 import { Video, VideoUpload } from '@/types/videos';
 import { fetchWithToken } from '@/utils/fetchWithToken';
 import { toast } from "sonner"
 
 
 export const useVideosActions = () => {
-  const { videos, isLoading, error, lastUpdated, fetchVideos } = useVideoStore();
+  const { videos, fetchVideos } = useVideoStore();
 
   const addVideo = async (video: VideoUpload) => {
     console.log('addVideo ', video);
@@ -42,13 +42,16 @@ export const useVideosActions = () => {
     console.log('getAverageRating', id);
   };
 
+  const getAllVideos = async () => {
+    const response = await fetchWithToken('http://localhost:8080/videos');
+    const data = await response.data;
+    return data;
+  };
 
-  const getVideos = async (forceRefresh = false) => {
-    if (forceRefresh || !lastUpdated) {
-      console.log('Fetching videos...: lastUpdated' + lastUpdated + ' forceRefresh: ' + forceRefresh); 
-      await fetchVideos(forceRefresh);
-    }
-    return { videos, isLoading, error };
+
+  const getVideos = () => {
+    console.log('getVideos' , videos)
+    return videos
   };
 
   return {
@@ -57,6 +60,7 @@ export const useVideosActions = () => {
     deleteVideo,
     getAverageRating,
     getVideos,
+    getAllVideos,
     videos
   };
 };
