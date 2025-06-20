@@ -49,17 +49,19 @@ export const useVideosActions = () => {
   };
 
 
-  const getVideos = () => {
-    console.log('getVideos' , videos)
-    return videos
+  const getPendingVideos = async (employee : string) => {
+    const response = await fetchWithToken(`http://localhost:8080/interactions/videos/${employee}/pending`);
+    const data = await response.data;
+    return data;
   };
+
 
   return {
     addVideo,
     updateVideo,
     deleteVideo,
     getAverageRating,
-    getVideos,
+    getPendingVideos,
     getAllVideos,
     videos
   };

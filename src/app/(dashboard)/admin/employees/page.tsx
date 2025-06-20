@@ -1,8 +1,8 @@
 
-export default function Videos() {
+export  function Employee() {
   return (
     <div className="animate-fade-in p-8">
-      <h1>Employee Videos</h1>
+      <h1>Employees Management</h1>
     </div>
   );
 }

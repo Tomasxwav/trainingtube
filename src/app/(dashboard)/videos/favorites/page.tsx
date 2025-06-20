@@ -1,8 +1,7 @@
-
-export default function Videos() {
+export default function Favorites() {
   return (
     <div className="animate-fade-in p-8">
-      <h1>Employee Videos</h1>
+      <h1>Favorites</h1>
     </div>
   );
 }

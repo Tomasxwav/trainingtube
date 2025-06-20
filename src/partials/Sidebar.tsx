@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Home, Film, Users, PlayCircle, ThumbsUp, Clock, Settings, HelpCircle } from 'lucide-react';
+import { Home, Film, Users, PlayCircle, ThumbsUp, Clock, Settings, HelpCircle, Heart } from 'lucide-react';
 
 export default function Sidebar() {
   
@@ -13,21 +13,27 @@ export default function Sidebar() {
       showFor: ['admin', 'employee'],
     },
     {
+      name: 'Pending Videos',
+      icon: Clock,
+      path: '/videos/pending',
+      showFor: ['admin', 'employee'],
+    },
+    {
       name: 'All Videos',
       icon: PlayCircle,
-      path: '/xd',
+      path: '/videos',
       showFor: ['employee'],
     },
     {
       name: 'Liked Videos',
       icon: ThumbsUp,
-      path: '/liked',
+      path: '/videos/liked',
       showFor: ['employee'],
     },
     {
-      name: 'Watch Later',
-      icon: Clock,
-      path: '/watch-later',
+      name: 'Favorites',
+      icon: Heart,
+      path: '/videos/favorites',
       showFor: ['employee'],
     },
     {
@@ -39,7 +45,7 @@ export default function Sidebar() {
     {
       name: 'Videos',
       icon: Film,
-      path: '/videos',
+      path: '/admin/videos',
       showFor: ['admin'],
     },
     {
