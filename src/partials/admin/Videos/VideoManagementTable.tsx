@@ -19,7 +19,7 @@ import { columns } from "./VideoManagementColumns"
 import { useVideoStore } from '@/stores/videoStore'
 
 export default function VideoManagementTable() {
-  const { videos, fetchVideos } = useVideoStore()
+  const { videos } = useVideoStore()
 
 
   interface DataTableProps<TData, TValue> {

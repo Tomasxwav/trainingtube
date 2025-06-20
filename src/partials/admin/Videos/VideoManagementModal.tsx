@@ -25,6 +25,7 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 import { useActionState } from 'react';
+import { useVideoStore } from '@/stores/videoStore';
 
 interface ChildComponentProps {
   isOpen: boolean;
@@ -33,6 +34,8 @@ interface ChildComponentProps {
 
 export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComponentProps) {
     const { addVideo } = useVideosActions();
+    const { fetchVideos } = useVideoStore()
+    
     const [state, action, pending] = useActionState<
         boolean,
         z.infer<typeof videoSchema> 
@@ -75,7 +78,10 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
       function onSubmit(values: z.infer<typeof videoSchema>) {
         console.log('onSubmit', values);
         addVideo(values)
-      }
+        form.reset();
+        fetchVideos()
+        onOpenChange(false)
+    }
       
     return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
