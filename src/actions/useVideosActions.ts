@@ -16,7 +16,7 @@ export const useVideosActions = () => {
       formData.append('description', video.description);
       formData.append('thumbnail', video.thumbnail);
       formData.append('video', video.video);
-      formData.append('category', video.category?.toLocaleLowerCase() || 'other');
+      formData.append('category', video.department?.toLocaleLowerCase() || 'other');
 
       await fetchWithToken('http://localhost:8080/videos', {
         method: 'POST',
@@ -55,6 +55,11 @@ export const useVideosActions = () => {
     return data;
   };
 
+  const getFavoritesVideos = async (employee : string) => {
+    const response = await fetchWithToken(`http://localhost:8080/interactions/videos/${employee}/favorites`);
+    const data = await response.data;
+    return data;
+  };
 
   return {
     addVideo,
@@ -62,6 +67,7 @@ export const useVideosActions = () => {
     deleteVideo,
     getAverageRating,
     getPendingVideos,
+    getFavoritesVideos,
     getAllVideos,
     videos
   };

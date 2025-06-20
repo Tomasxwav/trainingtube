@@ -1,80 +1,80 @@
 import Link from 'next/link'; 
 import Image from 'next/image'
-import { Star, Clock } from 'lucide-react';
-import { Video } from '@/stores/videoStore';
+import { Star, Clock, Calendar } from 'lucide-react';
 import { Card } from './ui/card';
+import { Video } from '@/types/videos';
 
-type VideoCardProps = {
-  video: Video;
-  showCategory?: boolean;
-  averageRating: number;
-};
+export default function VideoCard({video} : {video: Video}) {
+  const { id, title, thumbnailUrl, videoUrl, duration, views, uploadDate, department } = video;
+   const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffTime = Math.abs(now.getTime() - date.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
-export default function VideoCard({ video, showCategory = true, averageRating }: VideoCardProps) {
-  const { id, title, thumbnailUrl, duration, views, uploadedAt, categories } = video;
-  
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(date);
-  };
-  
+    if (diffDays === 1) return "hace 1 día"
+    if (diffDays < 7) return `hace ${diffDays} días`
+    if (diffDays < 30) return `hace ${Math.ceil(diffDays / 7)} semanas`
+    if (diffDays < 365) return `hace ${Math.ceil(diffDays / 30)} meses`
+    return `hace ${Math.ceil(diffDays / 365)} años`
+  }
+
   return (
-    <Link href={`/video/${id}`} className="group">
-      <Card className="overflow-hidden animate-fade-in py-0">
-        <div className="relative">
-          <Image 
-            src={thumbnailUrl} 
+    <div className="w-full max-w-[20vw] bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 shadow-accent">
+      <Link href={`/video?url=${encodeURIComponent(videoUrl)}`} className="block">
+        {/* Thumbnail Container */}
+        <div className="relative aspect-video bg-gray-100 overflow-hidden">
+          <Image
+            src={thumbnailUrl || "/placeholder.svg"}
             alt={title}
-            width={400}
-            height={300}
-            className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
+            fill
+            className="object-cover hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 30vw, 13vw"
           />
-          <div className="absolute bottom-2 right-2 bg-dark-900 bg-opacity-80 text-white text-xs px-2 py-1 rounded">
-            <span className="flex items-center">
-              <Clock size={12} className="mr-1" />
-              {duration}
-            </span>
+          {/* Duration overlay - hardcoded por ahora */}
+          <div className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
+            12:34
           </div>
         </div>
-        
-        <div className="p-3">
-          <h3 className="font-medium text-dark-900 line-clamp-2 group-hover:text-primary-600 transition-colors">
+
+        {/* Content */}
+        <div className="p-2 flex justify-between min-h-full">
+           {/* Title & Department */}
+         <div>
+          <h3 className="font-semibold text-foreground line-clamp-2 text-sm leading-5 mb-2 hover:text-blue-600 transition-colors">
             {title}
           </h3>
-          
-          <div className="mt-2 flex items-center justify-between">
-            <div className="text-sm text-dark-600">
-              {views} views • {formatDate(uploadedAt)}
+
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-bold">{department?.charAt(0).toUpperCase()}</span>
             </div>
-            
-            <div className="flex items-center">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  size={14}
-                  className={`${
-                    star <= averageRating
-                      ? 'text-yellow-400 fill-yellow-400'
-                      : 'text-dark-200'
-                  }`}
-                />
-              ))}
+            <span className="text-gray-600 text-sm font-medium">{department}</span>
+          </div>
+         </div>
+
+          {/* Rating and Date */}
+          <div className="text-xs text-gray-500 min-h-full flex flex-col justify-between items-end ">
+            <div className="flex items-center gap-1">
+              <div className="flex items-center">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-3 h-3 ${i < 4 ? "fill-yellow-400 text-yellow-400" : "fill-gray-200 text-gray-200"}`}
+                  />
+                ))}
+              </div>
+              <span className="ml-1 font-medium">4.2</span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <Calendar className="w-3 h-3" />
+              <span>{formatDate(uploadDate)}</span>
             </div>
           </div>
-          
-          {showCategory && categories.length > 0 && (
-            <div className="mt-2">
-              <span className="inline-block bg-dark-50 text-dark-700 text-xs px-2 py-1 rounded">
-                {categories[0]}
-              </span>
-            </div>
-          )}
         </div>
-      </Card>
-    </Link>
-  );
+      </Link>
+    </div>
+  )
 }
+  

@@ -1,13 +1,15 @@
+export type Department = 'sales' | 'marketing' | 'development' | 'it' | 'support' | 'design' | 'hr' | 'customer service' | 'finance' | 'legal' | 'operations' | 'other';
+
 export interface Video {
   id: string;
   title: string;
   description: string;
   thumbnailUrl: string;
   videoUrl: string;
-  duration: number;
-  views: number;
-  uploadedAt: string;
-  category: string;
+  uploadDate: string;
+  department: Department;
+  duration?: number;
+  views?: number;
   rating: number;
   requiredFor?: string[];
 }
@@ -17,7 +19,7 @@ export interface VideoUpload {
   description: string;
   thumbnail: File;
   video: File;
-  category?: string;
+  department?: Department;
 }
 
 export type Comment = {

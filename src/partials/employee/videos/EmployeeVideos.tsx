@@ -1,7 +1,7 @@
 'use client';
 
 import { useVideosActions } from '@/actions/useVideosActions';
-import EmployeeVideosTable from './EmployeeVideoTable';
+import EmployeeVideosScroller from './EmployeeVideoScroller';
 import { Suspense, useEffect, useState } from 'react';
 
 export default function EmployeeVideos() {
@@ -19,7 +19,7 @@ export default function EmployeeVideos() {
   return (
     <div className="animate-fade-in p-8">
       <h1>Employee Pending Videos</h1>
-      <EmployeeVideosTable videos={videos} />
+      <EmployeeVideosScroller videos={videos} />
     </div>
   );
 }
