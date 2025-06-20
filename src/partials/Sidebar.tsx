@@ -45,7 +45,7 @@ export default function Sidebar() {
     {
       name: 'Videos',
       icon: Film,
-      path: '/admin/videos',
+      path: '/admin/videos-management',
       showFor: ['admin'],
     },
     {
