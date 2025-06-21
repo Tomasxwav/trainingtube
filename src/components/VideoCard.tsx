@@ -20,10 +20,10 @@ export default function VideoCard({video} : {video: Video}) {
   }
 
   return (
-    <div className="w-full max-w-[20vw] bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 shadow-accent">
+    <div className="w-full max-w-[20vw] bg-transparent rounded-lg overflow-hiddenduration-300 ">
       <Link href={`/video?url=${encodeURIComponent(videoUrl)}`} className="block">
         {/* Thumbnail Container */}
-        <div className="relative aspect-video bg-gray-100 overflow-hidden">
+        <div className="relative aspect-video overflow-hidden rounded-2xl">
           <Image
             src={thumbnailUrl || "/placeholder.svg"}
             alt={title}
@@ -32,7 +32,7 @@ export default function VideoCard({video} : {video: Video}) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 30vw, 13vw"
           />
           {/* Duration overlay - hardcoded por ahora */}
-          <div className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
+          <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
             12:34
           </div>
         </div>
