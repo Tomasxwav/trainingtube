@@ -18,7 +18,7 @@ export const useVideosActions = () => {
       formData.append('video', video.video);
       formData.append('department', video.department?.toLocaleLowerCase() || 'other');
 
-      await fetchWithToken('http://localhost:8080/videos', {
+      await fetchWithToken('http://localhost:8080/videos/admin', {
         method: 'POST',
         body: formData,
       });
@@ -43,20 +43,20 @@ export const useVideosActions = () => {
   };
 
   const getAllVideos = async () => {
-    const response = await fetchWithToken('http://localhost:8080/videos');
+    const response = await fetchWithToken('http://localhost:8080/videos/admin');
     const data = await response.data;
     return data;
   };
 
 
   const getPendingVideos = async (employee : string) => {
-    const response = await fetchWithToken(`http://localhost:8080/interactions/videos/${employee}/pending`);
+    const response = await fetchWithToken(`http://localhost:8080/interactions/pending`);
     const data = await response.data;
     return data;
   };
 
   const getFavoritesVideos = async (employee : string) => {
-    const response = await fetchWithToken(`http://localhost:8080/interactions/videos/${employee}/favorites`);
+    const response = await fetchWithToken(`http://localhost:8080/interactions/favorites`);
     const data = await response.data;
     return data;
   };

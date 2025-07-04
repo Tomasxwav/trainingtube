@@ -3,18 +3,11 @@
 import { useVideosActions } from '@/actions/useVideosActions';
 import EmployeeVideosScroller from './EmployeeVideoScroller';
 import { Suspense, useEffect, useState } from 'react';
+import { useVideoStore } from '@/stores/videoStore';
 
 export default function EmployeeVideos() {
   
-  const { getPendingVideos } = useVideosActions();
-  const [videos, setVideos] = useState<any[]>([]);
-
-  useEffect(() => {
-    getPendingVideos('1').then((data) => {
-      console.log('data', data);
-      setVideos(data);
-    });
-  }, []);
+  const { videos } = useVideoStore();
     
   return (
     <div className="animate-fade-in p-8">

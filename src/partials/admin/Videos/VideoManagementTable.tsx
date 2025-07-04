@@ -14,13 +14,19 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { Video } from "@/types/videos"
 import { columns } from "./VideoManagementColumns"
-import { useVideoStore } from '@/stores/videoStore'
+import { useVideosActions } from '@/actions/useVideosActions'
+
+import React, { useEffect, useState } from "react"
+import { Video } from '@/types/videos'
 
 export default function VideoManagementTable() {
-  const { videos } = useVideoStore()
+  const { getAllVideos } = useVideosActions()
+  const [videos, setVideos] = useState<Video[]>([])
 
+  useEffect(() => {
+    getAllVideos().then((data: Video[]) => setVideos(data || []))
+  }, [getAllVideos])
 
   interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
