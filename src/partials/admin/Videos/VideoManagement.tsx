@@ -22,7 +22,7 @@ export default function VideoManagement() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const [categoryFilter, setCategoryFilter] = useState('all');
-  const categories = ['Training', 'Safety', 'Compliance', 'Onboarding', 'Technical Skills'];
+  const departments = ['Engineering', 'Product', 'Marketing', 'Finance', 'HR', 'IT', 'Sales', 'Academy', 'Legal'];
 
   
   return (
@@ -66,10 +66,10 @@ export default function VideoManagement() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Categories</SelectLabel>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
+                  <SelectLabel>Departments</SelectLabel>
+                  <SelectItem value="all">All Departments</SelectItem>
+                  {departments.map((category) => (
+                    <SelectItem key={category} value={category.toLowerCase()}>
                       {category}
                     </SelectItem>
                   ))}

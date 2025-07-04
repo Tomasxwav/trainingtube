@@ -1,4 +1,4 @@
-import VideoManagement from '@/partials/admin/videos/VideoManagement';
+import VideoManagement from '@/partials/admin/Videos/VideoManagement';
 
 export default function AdminVideos() {
   return (

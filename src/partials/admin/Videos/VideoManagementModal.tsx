@@ -26,6 +26,7 @@ import {
   } from "@/components/ui/select"
 import { useActionState } from 'react';
 import { useVideoStore } from '@/stores/videoStore';
+import { Department } from '@/types/videos';
 
 interface ChildComponentProps {
   isOpen: boolean;
@@ -71,7 +72,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
           description: '',
           thumbnail: {} as File,
           video: {} as File,
-          category: '',
+          department: 'other' as Department,
         },
       })
 
@@ -173,7 +174,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                         />
                     <FormField
                         control={form.control}
-                        name="category"
+                        name="department"
                         render={({ field }) => (
                             <FormItem
                                 className="mb-4"
@@ -188,7 +189,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                                         <SelectGroup>
                                         <SelectLabel>Category</SelectLabel>
                                         {categories.map((category) => (
-                                            <SelectItem key={category} value={category}>
+                                            <SelectItem key={category} value={category.toLowerCase()}>
                                                 {category}
                                             </SelectItem>
                                         ))}
