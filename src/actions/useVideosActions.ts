@@ -16,7 +16,7 @@ export const useVideosActions = () => {
       formData.append('description', video.description);
       formData.append('thumbnail', video.thumbnail);
       formData.append('video', video.video);
-      formData.append('category', video.department?.toLocaleLowerCase() || 'other');
+      formData.append('department', video.department?.toLocaleLowerCase() || 'other');
 
       await fetchWithToken('http://localhost:8080/videos', {
         method: 'POST',
