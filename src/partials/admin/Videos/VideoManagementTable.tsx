@@ -26,7 +26,7 @@ export default function VideoManagementTable() {
 
   useEffect(() => {
     getAllVideos().then((data: Video[]) => setVideos(data || []))
-  }, [getAllVideos])
+  }, [])
 
   interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
