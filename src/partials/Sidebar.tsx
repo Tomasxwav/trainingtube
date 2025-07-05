@@ -37,9 +37,9 @@ export default function Sidebar() {
       showFor: ['employee'],
     },
     {
-      name: 'Dashboard',
+      name: 'My metrics',
       icon: Home,
-      path: '/home2',
+      path: '/metrics',
       showFor: ['admin'],
     },
     {
