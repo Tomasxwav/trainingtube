@@ -1,23 +1,13 @@
 import Link from 'next/link'; 
 import Image from 'next/image'
-import { Star, Clock, Calendar } from 'lucide-react';
-import { Card } from './ui/card';
+import { Star, Calendar } from 'lucide-react';
 import { Video } from '@/types/videos';
+
+import { sinceDate } from '@/utils/sinceDate';
 
 export default function VideoCard({video} : {video: Video}) {
   const { id, title, thumbnailUrl, videoUrl, duration, views, uploadDate, department } = video;
-   const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffTime = Math.abs(now.getTime() - date.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-    if (diffDays === 1) return "hace 1 día"
-    if (diffDays < 7) return `hace ${diffDays} días`
-    if (diffDays < 30) return `hace ${Math.ceil(diffDays / 7)} semanas`
-    if (diffDays < 365) return `hace ${Math.ceil(diffDays / 30)} meses`
-    return `hace ${Math.ceil(diffDays / 365)} años`
-  }
+  
 
   return (
     <div className="w-full max-w-[20vw] bg-transparent rounded-lg overflow-hiddenduration-300 ">
@@ -69,7 +59,7 @@ export default function VideoCard({video} : {video: Video}) {
 
             <div className="flex items-center gap-1">
               <Calendar className="w-3 h-3" />
-              <span>{formatDate(uploadDate)}</span>
+              <span>{sinceDate(uploadDate)}</span>
             </div>
           </div>
         </div>

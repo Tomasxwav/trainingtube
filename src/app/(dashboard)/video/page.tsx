@@ -1,3 +1,6 @@
+'use client';
+
+import { useVideosActions } from '@/actions/useVideosActions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -5,15 +8,24 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import VideoPlayer from '@/components/VideoPlayer';
+import { useVideoStore } from '@/stores/videoStore';
+import { sinceDate } from '@/utils/sinceDate';
 import { BookMarked, Calendar, Eye, Heart, MessageSquare, Send, ThumbsUp } from 'lucide-react';
+import {  useSearchParams } from 'next/navigation';
 
 export default function VideoPage() {
+
+  const { videos } = useVideoStore();
+  const searchParams = useSearchParams();
+  const videoUrl = searchParams.get('url') ? decodeURIComponent(searchParams.get('url')!) : '';
+  const video = videos.find((video) => video.videoUrl === videoUrl.replaceAll(' ', '%20'));
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-12 grid-rows-2 p-2 md:p-8">
 
       {/* Video Player */}
       <div className="col-span-5 flex gap-8">
-        <VideoPlayer />
+        <VideoPlayer videoUrl={videoUrl} />
 
         {/* Rating Section */}
         <Card >
@@ -51,7 +63,7 @@ export default function VideoPage() {
           <div className="space-y-4">
             <div>
               <h1 className="text-2xl lg:text-3xl font-bold leading-tight">
-                How to sell drugs online
+                {video?.title}
               </h1>
               <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
@@ -60,7 +72,7 @@ export default function VideoPage() {
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
-                  <span>Published 3 days ago</span>
+                  <span>{sinceDate(video?.uploadDate)}</span>
                 </div>
                 <Badge variant="secondary">Sales</Badge>
                 <Badge variant="secondary">IT</Badge>
@@ -90,9 +102,13 @@ export default function VideoPage() {
             <div className="space-y-3">
               <h3 className="font-semibold">Description</h3>
               <p className="text-muted-foreground leading-relaxed">
-                In this comprehensive tutorial, we'll explore advanced forms to sell drugs online. 
+
+                {video?.description.concat(`In this comprehensive tutorial, we'll explore advanced forms to sell drugs online. 
                 We'll cover administration, payments, and marketing, and how to evaluate the success of your campaign.
                 We'll also cover how to handle refunds and disputes, and how to prevent fraud.
+                In this comprehensive tutorial, we'll explore advanced forms to sell drugs online. 
+                We'll cover administration, payments, and marketing, and how to evaluate the success of your campaign.
+                We'll also cover how to handle refunds and disputes, and how to prevent fraud.`)}
 
               </p>
               <p className="text-muted-foreground leading-relaxed">
@@ -117,9 +133,9 @@ export default function VideoPage() {
               <div className='flex items-center justify-between w-full'>
                 <div className='flex items-center space-x-2'>
                   <h1 className='text-lg font-bold'>Tomasxwav</h1>
-                  <p className='text-sm text-foreground/40'>Sales</p>
+                  <p className='text-sm text-foreground/40'>{video?.department}</p>
                 </div>
-                <span className='text-sm text-foreground/40'>2 days ago</span>
+                <span className='text-sm text-foreground/40'>{sinceDate(video?.uploadDate)}</span>
               </div>
               <p className='text-xs ml-2 mt-2'>Lorem ipsum dolor sit scing nec, ultricinas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orc</p>
             </div>

@@ -1,9 +1,5 @@
-'use client';
-import { useSearchParams } from 'next/navigation';
 
-export default function VideoPlayer() {
-    const searchParams = useSearchParams();
-     const videoUrl = searchParams.get('url') ? decodeURIComponent(searchParams.get('url')!) : '';
+export default function VideoPlayer({videoUrl} : {videoUrl: string}) {
     const isValidUrl = (url: string) => {
       try {
         new URL(url);
