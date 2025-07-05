@@ -55,9 +55,19 @@ export const useVideosActions = () => {
     return data;
   };
 
-  const getFavoritesVideos = async (employee : string) => {
+  const getFavoritesVideos = async () => {
     const response = await fetchWithToken(`http://localhost:8080/interactions/favorites`);
     const data = await response.data;
+    return data;
+  };
+
+  const addFavoriteVideo = async (id : string) => {
+    const response = await fetchWithToken(`http://localhost:8080/interactions/favorites/${id}`, {
+      method: 'POST',
+    });
+    const data = await response.data;
+
+    toast.success(`Video added to favorites`)
     return data;
   };
 
@@ -68,6 +78,7 @@ export const useVideosActions = () => {
     getAverageRating,
     getPendingVideos,
     getFavoritesVideos,
+    addFavoriteVideo,
     getAllVideos,
     videos
   };

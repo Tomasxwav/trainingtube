@@ -8,14 +8,13 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import VideoPlayer from '@/components/VideoPlayer';
-import { useVideoStore } from '@/stores/videoStore';
 import { sinceDate } from '@/utils/sinceDate';
 import { BookMarked, Calendar, Eye, Heart, MessageSquare, Send, ThumbsUp } from 'lucide-react';
 import {  useSearchParams } from 'next/navigation';
 
 export default function VideoPage() {
 
-  const { videos } = useVideoStore();
+  const { videos, addFavoriteVideo } = useVideosActions();
   const searchParams = useSearchParams();
   const videoUrl = searchParams.get('url') ? decodeURIComponent(searchParams.get('url')!) : '';
   const video = videos.find((video) => video.videoUrl === videoUrl.replaceAll(' ', '%20'));
@@ -41,6 +40,7 @@ export default function VideoPage() {
             </Button>
             <Button
               className="w-full justify-start gap-3"
+              onClick={() => addFavoriteVideo(video?.id)}
             >
               <Heart className={`w-4 h-4 `} />
               Add to Favorites
