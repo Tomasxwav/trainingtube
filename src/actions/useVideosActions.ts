@@ -49,7 +49,7 @@ export const useVideosActions = () => {
   };
 
 
-  const getPendingVideos = async (employee : string) => {
+  const getPendingVideos = async () => {
     const response = await fetchWithToken(`http://localhost:8080/interactions/pending`);
     const data = await response.data;
     return data;

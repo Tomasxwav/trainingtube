@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { useVideoStore } from "@/stores/videoStore"
 import { Film, Flame, BookOpen, ChevronLeft, ChevronRight, Play } from "lucide-react"
@@ -15,6 +15,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import VideoCard from '@/components/VideoCard'
 import { Video } from '@/types/videos'
+import { useVideosActions } from '@/actions/useVideosActions'
 
 const sampleVideos: Video[] = [
   {
@@ -92,8 +93,18 @@ function VideoCarousel() {
 
 export default function EmployeeDashboard() {
   const { videos } = useVideoStore()
+  const { getPendingVideos } = useVideosActions() 
+  const [pendingVideos, setPendingVideos] = useState<Video[]>([])
 
-  console.log("EmployeeDashboard videos:", videos)
+  useEffect(() => {
+    const fetchPendingVideos = async () => {
+      const data = await getPendingVideos()
+      setPendingVideos(data)
+    }
+
+    fetchPendingVideos()
+  }, [])
+  
 
   return (
     <div className="animate-fade-in">
@@ -115,19 +126,9 @@ export default function EmployeeDashboard() {
               <h2 className="text-xl font-semibold text-dark-900">Required Training</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {videos.map((video) => (
+              {pendingVideos.map((video) => (
                 <VideoCard key={video.id} video={video} />
               ))}
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <div className="flex items-center mb-4">
-              <Flame size={20} className="text-primary-500 mr-2" />
-              <h2 className="text-xl font-semibold text-dark-900">Popular Training</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {/* Popular videos will go here */}
             </div>
           </div>
 
@@ -138,7 +139,9 @@ export default function EmployeeDashboard() {
                 <h2 className="text-xl font-semibold text-dark-900">All Training Videos</h2>
               </div>
             </div>
-            {/* All videos will go here */}
+            {videos.map((video) => (
+                <VideoCard key={video.id} video={video} />
+              ))}
           </div>
         </>
       )}
