@@ -4,22 +4,26 @@ import { Star, Calendar } from 'lucide-react';
 import { Video } from '@/types/videos';
 
 import { sinceDate } from '@/utils/sinceDate';
+import clsx from 'clsx';
 
-export default function VideoCard({video} : {video: Video}) {
+export default function VideoCard({video, type = 'default' }: {video: Video, type?: string}) {
   const { id, title, thumbnailUrl, videoUrl, duration, views, uploadDate, department } = video;
   
 
   return (
-    <div className="w-full max-w-[20vw] bg-transparent rounded-lg overflow-hiddenduration-300 ">
-      <Link href={`/video?url=${encodeURIComponent(videoUrl)}`} className="block">
+    <div className={clsx(
+      "w-full bg-transparent rounded-lg overflow-hidden duration-300",
+      type === 'default' && 'max-w-[20vw]',
+      type === 'large' && 'max-w-full'
+    )}>
+      <Link href={`/video?url=${encodeURIComponent(videoUrl)}`} className={clsx(type === 'default' && 'block', type === 'large' && 'flex')}> 
         {/* Thumbnail Container */}
-        <div className="relative aspect-video overflow-hidden rounded-2xl">
+        <div className={clsx('relative aspect-video overflow-hidden rounded-2xl', type === 'large' && 'w-[30%]')}>
           <Image
             src={thumbnailUrl || "/placeholder.svg"}
             alt={title}
+            className="hover:scale-105 transition-transform duration-300 min-w-[40%]" 
             fill
-            className="object-cover hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 30vw, 13vw"
           />
           {/* Duration overlay - hardcoded por ahora */}
           <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
@@ -28,10 +32,16 @@ export default function VideoCard({video} : {video: Video}) {
         </div>
 
         {/* Content */}
-        <div className="p-2 flex justify-between min-h-full">
+        <div className={clsx("p-2 flex justify-between min-h-full min-w-[70%]", type === 'large' && 'px-8')}>
            {/* Title & Department */}
          <div>
-          <h3 className="font-semibold text-foreground line-clamp-2 text-sm leading-5 mb-2 hover:text-blue-600 transition-colors">
+          <h3 
+            className={clsx(
+              "font-semibold text-foreground line-clamp-2  leading-5 mb-2 hover:text-blue-600 transition-colors",
+              type === 'default' && 'text-sm',
+              type === 'large' && 'text-lg'
+            )}
+          >
             {title}
           </h3>
 
@@ -39,7 +49,7 @@ export default function VideoCard({video} : {video: Video}) {
             <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
               <span className="text-white text-xs font-bold">{department?.charAt(0).toUpperCase()}</span>
             </div>
-            <span className="text-gray-600 text-sm font-medium">{department}</span>
+            <span className="text-gray-600 font-medium">{department}</span>
           </div>
          </div>
 

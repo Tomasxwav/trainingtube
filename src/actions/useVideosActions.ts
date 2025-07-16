@@ -71,6 +71,22 @@ export const useVideosActions = () => {
     return data;
   };
 
+  const getLikedVideos = async () => {
+    const response = await fetchWithToken(`http://localhost:8080/interactions/liked`);
+    const data = await response.data;
+    return data;
+  };
+
+  const addLikedVideo = async (id : string) => {
+    const response = await fetchWithToken(`http://localhost:8080/interactions/liked/${id}`, {
+      method: 'POST',
+    });
+    const data = await response.data;
+
+    toast.success(`Video added to liked`)
+    return data;
+  };
+
   return {
     addVideo,
     updateVideo,
@@ -79,6 +95,8 @@ export const useVideosActions = () => {
     getPendingVideos,
     getFavoritesVideos,
     addFavoriteVideo,
+    getLikedVideos,
+    addLikedVideo,
     getAllVideos,
     videos
   };
