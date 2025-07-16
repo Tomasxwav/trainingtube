@@ -18,7 +18,7 @@ export const useVideosActions = () => {
       formData.append('video', video.video);
       formData.append('department', video.department?.toLocaleLowerCase() || 'other');
 
-      await fetchWithToken('http://localhost:8080/videos/admin', {
+      await fetchWithToken('/videos/admin', {
         method: 'POST',
         body: formData,
       });
@@ -43,26 +43,26 @@ export const useVideosActions = () => {
   };
 
   const getAllVideos = async () => {
-    const response = await fetchWithToken('http://localhost:8080/videos/admin');
+    const response = await fetchWithToken('/videos/admin');
     const data = await response.data;
     return data;
   };
 
 
   const getPendingVideos = async () => {
-    const response = await fetchWithToken(`http://localhost:8080/interactions/pending`);
+    const response = await fetchWithToken(`/interactions/pending`);
     const data = await response.data;
     return data;
   };
 
   const getFavoritesVideos = async () => {
-    const response = await fetchWithToken(`http://localhost:8080/interactions/favorites`);
+    const response = await fetchWithToken(`/interactions/favorites`);
     const data = await response.data;
     return data;
   };
 
   const addFavoriteVideo = async (id : string) => {
-    const response = await fetchWithToken(`http://localhost:8080/interactions/favorites/${id}`, {
+    const response = await fetchWithToken(`/interactions/favorites/${id}`, {
       method: 'POST',
     });
     const data = await response.data;
@@ -72,13 +72,13 @@ export const useVideosActions = () => {
   };
 
   const getLikedVideos = async () => {
-    const response = await fetchWithToken(`http://localhost:8080/interactions/liked`);
+    const response = await fetchWithToken(`/interactions/liked`);
     const data = await response.data;
     return data;
   };
 
   const addLikedVideo = async (id : string) => {
-    const response = await fetchWithToken(`http://localhost:8080/interactions/liked/${id}`, {
+    const response = await fetchWithToken(`/interactions/liked/${id}`, {
       method: 'POST',
     });
     const data = await response.data;

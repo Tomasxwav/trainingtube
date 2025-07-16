@@ -1,11 +1,12 @@
 import { Role } from '@/types/employees';
 import { fetchWithToken } from '@/utils/fetchWithToken';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export const useAuthActions = () => {
+  const router = useRouter()
   const login = async (email: string, password: string) => {
     try {
-      const res = await fetchWithToken('http://localhost:8080/auth/login', {
+      const res = await fetchWithToken('/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -16,7 +17,7 @@ export const useAuthActions = () => {
       if (!res.ok) {
         return res;
       }
-      redirect('/home');
+      router.push('/home')
     } catch (error) {
       console.error(error);
     }
@@ -24,7 +25,7 @@ export const useAuthActions = () => {
 
   const register = async (name: string, email: string, password: string, role: Role) => {
     try {
-      const res = await fetchWithToken('http://localhost:8080/auth/register', {
+      const res = await fetchWithToken('/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
