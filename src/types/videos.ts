@@ -1,4 +1,4 @@
-export type Department = 'sales' | 'marketing' | 'development' | 'it' | 'support' | 'design' | 'hr' | 'customer service' | 'finance' | 'legal' | 'operations' | 'other';
+export type Department = 'sales' | 'marketing' | 'development' | 'it' | 'support' | 'design' | 'hr' | 'customer service' | 'finance' | 'legal' | 'operations' | 'all';
 
 export interface Video {
   id: string;

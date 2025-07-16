@@ -2,75 +2,92 @@
 
 import Link from 'next/link'
 import { Home, Film, Users, PlayCircle, ThumbsUp, Clock, Settings, HelpCircle, Heart } from 'lucide-react';
+import { useAuthorities } from '@/hooks/useAuthorities';
+import { useEffect, useState } from 'react';
 
 export default function Sidebar() {
+  const [authorities, setAuthorities] = useState<string[]>([]);
   
+  useEffect(() => {
+    const fetchAuthorities = async () => {
+      const authorities = await useAuthorities();
+      setAuthorities(authorities);
+    };
+    fetchAuthorities();
+  }, []);
+
   const navItems = [
     {
       name: 'Home',
       icon: Home,
       path: '/home',
-      showFor: ['admin', 'employee'],
+      showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
       name: 'Pending Videos',
       icon: Clock,
       path: '/videos/pending',
-      showFor: ['admin', 'employee'],
+      showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
       name: 'All Videos',
       icon: PlayCircle,
       path: '/videos',
-      showFor: ['employee'],
+      showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR', 'ROLE_ADMIN'],
     },
     {
       name: 'Liked Videos',
       icon: ThumbsUp,
       path: '/videos/liked',
-      showFor: ['employee'],
+      showFor: ['canViewMyInteractions'],
     },
     {
       name: 'Favorites',
       icon: Heart,
       path: '/videos/favorites',
-      showFor: ['employee'],
+      showFor: ['canViewMyInteractions'],
     },
     {
       name: 'My metrics',
       icon: Home,
       path: '/metrics',
-      showFor: ['admin'],
+      showFor: ['canViewMyMetrics'],
     },
     {
       name: 'Videos',
       icon: Film,
       path: '/admin/videos-management',
-      showFor: ['admin'],
+      showFor: ['ROLE_ADMIN'],
     },
     {
       name: 'Employees',
       icon: Users,
       path: '/admin/employees',
-      showFor: ['admin'],
+      showFor: ['ROLE_ADMIN'],
+    },
+     {
+      name: 'Employees',
+      icon: Users,
+      path: '/supervisor/employees',
+      showFor: ['ROLE_SUPERVISOR'],
     },
     {
       name: 'Settings',
       icon: Settings,
       path: '/settings',
-      showFor: ['admin', 'employee'],
+      showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
       name: 'Help',
       icon: HelpCircle,
       path: '/help',
-      showFor: ['admin', 'employee'],
+      showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
   ];
   
-  /* const filteredNavItems = navItems.filter(item => 
-    item.showFor.includes('')
-  ); */
+  const filteredNavItems = navItems.filter(item => 
+    item.showFor.some(permission => authorities.includes(permission))
+  );
   
   return (
     <aside className="hidden md:flex md:flex-col w-64 min-h-screen h-full bg-background border-r border-dark-100 overflow-hidden">
@@ -79,16 +96,21 @@ export default function Sidebar() {
           <Film size={18} className="text-foreground" />
         </div>
         <span className="ml-2 text-xl font-bold text-dark-900">TrainTube</span>
-        {/* {isAdmin && (
+        {authorities.includes('ROLE_ADMIN') && (
           <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-primary-100 text-primary-700 rounded-full">
             Admin
           </span>
-        )} */}
+        )}
+        {authorities.includes('ROLE_SUPERVISOR') && (
+          <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-tertiary-100 text-tertiary-700 rounded-full">
+            Supervisor
+          </span>
+        )}
       </div>
       
       <nav className="flex-1 pt-4">
         <ul>
-          {navItems.map((item) => (
+          {filteredNavItems.map((item) => (
             <li key={item.path}>
               <Link
                 href={item.path}

@@ -1,118 +1,147 @@
-'use client';
-/* 
-import { useState } from 'react'; */
-/* import { useVideosStore } from '@/stores/videoStore'; */
-import VideoCard from '@/components/VideoCard';
-import { Film, Flame, BookOpen } from 'lucide-react';
-/* import { Button } from '@/components/ui/button'; */
+"use client"
+
+import { useState } from "react"
+
+import { useVideoStore } from "@/stores/videoStore"
+import { Film, Flame, BookOpen, ChevronLeft, ChevronRight, Play } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import { Card, CardContent } from "@/components/ui/card"
+import VideoCard from '@/components/VideoCard'
+import { Video } from '@/types/videos'
+
+const sampleVideos: Video[] = [
+  {
+    id: 'sample-1',
+    title: 'Workplace Safety Fundamentals',
+    description: 'Learn the essential safety protocols every employee should know',
+    thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
+    videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
+    uploadDate: '2023-10-01T12:00:00Z',
+    department: 'all',
+    rating: 4.5,
+  },
+  {
+    id: 'sample-2',
+    title: 'Effective Communication Skills',
+    description: 'Master the art of communication in the workplace',
+    thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
+    videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
+    uploadDate: '2023-10-02T12:00:00Z',
+    department: 'all',
+    rating: 4.7,
+  },
+  {
+    id: 'sample-3',
+    title: 'Time Management Techniques',
+    description: 'Boost your productivity with these time management tips',
+    thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
+    videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
+    uploadDate: '2023-10-03T12:00:00Z',
+    department: 'all',
+    rating: 4.8,
+  },
+]
+
+function VideoCarousel() {
+  return (
+    <div className="max-w-full mx-auto px-10">
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 bg-gradient-to-br from-primary to-black rounded-full flex items-center justify-center mx-auto mb-4"> 
+          <Play className="w-8 h-8 text-white" />
+        </div>
+        <h2 className="text-2xl font-bold text-dark-900 mb-2">Your Training Content is Coming Soon!</h2>
+        <p className="text-dark-600">Here's a preview of the type of engaging content you'll have access to</p>
+      </div>
+
+      <Carousel className="w-fit mx-auto">
+        <CarouselContent>
+          {sampleVideos.map((video) => (
+            <CarouselItem key={video.id}>
+              <div className="p-1">
+                <video controls width="100%" height="100%" className=' rounded-2xl'>
+                  <source src={video.videoUrl} type="video/mp4" />
+                  Tu navegador no soporta videos HTML5.
+              </video>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+
+      <Card className="mt-8 bg-primary/10 border-black/20 shadow-lg shadow-black">
+        <CardContent className="p-6 text-center">
+          <h3 className="font-semibold text-dark mb-2">What to Expect</h3>
+          <p className="text-dark text-sm">
+            Interactive video lessons, progress tracking, quizzes, and certificates. Your personalized training library
+            will be available soon!
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
 
 export default function EmployeeDashboard() {
- /*  const { videos  } = useVideosStore(); */
-/*   const [selectedCategory, setSelectedCategory] = useState<string | null>(null); */
-  
-/*   const categories = Array.from(
-    new Set(videos.flatMap((video) => video.categories))
-  ); */
-  
-/*   const filteredVideos = selectedCategory
-    ? videos.filter((video) => video.categories.includes(selectedCategory))
-    : videos; */
-  
- /*  const departmentVideos = user?.department
-    ? videos.filter((v) => v.requiredFor?.includes(user.department!))
-    : []; */
-  
+  const { videos } = useVideoStore()
+
+  console.log("EmployeeDashboard videos:", videos)
+
   return (
     <div className="animate-fade-in">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-dark-900 mb-2">Welcome back, </h1>
-        <p className="text-dark-600">Access your training materials and track your progress</p>
-      </div>
-      
-     {/*  {departmentVideos.length > 0 && (
-        <div className="mb-8">
-          <div className="flex items-center mb-4">
-            <BookOpen size={20} className="text-primary-500 mr-2" />
-            <h2 className="text-xl font-semibold text-dark-900">Required Training</h2>
+
+      {videos.length === 0 ? (
+        <div className="py-12">
+          <VideoCarousel />
+        </div>
+      ) : (
+        <>
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-dark-900 mb-2">Welcome back!</h1>
+            <p className="text-dark-600">Access your training materials and track your progress</p>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {departmentVideos.map((video) => (
-              <VideoCard 
-                key={video.id} 
-                video={video} 
-                averageRating={getAverageRating(video.id)}
-              />
-            ))}
+
+          <div className="mb-8">
+            <div className="flex items-center mb-4">
+              <BookOpen size={20} className="text-primary-500 mr-2" />
+              <h2 className="text-xl font-semibold text-dark-900">Required Training</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {videos.map((video) => (
+                <VideoCard key={video.id} video={video} />
+              ))}
+            </div>
           </div>
-        </div>
-      )} */}
-      
-      <div className="mb-8">
-        <div className="flex items-center mb-4">
-          <Flame size={20} className="text-primary-500 mr-2" />
-          <h2 className="text-xl font-semibold text-dark-900">Popular Training</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {/* {videos
-            .sort((a, b) => b.views - a.views)
-            .slice(0, 4)
-            .map((video) => (
-              <VideoCard 
-                key={video.id} 
-                video={video} 
-                averageRating={video.rating}
-              />
-            ))} */}
-        </div>
-      </div>
-      
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
-            <Film size={20} className="text-primary-500 mr-2" />
-            <h2 className="text-xl font-semibold text-dark-900">All Training Videos</h2>
+
+          <div className="mb-8">
+            <div className="flex items-center mb-4">
+              <Flame size={20} className="text-primary-500 mr-2" />
+              <h2 className="text-xl font-semibold text-dark-900">Popular Training</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {/* Popular videos will go here */}
+            </div>
           </div>
-          
-          {/* <div className="flex items-center space-x-2 overflow-x-auto pb-2">
-            <Button
-              onClick={() => setSelectedCategory(null)}
-              className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                selectedCategory === null
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-dark-50 text-dark-700 hover:bg-dark-100'
-              }`}
-            >
-              All
-            </Button>
-            
-            {categories.map((category) => (
-              <Button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-3 py-1 text-sm rounded-full whitespace-nowrap transition-colors ${
-                  selectedCategory === category
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-dark-50 text-dark-700 hover:bg-dark-100'
-                }`}
-              >
-                {category}
-              </Button>
-            ))}
-          </div> */}
-        </div>
-        
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredVideos.map((video) => (
-            <VideoCard 
-              key={video.id} 
-              video={video} 
-              averageRating={getAverageRating(video.id)}
-            />
-          ))}
-        </div> */}
-      </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <Film size={20} className="text-primary-500 mr-2" />
+                <h2 className="text-xl font-semibold text-dark-900">All Training Videos</h2>
+              </div>
+            </div>
+            {/* All videos will go here */}
+          </div>
+        </>
+      )}
     </div>
-  );
+  )
 }
