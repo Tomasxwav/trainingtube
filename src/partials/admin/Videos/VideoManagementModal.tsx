@@ -87,122 +87,180 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
       
     return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader className="w-full items-center justify-center border-b border-dark-200 pb-4">
-          <DialogTitle>Upload tutorial</DialogTitle>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="space-y-2">
+          <DialogTitle className="flex items-center gap-2 text-xl">
+            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+            Upload New Training Video
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            Add a new training video to your library. Fill out the required information below.
+          </DialogDescription>
         </DialogHeader>
-        <DialogDescription/>
-        <div>
+        
+        <div className="mt-6">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <FormField
                         control={form.control}
                         name="title"
                         render={({ field }) => (
-                            <FormItem 
-                                className="mb-4"
-                            >
-                            <FormLabel>Title</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Insert title" {...field} />
-                            </FormControl>
-                            <FormMessage />
+                            <FormItem>
+                                <FormLabel className="text-sm font-medium">Video Title *</FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        placeholder="Enter a descriptive title for your video" 
+                                        {...field} 
+                                        className="h-10"
+                                    />
+                                </FormControl>
+                                <FormDescription className="text-xs">
+                                    Choose a clear, descriptive title that helps learners understand the content.
+                                </FormDescription>
+                                <FormMessage />
                             </FormItem>
                         )}
-                        />
+                    />
+                    
                     <FormField
                         control={form.control}
                         name="description"
                         render={({ field }) => (
-                            <FormItem 
-                                className="mb-4"
-                            >
-                            <FormLabel>Description</FormLabel>
+                            <FormItem>
+                                <FormLabel className="text-sm font-medium">Description *</FormLabel>
                             <FormControl>
                                 <Textarea
-                                    placeholder="Write a description"
-                                    className="resize-none"
+                                    placeholder="Provide a detailed description of what learners will gain from this video..."
+                                    className="resize-none min-h-[100px]"
                                     {...field}
-                                    />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                        />
-                    <FormField
-                        control={form.control}
-                        name="thumbnail"
-                        render={({ field }) => (
-                            <FormItem 
-                                className="mb-4"
-                            >
-                            <FormLabel>Thumbnail</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type='file'
-                                    placeholder=""
-                                    onChange={(e) => field.onChange(e.target.files?.[0])}
-                                    onBlur={field.onBlur}
-                                    name={field.name}
-                                    ref={field.ref}
                                 />
                             </FormControl>
+                            <FormDescription className="text-xs">
+                                Include learning objectives, prerequisites, and what topics are covered.
+                            </FormDescription>
                             <FormMessage />
                             </FormItem>
                         )}
+                    />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <FormField
+                            control={form.control}
+                            name="thumbnail"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-sm font-medium">Thumbnail Image *</FormLabel>
+                                    <FormControl>
+                                        <div className="space-y-2">
+                                            <Input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => field.onChange(e.target.files?.[0])}
+                                                onBlur={field.onBlur}
+                                                name={field.name}
+                                                ref={field.ref}
+                                                className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                                            />
+                                        </div>
+                                    </FormControl>
+                                    <FormDescription className="text-xs">
+                                        Upload an engaging thumbnail image (JPG, PNG). Recommended size: 1280x720px.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                    <FormField
-                        control={form.control}
-                        name="video"
-                        render={({ field }) => (
-                            <FormItem 
-                                className="mb-4"
-                            >
-                            <FormLabel>Video</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type='file'
-                                    placeholder=""
-                                    onChange={(e) => field.onChange(e.target.files?.[0])}
-                                    onBlur={field.onBlur}
-                                    name={field.name}
-                                    ref={field.ref}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
+                        
+                        <FormField
+                            control={form.control}
+                            name="video"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-sm font-medium">Video File *</FormLabel>
+                                    <FormControl>
+                                        <div className="space-y-2">
+                                            <Input
+                                                type="file"
+                                                accept="video/*"
+                                                onChange={(e) => field.onChange(e.target.files?.[0])}
+                                                onBlur={field.onBlur}
+                                                name={field.name}
+                                                ref={field.ref}
+                                                className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                                            />
+                                        </div>
+                                    </FormControl>
+                                    <FormDescription className="text-xs">
+                                        Upload your training video (MP4, MOV, AVI). Max file size: 500MB.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
+                    </div>
+                    
                     <FormField
                         control={form.control}
                         name="department"
                         render={({ field }) => (
-                            <FormItem
-                                className="mb-4"
-                            >
-                            <FormLabel>Categories</FormLabel>
-                            <FormControl>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <SelectTrigger className="w-full mb-4">
-                                        <SelectValue placeholder="Select a category" />
-                                    </SelectTrigger>
-                                    <SelectContent className="h-[300px]">
-                                        <SelectGroup>
-                                        <SelectLabel>Category</SelectLabel>
-                                        {categories.map((category) => (
-                                            <SelectItem key={category} value={category.toLowerCase()}>
-                                                {category}
-                                            </SelectItem>
-                                        ))}
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </FormControl>
-                            <FormMessage />
+                            <FormItem>
+                                <FormLabel className="text-sm font-medium">Department *</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger className="h-10">
+                                            <SelectValue placeholder="Select target department" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Departments</SelectLabel>
+                                                {categories.map((category) => (
+                                                    <SelectItem key={category} value={category.toLowerCase()}>
+                                                        {category}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormDescription className="text-xs">
+                                    Choose the department this training video is intended for.
+                                </FormDescription>
+                                <FormMessage />
                             </FormItem>
                         )}
-                        />
-                    <Button disabled={pending} type="submit" variant={'secondary'} className="w-full py-2 px-4 cursor-pointer "> { pending ? 'Uploading...' : "Upload video"} </Button>  
+                    />
+                    
+                    <div className="flex gap-3 pt-4 border-t">
+                        <Button 
+                            type="button" 
+                            variant="outline" 
+                            onClick={() => onOpenChange(false)}
+                            className="flex-1"
+                        >
+                            Cancel
+                        </Button>
+                        <Button 
+                            disabled={pending} 
+                            type="submit" 
+                            className="flex-1"
+                        > 
+                            {pending ? (
+                                <>
+                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Uploading...
+                                </>
+                            ) : (
+                                "Upload Video"
+                            )}
+                        </Button>
+                    </div>
 
                 </form>
             </Form>
