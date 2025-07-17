@@ -45,12 +45,12 @@ export default function Sidebar() {
       path: '/videos/favorites',
       showFor: ['canViewMyInteractions'],
     },
-    {
+/*     {
       name: 'My metrics',
       icon: Home,
       path: '/metrics',
       showFor: ['canViewMyMetrics'],
-    },
+    }, */
     {
       name: 'Admin Videos',
       icon: Film,
@@ -112,7 +112,7 @@ export default function Sidebar() {
   
   return (
     <aside className="hidden md:flex md:flex-col w-64 min-h-full bg-background border-r border-dark-100 overflow-hidden">
-      <div className="flex items-center p-4 border-b border-dark-100">
+      <Link href='/' className="flex items-center p-4 border-b border-dark-100">
         <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
           <Film size={18} className="text-foreground" />
         </div>
@@ -127,7 +127,7 @@ export default function Sidebar() {
             Supervisor
           </span>
         )}
-      </div>
+      </Link>
       
       <nav className="flex-1 pt-4">
         <ul>

@@ -77,7 +77,7 @@ export const useAuthActions = () => {
       } */
 
       await clearSessionCookie();
-      router.push('/login');
+      router.push('/');
     }
     catch (error) {
       console.error('Error deleting session:', error);
