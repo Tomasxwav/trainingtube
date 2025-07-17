@@ -7,8 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Moon, Sun, Globe } from "lucide-react";
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+import { useAuthActions } from '@/actions/useAuthActions';
 
-export default async function SettingsPage() {
+export default function SettingsPage() {
+  const { deleteSession } = useAuthActions();
   const { theme, setTheme } = useTheme();
 
   return (
@@ -83,7 +85,14 @@ export default async function SettingsPage() {
               </p>
               <Button 
                 className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-colors"
-
+                onClick={async () => {
+                  try {
+                    await deleteSession();
+                  } catch (error) {
+                    console.error('Error al cerrar sesión:', error);
+                  }
+                }
+              }
               >
               
                 Cerrar sesión

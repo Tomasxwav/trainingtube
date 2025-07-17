@@ -1,7 +1,7 @@
 import { Role } from '@/types/employees';
 import { Authority } from '@/types/auth';
 import { fetchWithToken } from '@/utils/fetchWithToken';
-import { getAuthorities as getAuthoritiesCookies } from '@/utils/cookieUtils';
+import { clearSessionCookie, getAuthorities as getAuthoritiesCookies } from '@/utils/cookieUtils';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
@@ -66,9 +66,28 @@ export const useAuthActions = () => {
     return { authorities, loading };
   };
 
+  const deleteSession = async () => {
+    try {
+      /* const res = await fetchWithToken('/auth/logout', {
+        method: 'POST',
+      });
+
+      if (!res.ok) {
+        throw new Error('Error deleting session');
+      } */
+
+      await clearSessionCookie();
+      router.push('/login');
+    }
+    catch (error) {
+      console.error('Error deleting session:', error);
+    }
+  }
+
   return {
     login,
     register,
     getAuthorities,
+    deleteSession,
   };
 }
