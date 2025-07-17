@@ -20,10 +20,20 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: 'images.pexels.com',
+        hostname: 'storage.googleapis.com',
       },
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb', // Ajusta este valor según tus necesidades
+    },
+  },
+  publicRuntimeConfig: {
+    // Disponible tanto en servidor como cliente
+    publicBackendUrl: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'
+  }
+  
 };
 
 export default nextConfig;

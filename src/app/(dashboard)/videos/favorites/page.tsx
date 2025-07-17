@@ -2,16 +2,41 @@
 
 import { useVideosActions } from '@/actions/useVideosActions';
 import VideoCard from '@/components/VideoCard';
-import { useVideoStore } from '@/stores/videoStore';
 import { Video } from '@/types/videos';
 import { VideoOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function Videos() {
+export default function Favorites() {
 
-  const { videos } = useVideoStore()
+  const { getFavoritesVideos } = useVideosActions();
+  const [isLoading, setIsLoading] = useState(true);
+  const [favoritesVideos, setFavoritesVideos] = useState<Video[]>([]);
 
-  if (videos.length === 0) {
+    useEffect(() => {
+    const fetchFavoritesVideos = async () => {
+      try {
+        const data = await getFavoritesVideos();
+        setFavoritesVideos(data || []); 
+      } catch (error) {
+        console.error('Error fetching liked videos:', error);
+        setFavoritesVideos([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFavoritesVideos();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <div className="text-sm text-muted-foreground">Cargando videos...</div>
+      </div>
+    );
+  }
+
+  if (favoritesVideos.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-6">
         <div className="flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
@@ -29,10 +54,10 @@ export default function Videos() {
   
   return (
     <div className="animate-fade-in p-8">
-      <h1 className='text-2xl font-bold text-dark-900 mb-10'>All Videos</h1>
+      <h1 className='text-2xl font-bold text-dark-900 mb-10'>Videos que te gustan</h1>
       <div className="flex flex-col gap-4">
 
-        {videos.map((video) => (
+        {favoritesVideos.map((video) => (
           <VideoCard key={video.id} video={video} type='large' />
         ))}
       </div>

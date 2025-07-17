@@ -1,4 +1,6 @@
+
 import { z } from "zod";
+
 
 // Constants for file validation
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -36,4 +38,8 @@ export const videoSchema = z.object({
       (file) => !file || ACCEPTED_VIDEO_TYPES.includes(file.type),
       "Only .mp4, .webm and .ogg video formats are supported"
     ),
+  department:  z
+    .string()
+    .min(1, 'Department is required'),
+  tags: z.array(z.string()).optional(),
 });

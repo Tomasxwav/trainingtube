@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Bell, Menu, User, LogOut, Sun } from 'lucide-react';
-import { useAuthStore } from '../stores/authStore';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTheme } from "next-themes";
@@ -12,12 +11,10 @@ import { useTheme } from "next-themes";
 export default function Navbar() {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const { user, logout } = useAuthStore();
   const router = useRouter();
   const { setTheme } = useTheme();
   
   const handleLogout = () => {
-    logout();
     router.push('/login');
   };
 
@@ -68,11 +65,11 @@ export default function Navbar() {
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <span className="hidden md:inline font-medium text-dark-900">{user?.name}</span>
+              {/* <span className="hidden md:inline font-medium text-dark-900">{user?.name}</span> */}
             </span>
               
             
-            {isProfileOpen && (
+           {/*  {isProfileOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-card rounded-md shadow-lg py-1 z-20 animate-fade-in">
                 <div className="px-4 py-2 border-b">
                   <p className="text-sm font-medium text-dark-900">{user?.name}</p>
@@ -94,7 +91,7 @@ export default function Navbar() {
                   Sign out
                 </button>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

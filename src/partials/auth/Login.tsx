@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'
 import { Film, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
-import { useAuthStore } from '@/stores/authStore';
 import { useTheme } from "next-themes"
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useAuthActions } from '@/actions/useAuthActions';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -21,8 +21,7 @@ export default function Login() {
     setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
   }
   
-  const { login } = useAuthStore();
-  
+  const { login } = useAuthActions();
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,13 +29,11 @@ export default function Login() {
     setIsLoading(true);
     
     try {
-      const success = await login({ email, password });
+      const response = await login(email, password ); 
       
-      if (success) {
-        router.push('/home');
-      } else {
-        setError('Invalid email or password');
-      }
+      if (!response?.ok) {
+        setError(response?.error || '');
+      } 
     } catch (err) {
       setError('An error occurred. Please try again.' + err);
     } finally {
@@ -45,9 +42,9 @@ export default function Login() {
   };
   
   return (
-    <div className="min-h-screen bg-dark-50 flex items-center justify-center p-4">
+    <div className="min-h-screen h-screen bg-dark-50 flex items-center justify-center p-4">
         <button onClick={toggleTheme} className='absolute top-10 right-10'>XD</button>
-      <div className="w-full max-w-md bg-foreground/10 rounded-lg shadow-md overflow-hidden animate-fade-in">
+      <div className="scale-80 2xl:scale-100 w-full max-w-md bg-foreground/10 rounded-lg shadow-md overflow-hidden animate-fade-in">
         <div className="p-6 sm:p-8">
           <div className="flex justify-center mb-6">
             <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
