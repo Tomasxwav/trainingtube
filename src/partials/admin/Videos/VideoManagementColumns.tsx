@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import Link from 'next/link'
 
 const departmentColors: Record<string, string> = {
   'engineering': 'bg-blue-100 text-blue-800 border-blue-200',
@@ -21,24 +22,27 @@ const departmentColors: Record<string, string> = {
 
 export const columns: ColumnDef<Video>[] = [
     {
-        accessorKey: 'title',
-        header: ({ column }) => {
-          return (
-            <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-              className="hover:bg-transparent p-0 font-medium"
-            >
-              Video
-              <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-          )
-        },
-        enableSorting: true,
-        enableColumnFilter: true,
-        cell: ({ row }) => (
+      accessorKey: 'title',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="hover:bg-transparent p-0 font-medium"
+          >
+            Video
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      enableSorting: true,
+      enableColumnFilter: true,
+      cell: ({ row }) => {
+        const videoUrl = encodeURIComponent(row.original.videoUrl);
+
+        return (
           <div className="flex items-center space-x-3 min-w-[300px]">  
-            <div className="relative">
+            <Link className="relative" href={`/video?url=${videoUrl}`}>
               <Image 
                 src={row.original.thumbnailUrl} 
                 alt={row.original.title} 
@@ -49,20 +53,22 @@ export const columns: ColumnDef<Video>[] = [
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity rounded-md cursor-pointer">
                 <Play className="h-6 w-6 text-white" fill="white" />
               </div>
-            </div>
+            </Link>
             <div className="space-y-1">
               <p className="font-medium text-foreground leading-tight">{row.original.title}</p>
               <p className="text-sm text-muted-foreground line-clamp-2">
-                {row.original.description}
+                {row.original.description.substring(0, 20)}{row.original.description.length > 20 ? '...' : ''} 
               </p>
             </div>
           </div>
-      ),
+        )
+      },
     },
     {
-        accessorKey: 'department',
-        header: ({ column }) => {
-          return (
+      accessorKey: 'department',
+      header: ({ column }) => {
+        return (
+          <div className={`flex items-center w-full justify-center`}>
             <Button
               variant="ghost"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -71,25 +77,28 @@ export const columns: ColumnDef<Video>[] = [
               Department
               <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
-          )
-        },
-        enableSorting: true,
-        enableColumnFilter: true,
-        cell: ({ row }) => {
-          const department = row.original.department.toLowerCase()
-          const colorClass = departmentColors[department] || 'bg-gray-100 text-gray-800 border-gray-200'
-          
-          return (
+          </div>
+        )
+      },
+      enableSorting: true,
+      enableColumnFilter: true,
+      cell: ({ row }) => {
+        const department = row.original.department.toLowerCase()
+        const colorClass = departmentColors[department] || 'bg-gray-100 text-gray-800 border-gray-200'
+        
+        return (
+          <div className={`flex items-center w-full justify-center`}>
             <Badge 
               variant="outline" 
               className={`capitalize ${colorClass}`}
             >
               {row.original.department}
             </Badge>
-          )
-        },
+          </div>
+        )
+      },
     },
-    {
+   /*  {
         accessorKey: 'rating',
         header: ({ column }) => {
           return (
@@ -134,7 +143,7 @@ export const columns: ColumnDef<Video>[] = [
             <span>{row.original.views?.toLocaleString() || '0'}</span>
           </div>
         ),
-    },
+    }, */
     {
         accessorKey: 'duration',
         header: ({ column }) => {

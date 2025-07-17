@@ -24,18 +24,19 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-import { useActionState } from 'react';
-import { useVideoStore } from '@/stores/videoStore';
+import { useActionState, useTransition } from 'react';
 import { Department } from '@/types/videos';
+import { departments } from '@/constants/departments';
 
 interface ChildComponentProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  onVideoAdded?: () => void;
 }
 
-export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComponentProps) {
+export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdded }: ChildComponentProps) {
     const { addVideo } = useVideosActions();
-    const { fetchVideos } = useVideoStore()
+    const [isPending, startTransition] = useTransition();
     
     const [state, action, pending] = useActionState<
         boolean,
@@ -43,7 +44,11 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
         >(
         async (prevState, values) => {
             try {
-            await addVideo(values);
+            await addVideo({ ...values, department: values.department as Department }, () => {
+              if (onVideoAdded) {
+                onVideoAdded();
+              }
+            });
             return true; 
             } catch {
             return false; 
@@ -51,22 +56,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
         },
         false
         );
-
-    
-    const categories = [
-        'All',
-        'Customer Service',
-        'Sales',
-        'Marketing',
-        'Product',
-        'Finance',
-        'HR',
-        'Support',
-        'Engineering',
-        'Design',
-        'Development',
-        'IT',
-      ];
+        
     const form = useForm<z.infer<typeof videoSchema>>({
         resolver: zodResolver(videoSchema),
         defaultValues: {
@@ -74,19 +64,26 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
           description: '',
           thumbnail: {} as File,
           video: {} as File,
-          department: 'other' as Department,
+          department: '' as Department,
         },
       })
 
       function onSubmit(values: z.infer<typeof videoSchema>) {
         console.log('onSubmit', values);
-        addVideo(values)
+        startTransition(() => {
+          action(values);
+        });
         form.reset();
         onOpenChange(false)
     }
+
+    const handleOpenChange = (open: boolean) => {
+        form.reset();
+        onOpenChange(open);
+    }
       
     return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="space-y-2">
           <DialogTitle className="flex items-center gap-2 text-xl">
@@ -153,21 +150,21 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                             name="thumbnail"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-medium">Thumbnail Image *</FormLabel>
-                                    <FormControl>
-                                        <div className="space-y-2">
-                                            <Input
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={(e) => field.onChange(e.target.files?.[0])}
-                                                onBlur={field.onBlur}
-                                                name={field.name}
-                                                ref={field.ref}
-                                                className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
-                                            />
-                                        </div>
-                                    </FormControl>
-                                    <FormDescription className="text-xs">
+                                    <div className="space-y-2">
+                                        <FormLabel className="text-sm font-medium">Thumbnail Image *</FormLabel>
+                                        <FormControl>
+                                                <Input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => field.onChange(e.target.files?.[0])}
+                                                    onBlur={field.onBlur}
+                                                    name={field.name}
+                                                    ref={field.ref}
+                                                    className="h-fit file:h-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 "
+                                                />
+                                        </FormControl>
+                                    </div>
+                                    <FormDescription className="text-xs ">
                                         Upload an engaging thumbnail image (JPG, PNG). Recommended size: 1280x720px.
                                     </FormDescription>
                                     <FormMessage />
@@ -180,20 +177,20 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                             name="video"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-medium">Video File *</FormLabel>
-                                    <FormControl>
-                                        <div className="space-y-2">
-                                            <Input
-                                                type="file"
-                                                accept="video/*"
-                                                onChange={(e) => field.onChange(e.target.files?.[0])}
-                                                onBlur={field.onBlur}
-                                                name={field.name}
-                                                ref={field.ref}
-                                                className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
-                                            />
-                                        </div>
+                                    <div className="space-y-2">
+                                        <FormLabel className="text-sm font-medium">Video File *</FormLabel>
+                                        <FormControl>
+                                                <Input
+                                                    type="file"
+                                                    accept="video/*"
+                                                    onChange={(e) => field.onChange(e.target.files?.[0])}
+                                                    onBlur={field.onBlur}
+                                                    name={field.name}
+                                                    ref={field.ref}
+                                                    className="h-fit file:h-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                                                />
                                     </FormControl>
+                                    </div>
                                     <FormDescription className="text-xs">
                                         Upload your training video (MP4, MOV, AVI). Max file size: 500MB.
                                     </FormDescription>
@@ -210,16 +207,16 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                             <FormItem>
                                 <FormLabel className="text-sm font-medium">Department *</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange} value={field.value}>
                                         <SelectTrigger className="h-10">
-                                            <SelectValue placeholder="Select target department" />
+                                            <SelectValue placeholder="Select target department"  /> 
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
                                                 <SelectLabel>Departments</SelectLabel>
-                                                {categories.map((category) => (
-                                                    <SelectItem key={category} value={category.toLowerCase()}>
-                                                        {category}
+                                                {departments.map((department) => (
+                                                    <SelectItem key={department} value={department}>
+                                                        {department}
                                                     </SelectItem>
                                                 ))}
                                             </SelectGroup>
@@ -238,17 +235,17 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
                         <Button 
                             type="button" 
                             variant="outline" 
-                            onClick={() => onOpenChange(false)}
+                            onClick={() => handleOpenChange(false)}
                             className="flex-1"
                         >
                             Cancel
                         </Button>
                         <Button 
-                            disabled={pending} 
+                            disabled={pending || isPending} 
                             type="submit" 
                             className="flex-1"
                         > 
-                            {pending ? (
+                            {(pending || isPending) ? (
                                 <>
                                     <svg className="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

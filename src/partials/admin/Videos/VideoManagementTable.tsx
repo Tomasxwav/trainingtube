@@ -27,9 +27,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 interface VideoManagementTableProps {
   searchTerm: string;
   categoryFilter: string;
+  refreshTrigger?: number; 
 }
 
-export default function VideoManagementTable({ searchTerm, categoryFilter }: VideoManagementTableProps) {
+export default function VideoManagementTable({ searchTerm, categoryFilter, refreshTrigger }: VideoManagementTableProps) {
   const { getAllVideos } = useVideosActions()
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
@@ -44,7 +45,17 @@ export default function VideoManagementTable({ searchTerm, categoryFilter }: Vid
       .finally(() => setLoading(false))
   }, [])
 
-  // Filter videos based on search term and category
+  useEffect(() => {
+    if (refreshTrigger && refreshTrigger > 0) {
+      setLoading(true)
+      getAllVideos()
+        .then((data: Video[]) => {
+          setVideos(data || [])
+        })
+        .finally(() => setLoading(false))
+    }
+  }, [refreshTrigger])
+
   const filteredVideos = useMemo(() => {
     if (!videos) return []
     

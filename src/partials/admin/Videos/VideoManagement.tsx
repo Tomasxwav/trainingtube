@@ -17,14 +17,18 @@ import {
 } from "@/components/ui/select"
 import { Input } from '@/components/ui/input';
 import VideoManagementTable from '@/partials/admin/Videos/VideoManagementTable';
+import { departments } from '@/constants/departments';
 
 export default function VideoManagement() {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   
-  const departments = ['Engineering', 'Product', 'Marketing', 'Finance', 'HR', 'IT', 'Sales', 'Academy', 'Legal'];
+  const handleVideoAdded = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
   
   // Mock stats - you can replace with real data from your API
   const stats = {
@@ -59,7 +63,7 @@ export default function VideoManagement() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Videos</CardTitle>
@@ -116,7 +120,7 @@ export default function VideoManagement() {
             </p>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
       
       {/* Filters Section */}
       <Card>
@@ -165,11 +169,19 @@ export default function VideoManagement() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <VideoManagementTable searchTerm={searchTerm} categoryFilter={categoryFilter} />
+          <VideoManagementTable 
+            searchTerm={searchTerm} 
+            categoryFilter={categoryFilter} 
+            refreshTrigger={refreshTrigger}
+          />
         </CardContent>
       </Card>
 
-      <VideoManagementModal isOpen={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
+      <VideoManagementModal 
+        isOpen={isAddModalOpen} 
+        onOpenChange={setIsAddModalOpen}
+        onVideoAdded={handleVideoAdded}
+      />
     </div>
   );
 }

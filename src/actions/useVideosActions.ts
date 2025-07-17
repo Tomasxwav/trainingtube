@@ -7,8 +7,7 @@ import { toast } from "sonner"
 export const useVideosActions = () => {
   const { videos, fetchVideos } = useVideoStore();
 
-  const addVideo = async (video: VideoUpload) => {
-    console.log('addVideo ', video);
+  const addVideo = async (video: VideoUpload, onSuccess?: () => void) => {
     try {
       const formData = new FormData();
       
@@ -23,11 +22,13 @@ export const useVideosActions = () => {
         body: formData,
       });
       toast.success(`Video uploaded successfully`)
+      
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error) {
       toast.error(`Error uploading video ${error}`)
     }
-
-
   };
 
   const updateVideo = (video: Video) => {
