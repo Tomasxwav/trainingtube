@@ -1,23 +1,12 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
 import getConfig from 'next/config';
 import { SessionData } from '@/types/auth';
+import { setSessionCookie, getSession } from './cookieUtils';
 
 const { publicRuntimeConfig } = getConfig();
 const BASE_URL = publicRuntimeConfig.publicBackendUrl;
-
-async function setSessionCookie(session: SessionData) {
-  const cookieStore = await cookies();
-  cookieStore.set('session', JSON.stringify(session), {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    path: '/',
-    maxAge: 604800000,
-  });
-}
 
 async function refreshSession(refresh_token: string): Promise<SessionData | null> {
   try {
@@ -66,10 +55,9 @@ async function performRequest(url: string, token: string, options: RequestInit) 
 
 
 export async function fetchWithToken(url: string, options: RequestInit = { method: 'GET' }) {
-  const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get('session')?.value;
+  const session = await getSession();
 
-  if (!sessionCookie) {
+  if (!session) {
     console.log('No hay sesión, solicitando sin token');
 
     const response = await fetch(BASE_URL + url, options);
@@ -85,7 +73,6 @@ export async function fetchWithToken(url: string, options: RequestInit = { metho
     redirect('/home');
   }
 
-  const session: SessionData = JSON.parse(sessionCookie!);
   let { response, data } = await performRequest(url, session.access_token, options);
 
   if (response.status === 401) {
