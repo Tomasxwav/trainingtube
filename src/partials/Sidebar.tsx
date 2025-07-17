@@ -35,12 +35,12 @@ export default function Sidebar() {
       path: '/videos',
       showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR', 'ROLE_ADMIN'],
     },
-    {
+/*     {
       name: 'Liked Videos',
       icon: ThumbsUp,
       path: '/videos/liked',
       showFor: ['canViewMyInteractions'],
-    },
+    }, */
     {
       name: 'Favorites',
       icon: Heart,
@@ -54,13 +54,13 @@ export default function Sidebar() {
       showFor: ['canViewMyMetrics'],
     },
     {
-      name: 'Videos',
+      name: 'Admin Videos',
       icon: Film,
       path: '/admin/videos-management',
       showFor: ['ROLE_ADMIN'],
     },
     {
-      name: 'Employees',
+      name: 'Admin Employees',
       icon: Users,
       path: '/admin/employees',
       showFor: ['ROLE_ADMIN'],
