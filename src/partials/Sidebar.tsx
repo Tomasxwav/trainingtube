@@ -90,7 +90,7 @@ export default function Sidebar() {
   );
   
   return (
-    <aside className="hidden md:flex md:flex-col w-64 min-h-screen h-full bg-background border-r border-dark-100 overflow-hidden">
+    <aside className="hidden md:flex md:flex-col w-64 min-h-full bg-background border-r border-dark-100 overflow-hidden">
       <div className="flex items-center p-4 border-b border-dark-100">
         <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
           <Film size={18} className="text-foreground" />

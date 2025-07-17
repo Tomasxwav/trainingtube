@@ -42,9 +42,9 @@ export default function Login() {
   };
   
   return (
-    <div className="min-h-screen bg-dark-50 flex items-center justify-center p-4">
+    <div className="min-h-screen h-screen bg-dark-50 flex items-center justify-center p-4">
         <button onClick={toggleTheme} className='absolute top-10 right-10'>XD</button>
-      <div className="w-full max-w-md bg-foreground/10 rounded-lg shadow-md overflow-hidden animate-fade-in">
+      <div className="scale-80 2xl:scale-100 w-full max-w-md bg-foreground/10 rounded-lg shadow-md overflow-hidden animate-fade-in">
         <div className="p-6 sm:p-8">
           <div className="flex justify-center mb-6">
             <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">

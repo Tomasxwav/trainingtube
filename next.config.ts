@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
   },
   publicRuntimeConfig: {
     // Disponible tanto en servidor como cliente
-    publicBackendUrl: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
+    publicBackendUrl: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'
   }
   
 };
