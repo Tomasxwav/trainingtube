@@ -2,21 +2,18 @@
 
 import Link from 'next/link'
 import { Home, Film, Users, PlayCircle, ThumbsUp, Clock, Settings, HelpCircle, Heart } from 'lucide-react';
-import { useAuthorities } from '@/hooks/useAuthorities';
-import { useEffect, useState } from 'react';
+import { useAuthorities } from '@/hooks/useAuth';
+import { Authority } from '@/types/auth';
 
 export default function Sidebar() {
-  const [authorities, setAuthorities] = useState<string[]>([]);
-  
-  useEffect(() => {
-    const fetchAuthorities = async () => {
-      const authorities = await useAuthorities();
-      setAuthorities(authorities);
-    };
-    fetchAuthorities();
-  }, []);
+  const { authorities, loading } = useAuthorities();
 
-  const navItems = [
+  const navItems: Array<{
+    name: string;
+    icon: any;
+    path: string;
+    showFor: Authority[];
+  }> = [
     {
       name: 'Home',
       icon: Home,
@@ -88,6 +85,29 @@ export default function Sidebar() {
   const filteredNavItems = navItems.filter(item => 
     item.showFor.some(permission => authorities.includes(permission))
   );
+
+  if (loading) {
+    return (
+      <aside className="hidden md:flex md:flex-col w-64 min-h-full bg-background border-r border-dark-100 overflow-hidden">
+        <div className="flex items-center p-4 border-b border-dark-100">
+          <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+          <div className="ml-2 h-6 bg-gray-200 rounded animate-pulse w-24"></div>
+        </div>
+        <nav className="flex-1 pt-4">
+          <ul>
+            {[...Array(6)].map((_, i) => (
+              <li key={i}>
+                <div className="flex items-center px-4 py-3">
+                  <div className="w-5 h-5 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="ml-3 h-4 bg-gray-200 rounded animate-pulse w-20"></div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    );
+  }
   
   return (
     <aside className="hidden md:flex md:flex-col w-64 min-h-full bg-background border-r border-dark-100 overflow-hidden">
