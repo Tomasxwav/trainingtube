@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { departments } from '@/constants/departments';
 
 interface EmployeeModalProps {
   isOpen: boolean;
@@ -31,18 +32,6 @@ interface EmployeeModalProps {
   onSubmit: (data: EmployeeFormData) => void;
   employee?: Employee | null;
 }
-
-const departments = [
-  'Engineering',
-  'marketing',
-  'sales',
-  'Human Resources',
-  'Finance',
-  'Operations',
-  'Customer Support',
-  'Product',
-  'Design',
-];
 
 export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeModalProps) {
   const {

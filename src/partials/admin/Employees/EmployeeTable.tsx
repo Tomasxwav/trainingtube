@@ -288,7 +288,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
           <Select
             value={(table.getColumn('role')?.getFilterValue() as string[])?.join(',') ?? ''}
             onValueChange={(value) => {
-              table.getColumn('role')?.setFilterValue(value ? [value] : undefined);
+              table.getColumn('role')?.setFilterValue(value && value !== 'all' ? [value] : undefined);
             }}
           >
             <SelectTrigger className="w-40">
@@ -296,10 +296,10 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
               <SelectValue placeholder="Filter by role" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Roles</SelectItem>
-              <SelectItem value="employee">Employee</SelectItem>
-              <SelectItem value="supervisor">Supervisor</SelectItem>
-              <SelectItem value="admin">Admin</SelectItem>
+              <SelectItem value="all">All Employees</SelectItem>
+              <SelectItem value="EMPLOYEE">Employee</SelectItem>
+              <SelectItem value="SUPERVISOR">Supervisor</SelectItem>
+              <SelectItem value="ADMIN">Admin</SelectItem>
             </SelectContent>
           </Select>
         </div>
