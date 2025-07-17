@@ -11,16 +11,13 @@ export const employeeSchema = z.object({
     .toLowerCase(),
   password: z
     .string()
-    .min(6, 'Password must be at least 6 characters')
-    .optional()
-    .or(z.literal('')),
-  role: z.enum(['admin', 'employee', 'supervisor'], {
+    .min(6, 'Password must be at least 6 characters'),
+  role: z.enum(['ADMIN', 'EMPLOYEE', 'SUPERVISOR'], {
     required_error: 'Role is required',
   }),
   department: z
     .string()
     .min(1, 'Department is required')
-    .optional(),
 });
 
 export const createEmployeeSchema = employeeSchema.required({

@@ -12,7 +12,7 @@ import {
   ColumnFiltersState,
   SortingState,
 } from '@tanstack/react-table';
-import { Employee, Role } from '@/types/employees';
+import { Employee, Role, Roles } from '@/types/employees';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -42,34 +42,28 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { sinceDate } from '@/utils/sinceDate';
 
 interface EmployeeTableProps {
   employees: Employee[];
   onEdit: (employee: Employee) => void;
   onDelete: (id: string) => void;
-  onRoleChange: (id: string, role: Role) => void;
+  onRoleChange: (id: string, role: Roles) => void;
 }
 
-const getRoleBadgeVariant = (role: Role) => {
+const getRoleBadgeVariant = (role: Roles) => {
   switch (role) {
-    case 'admin':
+    case 'ADMIN':
       return 'destructive';
-    case 'supervisor':
+    case 'SUPERVISOR':
       return 'default';
-    case 'employee':
+    case 'EMPLOYEE':
       return 'secondary';
     default:
       return 'outline';
   }
 };
 
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-};
 
 export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: EmployeeTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -97,7 +91,8 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
       },
       cell: ({ row }) => {
         const employee = row.original;
-        const initials = employee.name
+        const displayName = employee.name || 'Unknown Employee';
+        const initials = displayName
           .split(' ')
           .map(n => n[0])
           .join('')
@@ -109,7 +104,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
               <AvatarFallback className="text-xs">{initials}</AvatarFallback>
             </Avatar>
             <div>
-              <div className="font-medium">{employee.name}</div>
+              <div className="font-medium">{displayName}</div>
               <div className="text-sm text-muted-foreground">{employee.email}</div>
             </div>
           </div>
@@ -138,13 +133,13 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
         const employee = row.original;
         return (
           <Select
-            value={employee.role}
-            onValueChange={(value: Role) => onRoleChange(employee.id, value)}
+            value={employee.role.name}
+            onValueChange={(value: Roles) => onRoleChange(employee.id, value.toUpperCase() as Roles)}
           >
             <SelectTrigger className="w-32">
               <SelectValue>
-                <Badge variant={getRoleBadgeVariant(employee.role)} className="capitalize">
-                  {employee.role}
+                <Badge variant={getRoleBadgeVariant(employee.role.name)} className="capitalize">
+                  {employee.role.name.toLocaleLowerCase()}
                 </Badge>
               </SelectValue>
             </SelectTrigger>
@@ -192,8 +187,8 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
       },
       cell: ({ row }) => {
         return (
-          <span className="text-muted-foreground">
-            {row.getValue('department') || 'Not assigned'}
+          <span className="text-muted-foreground capitalize">
+            {row.getValue('department') || 'Not assigned'} 
           </span>
         );
       },
@@ -219,7 +214,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
       cell: ({ row }) => {
         return (
           <span className="text-muted-foreground">
-            {formatDate(row.getValue('createdAt'))}
+            {sinceDate(row.getValue('createdAt'))}
           </span>
         );
       },

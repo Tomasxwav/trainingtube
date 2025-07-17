@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Employee, Role } from '@/types/employees';
+import { Employee, Role, Roles } from '@/types/employees';
 import { employeeSchema, EmployeeFormData } from '@/schema/employees/employeeSchema';
 import {
   Dialog,
@@ -28,14 +28,14 @@ import { Badge } from '@/components/ui/badge';
 interface EmployeeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: Omit<Employee, 'id' | 'createdAt'>) => void;
+  onSubmit: (data: EmployeeFormData) => void;
   employee?: Employee | null;
 }
 
 const departments = [
   'Engineering',
-  'Marketing',
-  'Sales',
+  'marketing',
+  'sales',
   'Human Resources',
   'Finance',
   'Operations',
@@ -58,7 +58,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
       name: '',
       email: '',
       password: '',
-      role: 'employee',
+      role: 'EMPLOYEE',
       department: '',
     },
   });
@@ -70,8 +70,8 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
       reset({
         name: employee.name,
         email: employee.email,
-        password: '', // Don't pre-fill password for security
-        role: employee.role,
+        password: '',
+        role: employee.role.name,
         department: employee.department || '',
       });
     } else {
@@ -79,20 +79,21 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
         name: '',
         email: '',
         password: '',
-        role: 'employee',
+        role: 'EMPLOYEE',
         department: '',
       });
     }
   }, [employee, reset]);
 
   const onFormSubmit = (data: EmployeeFormData) => {
-    // Ensure password is provided for new employees, or keep existing for updates
     const submitData = {
       ...data,
       password: data.password || (employee ? employee.password : ''),
-      department: data.department || undefined,
+      department: data.department || '',
+      role: data.role.toUpperCase() as Roles,
     };
     onSubmit(submitData);
+    handleClose();
   };
 
   const handleClose = () => {
@@ -181,15 +182,15 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
             <Label>Role</Label>
             <Select
               value={watchedRole}
-              onValueChange={(value: Role) => setValue('role', value)}
+              onValueChange={(value: Roles) => setValue('role', value)}
             >
               <SelectTrigger>
                 <SelectValue>
                   <Badge
                     variant={
-                      watchedRole === 'admin'
+                      watchedRole === 'ADMIN'
                         ? 'destructive'
-                        : watchedRole === 'supervisor'
+                        : watchedRole === 'SUPERVISOR'
                         ? 'default'
                         : 'secondary'
                     }
@@ -200,7 +201,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="employee">
+                <SelectItem value="EMPLOYEE">
                   <div className="flex items-center space-x-2">
                     <Badge variant="secondary" className="capitalize">
                       Employee
@@ -210,7 +211,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
                     </span>
                   </div>
                 </SelectItem>
-                <SelectItem value="supervisor">
+                <SelectItem value="SUPERVISOR">
                   <div className="flex items-center space-x-2">
                     <Badge variant="default" className="capitalize">
                       Supervisor
@@ -220,7 +221,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
                     </span>
                   </div>
                 </SelectItem>
-                <SelectItem value="admin">
+                <SelectItem value="ADMIN">
                   <div className="flex items-center space-x-2">
                     <Badge variant="destructive" className="capitalize">
                       Admin
@@ -232,6 +233,10 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
                 </SelectItem>
               </SelectContent>
             </Select>
+            {errors.role && (
+              <p className="text-sm text-destructive">{errors.role.message}</p>
+            )}
+            
           </div>
 
           {/* Department */}
@@ -252,6 +257,9 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
                 ))}
               </SelectContent>
             </Select>
+            {errors.department && (
+              <p className="text-sm text-destructive">{errors.department.message}</p>
+            )}  
           </div>
 
           <DialogFooter className="flex gap-2 pt-4">

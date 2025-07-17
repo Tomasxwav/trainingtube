@@ -1,73 +1,67 @@
 'use client';
 
-import { useState } from 'react';
-import { Employee, Role } from '@/types/employees';
+import { useEffect, useState } from 'react';
+import { Employee, EmployeeFormData, Role, Roles } from '@/types/employees';
 import { EmployeeTable } from '@/partials/admin/Employees/EmployeeTable';
 import { EmployeeModal } from '@/partials/admin/Employees/EmployeeModal';
 import { Button } from '@/components/ui/button';
 import { Plus, Users } from 'lucide-react';
-
-const mockEmployees: Employee[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john.doe@company.com',
-    password: 'hashedpassword',
-    role: 'employee',
-    department: 'Engineering',
-    createdAt: '2023-01-15T10:00:00Z',
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane.smith@company.com',
-    password: 'hashedpassword',
-    role: 'supervisor',
-    department: 'Marketing',
-    createdAt: '2023-02-20T10:00:00Z',
-  },
-  {
-    id: '3',
-    name: 'Mike Johnson',
-    email: 'mike.johnson@company.com',
-    password: 'hashedpassword',
-    role: 'employee',
-    department: 'Sales',
-    createdAt: '2023-03-10T10:00:00Z',
-  },
-];
+import { useEmployeesActions } from '@/actions/useEmployeesActions';
+import { toast } from 'sonner';
 
 export function EmployeeManagement() {
-  const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
 
-  const handleCreateEmployee = (employeeData: Omit<Employee, 'id' | 'createdAt'>) => {
-    const newEmployee: Employee = {
-      ...employeeData,
-      id: Math.random().toString(36).substr(2, 9),
-      createdAt: new Date().toISOString(),
-    };
-    setEmployees(prev => [...prev, newEmployee]);
-    setIsModalOpen(false);
+  const { getEmployees, createEmployee } = useEmployeesActions();
+  useEffect(() => {
+    getEmployees().then(data => setEmployees(data));
+  }, []);
+
+  const handleCreateEmployee = async (employeeData: EmployeeFormData) => {
+    try {
+      const loadingToast = toast.loading('Creating employee...');
+      
+      await createEmployee(employeeData);
+      
+      const employeeToAdd: Employee = {
+        ...employeeData,
+        id: crypto.randomUUID(),
+        createdAt: new Date().toISOString(),
+        role: {
+          id: crypto.randomUUID(),
+          name: employeeData.role as Roles,
+          authorities: [],
+        },
+      };
+      
+      setEmployees(prev => [...prev, employeeToAdd]);
+      
+      setIsModalOpen(false);
+      
+      toast.dismiss(loadingToast);
+      toast.success(`${employeeData.role.toLowerCase()} ${employeeData.name} created successfully!`);
+      
+    } catch (error) {
+      console.error('Error creating employee:', error);
+      toast.error('Failed to create employee. Please try again.');
+    }
   };
 
-  const handleUpdateEmployee = (employeeData: Omit<Employee, 'id' | 'createdAt'>) => {
+  const handleUpdateEmployee = (employeeData: EmployeeFormData) => {
     if (!editingEmployee) return;
-    
-    setEmployees(prev => 
-      prev.map(emp => 
-        emp.id === editingEmployee.id 
-          ? { ...emp, ...employeeData }
-          : emp
-      )
-    );
+
+    // TODO
+    console.log('handleUpdateEmployee', employeeData);
+
     setEditingEmployee(null);
     setIsModalOpen(false);
   };
 
   const handleDeleteEmployee = (id: string) => {
-    setEmployees(prev => prev.filter(emp => emp.id !== id));
+    // TODO
+    console.log('handleDeleteEmployee', id);
   };
 
   const handleEditEmployee = (employee: Employee) => {
@@ -75,14 +69,9 @@ export function EmployeeManagement() {
     setIsModalOpen(true);
   };
 
-  const handleRoleChange = (id: string, newRole: Role) => {
-    setEmployees(prev => 
-      prev.map(emp => 
-        emp.id === id 
-          ? { ...emp, role: newRole }
-          : emp
-      )
-    );
+  const handleRoleChange = (id: string, newRole: Roles) => {
+    // TODO
+    console.log('handleRoleChange', id, newRole);
   };
 
   const openCreateModal = () => {
@@ -133,7 +122,7 @@ export function EmployeeManagement() {
             <div>
               <p className="text-sm font-medium text-muted-foreground">Supervisors</p>
               <p className="text-2xl font-bold text-foreground">
-                {employees.filter(emp => emp.role === 'supervisor').length}
+                {employees.filter(emp => emp.role.name === 'SUPERVISOR').length}
               </p>
             </div>
             <div className="p-2 bg-green-500/10 rounded-lg">
@@ -147,7 +136,7 @@ export function EmployeeManagement() {
             <div>
               <p className="text-sm font-medium text-muted-foreground">Regular Employees</p>
               <p className="text-2xl font-bold text-foreground">
-                {employees.filter(emp => emp.role === 'employee').length}
+                {employees.filter(emp => emp.role.name === 'EMPLOYEE').length}
               </p>
             </div>
             <div className="p-2 bg-orange-500/10 rounded-lg">
