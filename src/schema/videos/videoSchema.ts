@@ -1,4 +1,4 @@
-import { Department } from '@/types/videos';
+
 import { z } from "zod";
 
 
@@ -38,6 +38,8 @@ export const videoSchema = z.object({
       (file) => !file || ACCEPTED_VIDEO_TYPES.includes(file.type),
       "Only .mp4, .webm and .ogg video formats are supported"
     ),
-  department: z.custom<Department>().optional(),
+  department:  z
+    .string()
+    .min(1, 'Department is required'),
   tags: z.array(z.string()).optional(),
 });
