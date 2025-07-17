@@ -5,8 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Moon, Sun, Globe } from "lucide-react";
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
   const { theme, setTheme } = useTheme();
 
   return (
@@ -63,6 +65,33 @@ export default function SettingsPage() {
               </div>
             </CardContent>
           </Card>
+
+          <Separator />
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                Cerrar sesión
+              </CardTitle>
+              <CardDescription>
+                Ajustes relacionados con tu cuenta y privacidad
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Al cerrar sesión, se cerrará tu sesión en todos los dispositivos.
+              </p>
+              <Button 
+                className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-colors"
+
+              >
+              
+                Cerrar sesión
+              </Button>
+            </CardContent>
+          </Card>
+
+          
     </div>
 
     </div>
