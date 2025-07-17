@@ -1,123 +1,110 @@
 'use server';
+
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { SessionData } from '@/types/auth';
 import getConfig from 'next/config';
+import { SessionData } from '@/types/auth';
 
-export async function fetchWithToken(url: string, options: RequestInit = { method: 'GET' }) { 
-  const { publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig();
+const BASE_URL = publicRuntimeConfig.publicBackendUrl;
+
+async function setSessionCookie(session: SessionData) {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get('session')?.value 
+  cookieStore.set('session', JSON.stringify(session), {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    path: '/',
+    maxAge: 604800000,
+  });
+}
 
-  console.log('la url es:', publicRuntimeConfig.publicBackendUrl, url);
-
-  if (!sessionCookie) {
-
-    console.log('No hay session cookie, se redirige a login');
-    const response = await fetch(publicRuntimeConfig.publicBackendUrl + url, options);
-
-    if (!response.ok) {
-      if (response.status === 401) {
-        redirect('/login');
-      }
-      const errorMessage = await response.text();
-      return { ok: false, error: errorMessage, status: response.status };
-    }
-
-    const data = await response.json();
-    
-    cookieStore.set('session', JSON.stringify(data), {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      path: '/',
+async function refreshSession(refresh_token: string): Promise<SessionData | null> {
+  try {
+    const res = await fetch(`${BASE_URL}/auth/refresh-token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token }),
     });
 
-    redirect('/home'); 
-  }
+    if (!res.ok) return null;
 
-  console.log('Hay session cookie, se hace la peticion con token');
-  
-  const session: SessionData = JSON.parse(sessionCookie);
-  
-  let response = await fetch(publicRuntimeConfig.publicBackendUrl + url, {
+    const newSession = await res.json();
+    await setSessionCookie(newSession);
+    return newSession;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    return null;
+  }
+}
+
+async function performRequest(url: string, token: string, options: RequestInit) {
+  const response = await fetch(BASE_URL + url, {
     ...options,
     headers: {
       ...options.headers,
-      Authorization: `Bearer ${session.access_token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
-  console.log('Se ha hecho la peticion con token');
-  
-  console.log('Response status before checking token:', response.status);
 
+  const contentType = response.headers.get('content-type');
+  let data: any;
 
-  if (!response.ok && response.status === 401) {
-    console.log('Entraste a la peticion con token, se ha expirado el token');
-    
-    console.log('Token expired, refreshing token');
+  if (contentType?.includes('application/json')) {
     try {
-      const newSessionResponse = await fetch(`${publicRuntimeConfig.publicBackendUrl}/auth/refresh-token`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ refresh_token: session.refresh_token }),
-        }
-      );
+      data = await response.json();
+    } catch (err) {
+      console.warn('Respuesta vacía o malformada al intentar hacer JSON.parse');
+      data = null;
+    }
+  } else {
+    data = await response.text();
+  }
 
-      const newSession = await newSessionResponse.json();
-      console.log('New session:', newSession);
-      
+  return { response, data };
+}
 
-      cookieStore.set('session', JSON.stringify(newSession), {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-        path: '/',
-      });
 
-      console.log('New session cookie set, retrying request');
-      
+export async function fetchWithToken(url: string, options: RequestInit = { method: 'GET' }) {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get('session')?.value;
 
-      response = await fetch(publicRuntimeConfig.publicBackendUrl + url, {
-        ...options,
-        headers: {
-          ...options.headers,
-          Authorization: `Bearer ${newSession.access_token}`,
-        },
-      });
+  if (!sessionCookie) {
+    console.log('No hay sesión, solicitando sin token');
 
-      console.log('Retry response status:', response.status);
-      
+    const response = await fetch(BASE_URL + url, options);
 
-      if (response.status === 401) {
-        redirect('/login');
-      }
+    if (!response.ok) {
+      if (response.status === 401) redirect('/login');
+      const error = await response.text();
+      return { ok: false, error, status: response.status };
+    }
 
-      let data;
-      
-      if (options.method !== 'GET') {
-        data = await response.text();
-      } else {
-        data = await response.json();
-      }
+    const newSession = await response.json();
+    await setSessionCookie(newSession);
+    redirect('/home');
+  }
 
-    } catch (error) {
+  const session: SessionData = JSON.parse(sessionCookie!);
+  let { response, data } = await performRequest(url, session.access_token, options);
+
+  if (response.status === 401) {
+    console.log('Token expirado, intentando refrescar...');
+
+    const refreshedSession = await refreshSession(session.refresh_token);
+    if (!refreshedSession) redirect('/login');
+
+    ({ response, data } = await performRequest(url, refreshedSession.access_token, options));
+
+    if (response.status === 401) {
+      console.log('Reintento también falló. Redirigiendo a login...');
       redirect('/login');
     }
   }
 
-  let data;
-  if (options.method !== 'GET') {
-    data = await response.text();
-  } else {
-    data = await response.json();
-  }
-
-
-
-  return {ok: true, status: response.status, data: data}; 
+  return {
+    ok: response.ok,
+    status: response.status,
+    data,
+  };
 }
-
