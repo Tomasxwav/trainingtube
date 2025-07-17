@@ -1,6 +1,9 @@
 import { Role } from '@/types/employees';
+import { Authority } from '@/types/auth';
 import { fetchWithToken } from '@/utils/fetchWithToken';
+import { getAuthorities as getAuthoritiesCookies } from '@/utils/cookieUtils';
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 export const useAuthActions = () => {
   const router = useRouter()
@@ -40,8 +43,32 @@ export const useAuthActions = () => {
     }
   };
 
+  const getAuthorities = () => {
+    const [authorities, setAuthorities] = useState<Authority[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      const fetchAuthorities = async () => {
+        try {
+          const userAuthorities = await getAuthoritiesCookies();
+          setAuthorities(userAuthorities);
+        } catch (error) {
+          console.error('Error fetching authorities:', error);
+          setAuthorities([]);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchAuthorities();
+    }, []);
+
+    return { authorities, loading };
+  };
+
   return {
     login,
     register,
+    getAuthorities,
   };
 }

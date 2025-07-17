@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { Home, Film, Users, PlayCircle, ThumbsUp, Clock, Settings, HelpCircle, Heart } from 'lucide-react';
-import { useAuthorities } from '@/hooks/useAuth';
+import { useAuthActions } from '@/actions/useAuthActions';
 import { Authority } from '@/types/auth';
 
 export default function Sidebar() {
-  const { authorities, loading } = useAuthorities();
+  const { getAuthorities } = useAuthActions();
+  const { authorities, loading } = getAuthorities();
 
   const navItems: Array<{
     name: string;
