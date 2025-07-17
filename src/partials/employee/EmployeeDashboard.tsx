@@ -66,10 +66,10 @@ function VideoCarousel() {
           {sampleVideos.map((video) => (
             <CarouselItem key={video.id}>
               <div className="p-1">
-                <video controls width="100%" height="100%" className=' rounded-2xl'>
+                <video controls width="100%" height="100%" className="rounded-2xl">
                   <source src={video.videoUrl} type="video/mp4" />
                   Tu navegador no soporta videos HTML5.
-              </video>
+                </video>
               </div>
             </CarouselItem>
           ))}
@@ -105,45 +105,68 @@ export default function EmployeeDashboard() {
     fetchPendingVideos()
   }, [])
   
-
   return (
     <div className="animate-fade-in">
-
       {videos.length === 0 ? (
         <div className="py-12">
           <VideoCarousel />
         </div>
       ) : (
-        <>
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-dark-900 mb-2">Welcome back!</h1>
-            <p className="text-dark-600">Access your training materials and track your progress</p>
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          {/* Welcome Header */}
+          <div className="mb-10">
+            <h1 className="text-3xl font-bold text-dark-900 mb-2">Welcome back! 👋</h1>
+            <p className="text-dark-600 text-lg">Continue your learning journey and track your progress</p>
           </div>
 
-          <div className="mb-8">
-            <div className="flex items-center mb-4">
-              <BookOpen size={20} className="text-primary-500 mr-2" />
-              <h2 className="text-xl font-semibold text-dark-900">Required Training</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {pendingVideos.map((video) => (
-                <VideoCard key={video.id} video={video} />
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <Film size={20} className="text-primary-500 mr-2" />
-                <h2 className="text-xl font-semibold text-dark-900">All Training Videos</h2>
+          {/* Required Training Section */}
+          {pendingVideos.length > 0 && (
+            <div className="mb-12">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center justify-center w-10 h-10 bg-primary/20 rounded-xl">
+                  <BookOpen size={20} className="text-primary" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-dark-900">Required Training</h2>
+                  <p className="text-dark-600 text-sm">Complete these courses to stay compliant</p>
+                </div>
+                <div className="ml-auto">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">
+                    {pendingVideos.length} pending
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {pendingVideos.map((video) => (
+                  <VideoCard key={video.id} video={video} />
+                ))}
               </div>
             </div>
-            {videos.map((video) => (
+          )}
+
+          {/* All Training Videos Section */}
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center justify-center w-10 h-10 bg-primary/20 rounded-xl">
+                <Film size={20} className="text-primary" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-dark-900">Training Library</h2>
+                <p className="text-dark-600 text-sm">Explore all available training content</p>
+              </div>
+              <div className="ml-auto">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">
+                  {videos.length} videos
+                </span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {videos.map((video) => (
                 <VideoCard key={video.id} video={video} />
               ))}
+            </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   )
