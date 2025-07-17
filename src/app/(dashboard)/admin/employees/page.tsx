@@ -1,8 +1,10 @@
 
-export  function Employee() {
+import { EmployeeManagement } from '@/partials/admin/Employees/EmployeeManagement';
+
+export default function EmployeesPage() {
   return (
     <div className="animate-fade-in p-8">
-      <h1>Employees Management</h1>
+      <EmployeeManagement />
     </div>
   );
 }
