@@ -18,6 +18,15 @@ export const columns: ColumnDef<Video>[] = [
       ),
     },
     {
+        accessorKey: 'department',
+        header: 'Department',
+        enableSorting: true,
+        enableColumnFilter: true,
+        cell: ({ row }) => (
+          <span className="capitalize">{row.original.department.toLowerCase()}</span>
+        ),
+    },
+/*     {
         accessorKey: 'duration',
         header: 'Duration',
         enableSorting: true,
@@ -34,12 +43,20 @@ export const columns: ColumnDef<Video>[] = [
         header: 'Rating',
         enableSorting: true,
         enableColumnFilter: true,
-    },
+    }, */
     {
-        accessorKey: 'uploadedAt',
+        accessorKey: 'uploadDate',
         header: 'Uploaded',
         enableSorting: true,
         enableColumnFilter: true,
+        cell: ({ row }) => {
+          const date = new Date(row.original.uploadDate);
+          return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          });
+        },
     },
     {
       accessorKey: 'actions',

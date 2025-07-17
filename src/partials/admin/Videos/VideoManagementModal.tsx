@@ -51,6 +51,8 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
         },
         false
         );
+
+    
     const categories = [
         'All',
         'Customer Service',
@@ -80,7 +82,6 @@ export default function VideoManagementModal({ isOpen, onOpenChange }: ChildComp
         console.log('onSubmit', values);
         addVideo(values)
         form.reset();
-        fetchVideos()
         onOpenChange(false)
     }
       

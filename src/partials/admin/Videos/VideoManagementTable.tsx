@@ -39,6 +39,15 @@ export default function VideoManagementTable() {
     getCoreRowModel: getCoreRowModel(),
   })
 
+  if(!videos || videos.length === 0) {
+    return (
+      <div className="text-center text-dark-500 py-6">
+        <p>No videos found. Please add some videos to manage.</p>
+      </div>
+    )
+  }
+
+
   return (
     <Table className="border-b border-dark-50 hover:bg-dark-50 transition-colors">
       <TableHeader>
