@@ -29,27 +29,27 @@ export default function VideoPage() {
         {/* Rating Section */}
         <Card >
           <CardHeader>
-            <h3 className="font-semibold">Actions</h3>
+            <h3 className="font-semibold">Acciones</h3>
           </CardHeader>
           <CardContent className="space-y-3">
             <Button
               className="w-full justify-start gap-3"
             >
               <ThumbsUp className={`w-4 h-4 `} />
-              Like
+              Me gusta
             </Button>
             <Button
               className="w-full justify-start gap-3"
               onClick={() => addFavoriteVideo(video?.id)}
             >
               <Heart className={`w-4 h-4 `} />
-              Add to Favorites
+              Agregar a Favoritos
             </Button>
             <Button
               className="w-full justify-start gap-3"
             >
               <BookMarked className={`w-4 h-4 `} />
-              Add to Watch Later
+              Ver más tarde
             </Button>
 
           </CardContent>
@@ -68,14 +68,14 @@ export default function VideoPage() {
               <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Eye className="w-4 h-4" />
-                  <span>24,567 views</span>
+                  <span>24,567 vistas</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
                   <span>{sinceDate(video?.uploadDate)}</span>
                 </div>
-                <Badge variant="secondary">Sales</Badge>
-                <Badge variant="secondary">IT</Badge>
+                <Badge variant="secondary">Ventas</Badge>
+                <Badge variant="secondary">TI</Badge>
                 <Badge variant="secondary">Marketing</Badge>
               </div>
             </div>
@@ -100,20 +100,20 @@ export default function VideoPage() {
 
             {/* Description */}
             <div className="space-y-3">
-              <h3 className="font-semibold">Description</h3>
+              <h3 className="font-semibold">Descripción</h3>
               <p className="text-muted-foreground leading-relaxed">
 
-                {video?.description.concat(`In this comprehensive tutorial, we'll explore advanced forms to sell drugs online. 
-                We'll cover administration, payments, and marketing, and how to evaluate the success of your campaign.
-                We'll also cover how to handle refunds and disputes, and how to prevent fraud.
-                In this comprehensive tutorial, we'll explore advanced forms to sell drugs online. 
-                We'll cover administration, payments, and marketing, and how to evaluate the success of your campaign.
-                We'll also cover how to handle refunds and disputes, and how to prevent fraud.`)}
+                {video?.description.concat(`En este tutorial completo, exploraremos formularios avanzados para vender productos en línea. 
+                Cubriremos administración, pagos y marketing, y cómo evaluar el éxito de tu campaña.
+                También veremos cómo manejar reembolsos y disputas, y cómo prevenir fraudes.
+                En este tutorial completo, exploraremos formularios avanzados para vender productos en línea. 
+                Cubriremos administración, pagos y marketing, y cómo evaluar el éxito de tu campaña.
+                También veremos cómo manejar reembolsos y disputas, y cómo prevenir fraudes.`)}
 
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Topics covered: • Forms • Validation • Payments • Refunds • Disputes • Fraud Prevention
-                 • Security • Marketing
+                Temas cubiertos: • Formularios • Validación • Pagos • Reembolsos • Disputas • Prevención de Fraudes
+                 • Seguridad • Marketing
               </p>
             </div>
           </div>
@@ -123,8 +123,8 @@ export default function VideoPage() {
       {/* Comments Section */}
       <div className='bg-card rounded-lg  col-span-2'>
         <div className='p-4 border-b flex items-center justify-between'>
-          <h1 className='text-2xl font-bold '>Comments </h1>
-          <span className='text-sm text-foreground/40 flex gap-2 items-center'><MessageSquare className='size-4' />0 Comments</span>
+          <h1 className='text-2xl font-bold '>Comentarios </h1>
+          <span className='text-sm text-foreground/40 flex gap-2 items-center'><MessageSquare className='size-4' />0 Comentarios</span>
         </div>
         <div className='p-4'>
           <div className='flex items-center gap-4'>
@@ -144,13 +144,13 @@ export default function VideoPage() {
 
         <div className="space-y-3 p-8 ">
           <Textarea
-            placeholder="Add a comment..."
+            placeholder="Agrega un comentario..."
             className="min-h-[80px] resize-none"
           />
           <div className="flex justify-end">
             <Button size="sm" >
               <Send className="w-4 h-4 mr-2" />
-              Post
+              Publicar
             </Button>
           </div>
         </div> 

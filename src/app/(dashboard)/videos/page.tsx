@@ -17,10 +17,10 @@ export default function Videos() {
               <VideoOff className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold text-dark-900 mb-2">
-              No Videos Available
+              No hay videos disponibles
             </h3>
             <p className="text-dark-600 max-w-md leading-relaxed">
-              There are no training videos available at the moment. New content will appear here when added to the library.
+              No hay videos de entrenamiento disponibles en este momento. El nuevo contenido aparecerá aquí cuando se agregue a la biblioteca.
             </p>
           </div>
         </div>
@@ -38,8 +38,8 @@ export default function Videos() {
               <Film size={24} className="text-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-dark-900">Training Library</h1>
-              <p className="text-dark-600">Browse and access all available training content</p>
+              <h1 className="text-3xl font-bold text-dark-900">Biblioteca de Entrenamiento</h1>
+              <p className="text-dark-600">Explora y accede a todo el contenido de entrenamiento disponible</p>
             </div>
           </div>
           
@@ -47,7 +47,7 @@ export default function Videos() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-primary rounded-full"></div>
-              <span className="text-sm text-dark-600">Available Training</span>
+              <span className="text-sm text-dark-600">Entrenamiento disponible</span>
             </div>
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">
               {videos.length} {videos.length === 1 ? 'video' : 'videos'}

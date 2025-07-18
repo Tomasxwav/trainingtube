@@ -64,7 +64,6 @@ const getRoleBadgeVariant = (role: Roles) => {
   }
 };
 
-
 export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: EmployeeTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -80,7 +79,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="h-auto p-0 font-semibold"
           >
-            Employee
+            Empleado
             {column.getIsSorted() === 'asc' ? (
               <ChevronUp className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === 'desc' ? (
@@ -91,7 +90,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
       },
       cell: ({ row }) => {
         const employee = row.original;
-        const displayName = employee.name || 'Unknown Employee';
+        const displayName = employee.name || 'Empleado desconocido';
         const initials = displayName
           .split(' ')
           .map(n => n[0])
@@ -120,7 +119,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="h-auto p-0 font-semibold"
           >
-            Role
+            Rol
             {column.getIsSorted() === 'asc' ? (
               <ChevronUp className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === 'desc' ? (
@@ -146,7 +145,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             <SelectContent>
               <SelectItem value="employee">
                 <Badge variant="secondary" className="capitalize">
-                  Employee
+                  Empleado
                 </Badge>
               </SelectItem>
               <SelectItem value="supervisor">
@@ -156,7 +155,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
               </SelectItem>
               <SelectItem value="admin">
                 <Badge variant="destructive" className="capitalize">
-                  Admin
+                  Administrador
                 </Badge>
               </SelectItem>
             </SelectContent>
@@ -176,7 +175,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="h-auto p-0 font-semibold"
           >
-            Department
+            Departamento
             {column.getIsSorted() === 'asc' ? (
               <ChevronUp className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === 'desc' ? (
@@ -188,7 +187,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
       cell: ({ row }) => {
         return (
           <span className="text-muted-foreground capitalize">
-            {row.getValue('department') || 'Not assigned'} 
+            {row.getValue('department') || 'No asignado'} 
           </span>
         );
       },
@@ -202,7 +201,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="h-auto p-0 font-semibold"
           >
-            Joined
+            Ingreso
             {column.getIsSorted() === 'asc' ? (
               <ChevronUp className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === 'desc' ? (
@@ -221,7 +220,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
     },
     {
       id: 'actions',
-      header: 'Actions',
+      header: 'Acciones',
       cell: ({ row }) => {
         const employee = row.original;
         
@@ -273,13 +272,13 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
 
   return (
     <div className="space-y-4 p-6">
-      {/* Filters */}
+      {/* Filtros */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search employees..."
+              placeholder="Buscar empleados..."
               value={globalFilter ?? ''}
               onChange={(event) => setGlobalFilter(String(event.target.value))}
               className="pl-9 w-64"
@@ -293,23 +292,23 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
           >
             <SelectTrigger className="w-40">
               <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Filter by role" />
+              <SelectValue placeholder="Filtrar por rol" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Employees</SelectItem>
-              <SelectItem value="EMPLOYEE">Employee</SelectItem>
+              <SelectItem value="all">Todos los empleados</SelectItem>
+              <SelectItem value="EMPLOYEE">Empleado</SelectItem>
               <SelectItem value="SUPERVISOR">Supervisor</SelectItem>
-              <SelectItem value="ADMIN">Admin</SelectItem>
+              <SelectItem value="ADMIN">Administrador</SelectItem>
             </SelectContent>
           </Select>
         </div>
         
         <div className="text-sm text-muted-foreground">
-          {table.getFilteredRowModel().rows.length} of {employees.length} employees
+          {table.getFilteredRowModel().rows.length} de {employees.length} empleados
         </div>
       </div>
 
-      {/* Table */}
+      {/* Tabla */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -342,7 +341,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No employees found.
+                  No se encontraron empleados.
                 </TableCell>
               </TableRow>
             )}
@@ -350,10 +349,10 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
         </Table>
       </div>
 
-      {/* Pagination */}
+      {/* Paginación */}
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -363,7 +362,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             disabled={!table.getCanPreviousPage()}
           >
             <ChevronLeft className="h-4 w-4" />
-            Previous
+            Anterior
           </Button>
           <Button
             variant="outline"
@@ -371,7 +370,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Siguiente
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>

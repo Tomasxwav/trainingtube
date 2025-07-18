@@ -2,8 +2,8 @@ import VideoManagement from '@/partials/admin/Videos/VideoManagement';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Video Management | Admin Dashboard',
-  description: 'Manage training videos, upload new content, and organize your video library.',
+  title: 'Gestión de Videos | Panel de Administración',
+  description: 'Administra videos de entrenamiento, sube nuevo contenido y organiza tu biblioteca de videos.',
 };
 
 export default function AdminVideos() {

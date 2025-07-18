@@ -12,7 +12,7 @@ export default function Favorites() {
   const [isLoading, setIsLoading] = useState(true);
   const [favoritesVideos, setFavoritesVideos] = useState<Video[]>([]);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchFavoritesVideos = async () => {
       try {
         const data = await getFavoritesVideos();
@@ -35,7 +35,7 @@ export default function Favorites() {
           <div className="flex items-center justify-center py-16">
             <div className="flex items-center gap-3">
               <Loader2 className="w-5 h-5 text-primary animate-spin" />
-              <span className="text-dark-600">Loading your favorite videos...</span>
+              <span className="text-dark-600">Cargando tus videos favoritos...</span>
             </div>
           </div>
         </div>
@@ -52,10 +52,10 @@ export default function Favorites() {
               <Heart className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold text-dark-900 mb-2">
-              No Favorite Videos Yet
+              Aún no tienes videos favoritos
             </h3>
             <p className="text-dark-600 max-w-md leading-relaxed">
-              You haven't marked any videos as favorites yet. Start exploring the training library and save your favorite content here.
+              Aún no has marcado ningún video como favorito. Comienza a explorar la biblioteca de entrenamiento y guarda aquí tu contenido favorito.
             </p>
           </div>
         </div>
@@ -73,8 +73,8 @@ export default function Favorites() {
               <Heart size={24} className="text-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-dark-900">Favorite Videos</h1>
-              <p className="text-dark-600">Your personally curated collection of training content</p>
+              <h1 className="text-3xl font-bold text-dark-900">Videos Favoritos</h1>
+              <p className="text-dark-600">Tu colección personal de contenido de entrenamiento</p>
             </div>
           </div>
           
@@ -82,10 +82,10 @@ export default function Favorites() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-primary rounded-full"></div>
-              <span className="text-sm text-dark-600">Saved Content</span>
+              <span className="text-sm text-dark-600">Contenido guardado</span>
             </div>
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">
-              {favoritesVideos.length} {favoritesVideos.length === 1 ? 'favorite' : 'favorites'}
+              {favoritesVideos.length} {favoritesVideos.length === 1 ? 'favorito' : 'favoritos'}
             </span>
           </div>
         </div>
