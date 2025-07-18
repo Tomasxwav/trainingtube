@@ -30,7 +30,7 @@ export default function VideoManagement() {
     setRefreshTrigger(prev => prev + 1);
   };
   
-  // Mock stats - you can replace with real data from your API
+  // Estadísticas simuladas - puedes reemplazar con datos reales de tu API
   const stats = {
     totalVideos: 127,
     totalViews: 15420,
@@ -41,15 +41,15 @@ export default function VideoManagement() {
   
   return (
     <div className="animate-fade-in space-y-6">
-      {/* Header Section */}
+      {/* Sección de encabezado */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
             <Film className="h-8 w-8 text-primary" />
-            Video Management
+            Gestión de Videos
           </h1>
           <p className="text-muted-foreground">
-            Upload, organize, and manage your training video library
+            Sube, organiza y administra tu biblioteca de videos de capacitación
           </p>
         </div>
         
@@ -58,22 +58,22 @@ export default function VideoManagement() {
           className="flex items-center gap-2 mt-4 sm:mt-0" 
         >
           <Plus size={18} />
-          Add New Video
+          Agregar Nuevo Video
         </Button>
       </div>
 
-      {/* Stats Cards */}
+      {/* Tarjetas de estadísticas */}
       {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Videos</CardTitle>
+            <CardTitle className="text-sm font-medium">Total de Videos</CardTitle>
             <Film className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalVideos}</div>
             <p className="text-xs text-muted-foreground">
               <Badge variant="secondary" className="text-xs">
-                +{stats.recentUploads} this month
+                +{stats.recentUploads} este mes
               </Badge>
             </p>
           </CardContent>
@@ -81,7 +81,7 @@ export default function VideoManagement() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Views</CardTitle>
+            <CardTitle className="text-sm font-medium">Total de Visualizaciones</CardTitle>
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -89,7 +89,7 @@ export default function VideoManagement() {
             <p className="text-xs text-muted-foreground">
               <span className="text-green-600 flex items-center gap-1">
                 <TrendingUp className="h-3 w-3" />
-                +12% from last month
+                +12% respecto al mes pasado
               </span>
             </p>
           </CardContent>
@@ -97,32 +97,32 @@ export default function VideoManagement() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Average Rating</CardTitle>
+            <CardTitle className="text-sm font-medium">Calificación Promedio</CardTitle>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.avgRating}/5</div>
             <p className="text-xs text-muted-foreground">
-              <span className="text-green-600">Excellent feedback</span>
+              <span className="text-green-600">Comentarios excelentes</span>
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Departments</CardTitle>
+            <CardTitle className="text-sm font-medium">Departamentos</CardTitle>
             <Badge variant="outline">{departments.length}</Badge>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{departments.length}</div>
             <p className="text-xs text-muted-foreground">
-              Active departments
+              Departamentos activos
             </p>
           </CardContent>
         </Card>
       </div> */}
       
-      {/* Filters Section */}
+      {/* Sección de filtros */}
       <Card>
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row md:items-center gap-4">
@@ -130,7 +130,7 @@ export default function VideoManagement() {
               <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search videos by title, description, or department..."
+                placeholder="Buscar videos por título, descripción o departamento..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -141,12 +141,12 @@ export default function VideoManagement() {
               <Filter size={18} className="text-muted-foreground" />
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                 <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Filter by department" />
+                  <SelectValue placeholder="Filtrar por departamento" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Departments</SelectLabel>
-                    <SelectItem value="all">All Departments</SelectItem>
+                    <SelectLabel>Departamentos</SelectLabel>
+                    <SelectItem value="all">Todos los Departamentos</SelectItem>
                     {departments.map((category) => (
                       <SelectItem key={category} value={category.toLowerCase()}>
                         {category}
@@ -160,12 +160,12 @@ export default function VideoManagement() {
         </CardContent>
       </Card>
 
-      {/* Videos Table */}
+      {/* Tabla de videos */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Film className="h-5 w-5" />
-            Video Library
+            Biblioteca de Videos
           </CardTitle>
         </CardHeader>
         <CardContent>

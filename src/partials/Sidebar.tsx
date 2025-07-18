@@ -16,73 +16,72 @@ export default function Sidebar() {
     showFor: Authority[];
   }> = [
     {
-      name: 'Home',
+      name: 'Inicio',
       icon: Home,
       path: '/home',
       showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
-      name: 'Pending Videos',
+      name: 'Videos pendientes',
       icon: Clock,
       path: '/videos/pending',
       showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
-      name: 'All Videos',
+      name: 'Todos los videos',
       icon: PlayCircle,
       path: '/videos',
       showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR', 'ROLE_ADMIN'],
     },
-/*     {
-      name: 'Liked Videos',
-      icon: ThumbsUp,
-      path: '/videos/liked',
-      showFor: ['canViewMyInteractions'],
-    }, */
+    // {
+    //   name: 'Videos que me gustan',
+    //   icon: ThumbsUp,
+    //   path: '/videos/liked',
+    //   showFor: ['canViewMyInteractions'],
+    // },
     {
-      name: 'Favorites',
+      name: 'Favoritos',
       icon: Heart,
       path: '/videos/favorites',
       showFor: ['canViewMyInteractions'],
     },
-/*     {
-      name: 'My metrics',
-      icon: Home,
-      path: '/metrics',
-      showFor: ['canViewMyMetrics'],
-    }, */
+    // {
+    //   name: 'Mis métricas',
+    //   icon: Home,
+    //   path: '/metrics',
+    //   showFor: ['canViewMyMetrics'],
+    // },
     {
-      name: 'Admin Videos',
+      name: 'Videos de administrador',
       icon: Film,
       path: '/admin/videos-management',
       showFor: ['ROLE_ADMIN'],
     },
     {
-      name: 'Admin Employees',
+      name: 'Empleados admin',
       icon: Users,
       path: '/admin/employees',
       showFor: ['ROLE_ADMIN'],
     },
-     {
-      name: 'Employees',
+    {
+      name: 'Empleados',
       icon: Users,
       path: '/supervisor/employees',
       showFor: ['ROLE_SUPERVISOR'],
     },
     {
-      name: 'Settings',
+      name: 'Configuración',
       icon: Settings,
       path: '/settings',
       showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
-      name: 'Help',
+      name: 'Ayuda',
       icon: HelpCircle,
       path: '/help',
       showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
   ];
-  
   const filteredNavItems = navItems.filter(item => 
     item.showFor.some(permission => authorities.includes(permission))
   );

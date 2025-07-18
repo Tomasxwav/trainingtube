@@ -71,8 +71,8 @@ export default function EmployeeVideosScroller({ videos }: { videos: any[] }) {
           <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <VideoOff className="w-6 h-6 text-primary" />
           </div>
-          <h3 className="text-lg font-semibold text-dark-900 mb-2">No Videos Available</h3>
-          <p className="text-dark-600">There are no videos to display at the moment.</p>
+          <h3 className="text-lg font-semibold text-dark-900 mb-2">No hay videos disponibles</h3>
+          <p className="text-dark-600">No hay videos para mostrar en este momento.</p>
         </div>
       </div>
     );

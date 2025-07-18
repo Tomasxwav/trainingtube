@@ -2,10 +2,10 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from '@/components/ui/input';
 import { videoSchema } from '@/schema/videos/videoSchema';
@@ -92,10 +92,10 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
             </div>
-            Upload New Training Video
+            Subir Nuevo Video de Capacitación
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Add a new training video to your library. Fill out the required information below.
+            Agrega un nuevo video de capacitación a tu biblioteca. Completa la información requerida a continuación.
           </DialogDescription>
         </DialogHeader>
         
@@ -107,16 +107,16 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                         name="title"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-medium">Video Title *</FormLabel>
+                                <FormLabel className="text-sm font-medium">Título del Video *</FormLabel>
                                 <FormControl>
                                     <Input 
-                                        placeholder="Enter a descriptive title for your video" 
+                                        placeholder="Ingresa un título descriptivo para tu video" 
                                         {...field} 
                                         className="h-10"
                                     />
                                 </FormControl>
                                 <FormDescription className="text-xs">
-                                    Choose a clear, descriptive title that helps learners understand the content.
+                                    Elige un título claro y descriptivo que ayude a los aprendices a entender el contenido.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -128,16 +128,16 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                         name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-medium">Description *</FormLabel>
+                                <FormLabel className="text-sm font-medium">Descripción *</FormLabel>
                             <FormControl>
                                 <Textarea
-                                    placeholder="Provide a detailed description of what learners will gain from this video..."
+                                    placeholder="Proporciona una descripción detallada de lo que los aprendices obtendrán de este video..."
                                     className="resize-none min-h-[100px]"
                                     {...field}
                                 />
                             </FormControl>
                             <FormDescription className="text-xs">
-                                Include learning objectives, prerequisites, and what topics are covered.
+                                Incluye objetivos de aprendizaje, requisitos previos y los temas que se cubren.
                             </FormDescription>
                             <FormMessage />
                             </FormItem>
@@ -151,7 +151,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                             render={({ field }) => (
                                 <FormItem>
                                     <div className="space-y-2">
-                                        <FormLabel className="text-sm font-medium">Thumbnail Image *</FormLabel>
+                                        <FormLabel className="text-sm font-medium">Imagen Miniatura *</FormLabel>
                                         <FormControl>
                                                 <Input
                                                     type="file"
@@ -165,7 +165,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                                         </FormControl>
                                     </div>
                                     <FormDescription className="text-xs ">
-                                        Upload an engaging thumbnail image (JPG, PNG). Recommended size: 1280x720px.
+                                        Sube una imagen miniatura atractiva (JPG, PNG). Tamaño recomendado: 1280x720px.
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -178,7 +178,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                             render={({ field }) => (
                                 <FormItem>
                                     <div className="space-y-2">
-                                        <FormLabel className="text-sm font-medium">Video File *</FormLabel>
+                                        <FormLabel className="text-sm font-medium">Archivo de Video *</FormLabel>
                                         <FormControl>
                                                 <Input
                                                     type="file"
@@ -192,7 +192,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                                     </FormControl>
                                     </div>
                                     <FormDescription className="text-xs">
-                                        Upload your training video (MP4, MOV, AVI). Max file size: 500MB.
+                                        Sube tu video de capacitación (MP4, MOV, AVI). Tamaño máximo de archivo: 500MB.
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -205,15 +205,15 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                         name="department"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-medium">Department *</FormLabel>
+                                <FormLabel className="text-sm font-medium">Departamento *</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} value={field.value}>
                                         <SelectTrigger className="h-10">
-                                            <SelectValue placeholder="Select target department"  /> 
+                                            <SelectValue placeholder="Selecciona el departamento objetivo"  /> 
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                <SelectLabel>Departments</SelectLabel>
+                                                <SelectLabel>Departamentos</SelectLabel>
                                                 {departments.map((department) => (
                                                     <SelectItem key={department} value={department}>
                                                         {department}
@@ -224,7 +224,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                                     </Select>
                                 </FormControl>
                                 <FormDescription className="text-xs">
-                                    Choose the department this training video is intended for.
+                                    Elige el departamento al que está dirigido este video de capacitación.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -238,7 +238,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                             onClick={() => handleOpenChange(false)}
                             className="flex-1"
                         >
-                            Cancel
+                            Cancelar
                         </Button>
                         <Button 
                             disabled={pending || isPending} 
@@ -251,10 +251,10 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Uploading...
+                                    Subiendo...
                                 </>
                             ) : (
-                                "Upload Video"
+                                "Subir Video"
                             )}
                         </Button>
                     </div>

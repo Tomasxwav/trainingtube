@@ -35,7 +35,7 @@ export default function Login() {
         setError(response?.error || '');
       } 
     } catch (err) {
-      setError('An error occurred. Please try again.' + err);
+      setError('Ocurrió un error. Por favor, inténtalo de nuevo.' + err);
     } finally {
       setIsLoading(false);
     }
@@ -53,11 +53,11 @@ export default function Login() {
           </div>
           
           <h1 className="text-2xl font-bold text-center text-dark-900 mb-6">
-            Welcome to TrainTube
+            Bienvenido a TrainTube
           </h1>
           
           <p className="text-center text-dark-600 mb-6">
-            Sign in to access your training videos
+            Inicia sesión para acceder a tus videos de entrenamiento
           </p>
           
           <form onSubmit={handleLogin}>
@@ -70,7 +70,7 @@ export default function Login() {
             
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium text-dark-700 mb-1">
-                Email
+                Correo electrónico
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -82,7 +82,7 @@ export default function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-background py-2 pl-10 pr-3 border border-dark-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Enter your email"
+                  placeholder="Introduce tu correo electrónico"
                   required
                 />
               </div>
@@ -90,7 +90,7 @@ export default function Login() {
             
             <div className="mb-6">
               <label htmlFor="password" className="block text-sm font-medium text-dark-700 mb-1">
-                Password
+                Contraseña
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -102,7 +102,7 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-background py-2 pl-10 pr-10 border border-dark-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Enter your password"
+                  placeholder="Introduce tu contraseña"
                   required
                 />
                 <button
@@ -124,20 +124,20 @@ export default function Login() {
               disabled={isLoading}
               className="w-full py-2 px-4 bg-primary cursor-pointer text-white "
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </Button>
           </form>
           
           <div className="mt-8 text-center text-sm text-dark-600">
-            <p>Demo Credentials:</p>
+            <p>Credenciales de demostración:</p>
             <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
               <div className="bg-dark-50 p-2 rounded-md">
-                <p className="font-medium">Admin</p>
+                <p className="font-medium">Administrador</p>
                 <p>admin@example.com</p>
                 <p>admin123</p>
               </div>
               <div className="bg-dark-50 p-2 rounded-md">
-                <p className="font-medium">Employee</p>
+                <p className="font-medium">Empleado</p>
                 <p>employee@example.com</p>
                 <p>employee123</p>
               </div>

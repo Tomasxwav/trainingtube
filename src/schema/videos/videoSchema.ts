@@ -1,8 +1,6 @@
-
 import { z } from "zod";
 
-
-// Constants for file validation
+// Constantes para la validación de archivos
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -18,28 +16,28 @@ const ACCEPTED_VIDEO_TYPES = [
 
 export const videoSchema = z.object({
   title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
+    message: "El título debe tener al menos 2 caracteres.",
   }),
   description: z.string().min(2, {
-    message: "Description must be at least 2 characters.",
+    message: "La descripción debe tener al menos 2 caracteres.",
   }),
   thumbnail: z.instanceof(File),
   video: z
     .instanceof(File)
     .refine(
       (file) => !file || file instanceof File,
-      "Must be a valid file"
+      "Debe ser un archivo válido"
     )
     .refine(
-      (file) => !file || file.size <= MAX_FILE_SIZE * 10, // 50MB for video
-      `Video must be less than ${(MAX_FILE_SIZE * 10) / 1024 / 1024}MB`
+      (file) => !file || file.size <= MAX_FILE_SIZE * 10, // 50MB para video
+      `El video debe ser menor a ${(MAX_FILE_SIZE * 10) / 1024 / 1024}MB`
     )
     .refine(
       (file) => !file || ACCEPTED_VIDEO_TYPES.includes(file.type),
-      "Only .mp4, .webm and .ogg video formats are supported"
+      "Solo se permiten formatos de video .mp4, .webm y .ogg"
     ),
   department:  z
     .string()
-    .min(1, 'Department is required'),
+    .min(1, 'El departamento es obligatorio'),
   tags: z.array(z.string()).optional(),
 });

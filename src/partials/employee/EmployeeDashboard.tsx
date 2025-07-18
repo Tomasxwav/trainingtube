@@ -20,8 +20,8 @@ import { useVideosActions } from '@/actions/useVideosActions'
 const sampleVideos: Video[] = [
   {
     id: 'sample-1',
-    title: 'Workplace Safety Fundamentals',
-    description: 'Learn the essential safety protocols every employee should know',
+    title: 'Fundamentos de Seguridad en el Lugar de Trabajo',
+    description: 'Aprende los protocolos de seguridad esenciales que todo empleado debe conocer',
     thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
     videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
     uploadDate: '2023-10-01T12:00:00Z',
@@ -30,8 +30,8 @@ const sampleVideos: Video[] = [
   },
   {
     id: 'sample-2',
-    title: 'Effective Communication Skills',
-    description: 'Master the art of communication in the workplace',
+    title: 'Habilidades de Comunicación Efectiva',
+    description: 'Domina el arte de la comunicación en el lugar de trabajo',
     thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
     videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
     uploadDate: '2023-10-02T12:00:00Z',
@@ -40,8 +40,8 @@ const sampleVideos: Video[] = [
   },
   {
     id: 'sample-3',
-    title: 'Time Management Techniques',
-    description: 'Boost your productivity with these time management tips',
+    title: 'Técnicas de Gestión del Tiempo',
+    description: 'Mejora tu productividad con estos consejos de gestión del tiempo',
     thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
     videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
     uploadDate: '2023-10-03T12:00:00Z',
@@ -57,8 +57,8 @@ function VideoCarousel() {
         <div className="w-16 h-16 bg-gradient-to-br from-primary to-black rounded-full flex items-center justify-center mb-4"> 
           <Play className="w-8 h-8 text-white" />
         </div>
-        <h2 className="text-2xl font-bold text-dark-900 mb-2">Your Training Content is Coming Soon!</h2>
-        <p className="text-dark-600">Here's a preview of the type of engaging content you'll have access to</p>
+        <h2 className="text-2xl font-bold text-dark-900 mb-2">¡Tu contenido de capacitación llegará pronto!</h2>
+        <p className="text-dark-600">Aquí tienes una vista previa del tipo de contenido atractivo al que tendrás acceso</p>
       </div>
 
       <Carousel className="w-fit">
@@ -80,10 +80,9 @@ function VideoCarousel() {
 
       <Card className="mt-8 bg-primary/10 border-black/20 shadow-lg shadow-black">
         <CardContent className="p-6 text-center">
-          <h3 className="font-semibold text-dark mb-2">What to Expect</h3>
+          <h3 className="font-semibold text-dark mb-2">Qué esperar</h3>
           <p className="text-dark text-sm">
-            Interactive video lessons, progress tracking, quizzes, and certificates. Your personalized training library
-            will be available soon!
+            Lecciones interactivas en video, seguimiento de progreso, cuestionarios y certificados. ¡Tu biblioteca de capacitación personalizada estará disponible pronto!
           </p>
         </CardContent>
       </Card>
@@ -113,13 +112,11 @@ export default function EmployeeDashboard() {
         </div>
       ) : (
         <div className="min-w-full px-6 py-8">
-          {/* Welcome Header */}
           <div className="mb-10">
-            <h1 className="text-3xl font-bold text-dark-900 mb-2">Welcome back! 👋</h1>
-            <p className="text-dark-600 text-lg">Continue your learning journey and track your progress</p>
+            <h1 className="text-3xl font-bold text-dark-900 mb-2">¡Bienvenido de nuevo! 👋</h1>
+            <p className="text-dark-600 text-lg">Continúa tu camino de aprendizaje y sigue tu progreso</p>
           </div>
 
-          {/* Required Training Section */}
           {pendingVideos.length > 0 && (
             <div className="mb-12">
               <div className="flex items-center gap-3 mb-6">
@@ -127,12 +124,12 @@ export default function EmployeeDashboard() {
                   <BookOpen size={20} className="text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-dark-900">Required Training</h2>
-                  <p className="text-dark-600 text-sm">Complete these courses to stay compliant</p>
+                  <h2 className="text-xl font-semibold text-dark-900">Capacitación obligatoria</h2>
+                  <p className="text-dark-600 text-sm">Completa estos cursos para mantenerte en cumplimiento</p>
                 </div>
                 <div className="ml-auto">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">
-                    {pendingVideos.length} pending
+                    {pendingVideos.length} pendientes
                   </span>
                 </div>
               </div>
@@ -144,15 +141,14 @@ export default function EmployeeDashboard() {
             </div>
           )}
 
-          {/* All Training Videos Section */}
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="flex items-center justify-center w-10 h-10 bg-primary/20 rounded-xl">
                 <Film size={20} className="text-primary" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-dark-900">Training Library</h2>
-                <p className="text-dark-600 text-sm">Explore all available training content</p>
+                <h2 className="text-xl font-semibold text-dark-900">Biblioteca de capacitación</h2>
+                <p className="text-dark-600 text-sm">Explora todo el contenido de capacitación disponible</p>
               </div>
               <div className="ml-auto">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">

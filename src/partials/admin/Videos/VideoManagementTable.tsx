@@ -116,8 +116,8 @@ export default function VideoManagementTable({ searchTerm, categoryFilter, refre
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-foreground mb-2">No videos found</h3>
-        <p className="text-muted-foreground mb-4">Get started by uploading your first training video.</p>
+        <h3 className="text-lg font-medium text-foreground mb-2">No se encontraron videos</h3>
+        <p className="text-muted-foreground mb-4">Comienza subiendo tu primer video de capacitación.</p>
       </div>
     )
   }
@@ -130,8 +130,8 @@ export default function VideoManagementTable({ searchTerm, categoryFilter, refre
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-foreground mb-2">No videos match your search</h3>
-        <p className="text-muted-foreground">Try adjusting your search terms or filters.</p>
+        <h3 className="text-lg font-medium text-foreground mb-2">Ningún video coincide con tu búsqueda</h3>
+        <p className="text-muted-foreground">Intenta ajustar tus términos de búsqueda o filtros.</p>
       </div>
     )
   }
@@ -139,16 +139,14 @@ export default function VideoManagementTable({ searchTerm, categoryFilter, refre
 
   return (
     <div className="space-y-4">
-      {/* Results summary */}
       <div className="flex items-center justify-between text-sm text-muted-foreground">
         <span>
-          Showing {table.getRowModel().rows.length} of {videos.length} videos
-          {searchTerm && ` for "${searchTerm}"`}
-          {categoryFilter !== 'all' && ` in ${categoryFilter}`}
+          Mostrando {table.getRowModel().rows.length} de {videos.length} videos
+          {searchTerm && ` para "${searchTerm}"`}
+          {categoryFilter !== 'all' && ` en ${categoryFilter}`}
         </span>
       </div>
 
-      {/* Table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
