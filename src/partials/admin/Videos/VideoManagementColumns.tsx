@@ -74,7 +74,7 @@ export const columns: ColumnDef<Video>[] = [
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
               className="hover:bg-transparent p-0 font-medium"
             >
-              Department
+              Departamento
               <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -107,7 +107,7 @@ export const columns: ColumnDef<Video>[] = [
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
               className="hover:bg-transparent p-0 font-medium"
             >
-              Rating
+              Calificación
               <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
           )
@@ -130,7 +130,7 @@ export const columns: ColumnDef<Video>[] = [
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
               className="hover:bg-transparent p-0 font-medium"
             >
-              Views
+              Vistas
               <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
           )
@@ -153,7 +153,7 @@ export const columns: ColumnDef<Video>[] = [
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
               className="hover:bg-transparent p-0 font-medium"
             >
-              Duration
+              Duración
               <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
           )
@@ -182,7 +182,7 @@ export const columns: ColumnDef<Video>[] = [
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
               className="hover:bg-transparent p-0 font-medium"
             >
-              Uploaded
+              Subido
               <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
           )
@@ -196,15 +196,15 @@ export const columns: ColumnDef<Video>[] = [
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
           
           let timeAgo = '';
-          if (diffDays === 1) timeAgo = 'Yesterday';
-          else if (diffDays < 7) timeAgo = `${diffDays} days ago`;
-          else if (diffDays < 30) timeAgo = `${Math.floor(diffDays / 7)} weeks ago`;
-          else timeAgo = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          if (diffDays === 1) timeAgo = 'Ayer';
+          else if (diffDays < 7) timeAgo = `Hace ${diffDays} días`;
+          else if (diffDays < 30) timeAgo = `Hace ${Math.floor(diffDays / 7)} semanas`;
+          else timeAgo = date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
           
           return (
             <div className="space-y-1">
               <div className="font-medium">
-                {date.toLocaleDateString('en-US', {
+                {date.toLocaleDateString('es-ES', {
                   month: 'short',
                   day: 'numeric',
                   year: 'numeric',
@@ -217,7 +217,7 @@ export const columns: ColumnDef<Video>[] = [
     },
     {
       accessorKey: 'actions',
-      header: 'Actions',
+      header: 'Acciones',
       enableSorting: false,
       enableColumnFilter: false,
       cell: ({ row }) => (
@@ -226,8 +226,8 @@ export const columns: ColumnDef<Video>[] = [
             variant="ghost"
             size="sm"
             onClick={() => {
-              // TODO: Implement edit functionality
-              console.log('Edit video:', row.original.id)
+              // TODO: Implementar funcionalidad de edición
+              console.log('Editar video:', row.original.id)
             }}
             className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
           >
@@ -237,8 +237,8 @@ export const columns: ColumnDef<Video>[] = [
             variant="ghost"
             size="sm"
             onClick={() => {
-              // TODO: Implement delete functionality
-              console.log('Delete video:', row.original.id)
+              // TODO: Implementar funcionalidad de eliminación
+              console.log('Eliminar video:', row.original.id)
             }}
             className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
           >

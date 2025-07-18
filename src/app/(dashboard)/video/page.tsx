@@ -20,36 +20,39 @@ export default function VideoPage() {
   const video = videos.find((video) => video.videoUrl === videoUrl.replaceAll(' ', '%20'));
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-12 grid-rows-2 p-2 md:p-8">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-8  2xl:gap-12 p-2 md:p-8">
 
       {/* Video Player */}
-      <div className="col-span-5 flex gap-8">
+      <div className="lg:col-span-5 flex lg:gap-8 flex-col xl:flex-row gap-4">
         <VideoPlayer videoUrl={videoUrl} />
 
         {/* Rating Section */}
-        <Card >
-          <CardHeader>
-            <h3 className="font-semibold">Actions</h3>
-          </CardHeader>
-          <CardContent className="space-y-3">
+        <Card className='gap-2 m-0 p-0 md:py-4 '>
+          <span className='hidden md:inline-block'>
+            <CardHeader>
+              <h3 className="font-semibold md:mb-2">Acciones</h3>
+            </CardHeader>
+            <Separator />
+          </span>
+          <CardContent className="flex justify-around gap-2 flex-wrap py-4"> 
             <Button
-              className="w-full justify-start gap-3"
+              className="md:w-full justify-start md:gap-3" 
             >
               <ThumbsUp className={`w-4 h-4 `} />
-              Like
+              <span className='hidden md:inline-block'>Me gusta</span>
             </Button>
             <Button
-              className="w-full justify-start gap-3"
+              className="md:w-full justify-start md:gap-3"
               onClick={() => addFavoriteVideo(video?.id)}
             >
               <Heart className={`w-4 h-4 `} />
-              Add to Favorites
+              <span className='hidden md:inline-block'>Agregar a Favoritos</span>
             </Button>
             <Button
-              className="w-full justify-start gap-3"
+              className="md:w-full justify-start md:gap-3"
             >
               <BookMarked className={`w-4 h-4 `} />
-              Add to Watch Later
+              <span className='hidden md:inline-block'>Ver más tarde</span>
             </Button>
 
           </CardContent>
@@ -58,7 +61,7 @@ export default function VideoPage() {
 
 
       {/* Description Section */}
-      <Card className='col-span-3'>
+      <Card className='lg:col-span-3'>
         <CardContent className="p-6">
           <div className="space-y-4">
             <div>
@@ -68,14 +71,14 @@ export default function VideoPage() {
               <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Eye className="w-4 h-4" />
-                  <span>24,567 views</span>
+                  <span>24,567 vistas</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
                   <span>{sinceDate(video?.uploadDate)}</span>
                 </div>
-                <Badge variant="secondary">Sales</Badge>
-                <Badge variant="secondary">IT</Badge>
+                <Badge variant="secondary">Ventas</Badge>
+                <Badge variant="secondary">TI</Badge>
                 <Badge variant="secondary">Marketing</Badge>
               </div>
             </div>
@@ -100,20 +103,20 @@ export default function VideoPage() {
 
             {/* Description */}
             <div className="space-y-3">
-              <h3 className="font-semibold">Description</h3>
+              <h3 className="font-semibold">Descripción</h3>
               <p className="text-muted-foreground leading-relaxed">
 
-                {video?.description.concat(`In this comprehensive tutorial, we'll explore advanced forms to sell drugs online. 
-                We'll cover administration, payments, and marketing, and how to evaluate the success of your campaign.
-                We'll also cover how to handle refunds and disputes, and how to prevent fraud.
-                In this comprehensive tutorial, we'll explore advanced forms to sell drugs online. 
-                We'll cover administration, payments, and marketing, and how to evaluate the success of your campaign.
-                We'll also cover how to handle refunds and disputes, and how to prevent fraud.`)}
+                {video?.description.concat(`En este tutorial completo, exploraremos formularios avanzados para vender productos en línea. 
+                Cubriremos administración, pagos y marketing, y cómo evaluar el éxito de tu campaña.
+                También veremos cómo manejar reembolsos y disputas, y cómo prevenir fraudes.
+                En este tutorial completo, exploraremos formularios avanzados para vender productos en línea. 
+                Cubriremos administración, pagos y marketing, y cómo evaluar el éxito de tu campaña.
+                También veremos cómo manejar reembolsos y disputas, y cómo prevenir fraudes.`)}
 
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Topics covered: • Forms • Validation • Payments • Refunds • Disputes • Fraud Prevention
-                 • Security • Marketing
+                Temas cubiertos: • Formularios • Validación • Pagos • Reembolsos • Disputas • Prevención de Fraudes
+                 • Seguridad • Marketing
               </p>
             </div>
           </div>
@@ -121,10 +124,10 @@ export default function VideoPage() {
       </Card>
 
       {/* Comments Section */}
-      <div className='bg-card rounded-lg  col-span-2'>
+      <div className='bg-card rounded-lg  lg:col-span-2'>
         <div className='p-4 border-b flex items-center justify-between'>
-          <h1 className='text-2xl font-bold '>Comments </h1>
-          <span className='text-sm text-foreground/40 flex gap-2 items-center'><MessageSquare className='size-4' />0 Comments</span>
+          <h1 className='text-2xl font-bold '>Comentarios </h1>
+          <span className='text-sm text-foreground/40 flex gap-2 items-center'><MessageSquare className='size-4' />0 Comentarios</span>
         </div>
         <div className='p-4'>
           <div className='flex items-center gap-4'>
@@ -144,13 +147,13 @@ export default function VideoPage() {
 
         <div className="space-y-3 p-8 ">
           <Textarea
-            placeholder="Add a comment..."
+            placeholder="Agrega un comentario..."
             className="min-h-[80px] resize-none"
           />
           <div className="flex justify-end">
             <Button size="sm" >
               <Send className="w-4 h-4 mr-2" />
-              Post
+              Publicar
             </Button>
           </div>
         </div> 

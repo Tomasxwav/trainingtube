@@ -3,21 +3,21 @@ import { z } from 'zod';
 export const employeeSchema = z.object({
   name: z
     .string()
-    .min(2, 'Name must be at least 2 characters')
-    .max(50, 'Name must be less than 50 characters'),
+    .min(2, 'El nombre debe tener al menos 2 caracteres')
+    .max(50, 'El nombre debe tener menos de 50 caracteres'),
   email: z
     .string()
-    .email('Invalid email address')
+    .email('Correo electrónico inválido')
     .toLowerCase(),
   password: z
     .string()
-    .min(6, 'Password must be at least 6 characters'),
+    .min(6, 'La contraseña debe tener al menos 6 caracteres'),
   role: z.enum(['ADMIN', 'EMPLOYEE', 'SUPERVISOR'], {
-    required_error: 'Role is required',
+    required_error: 'El rol es obligatorio',
   }),
   department: z
     .string()
-    .min(1, 'Department is required')
+    .min(1, 'El departamento es obligatorio')
 });
 
 export const createEmployeeSchema = employeeSchema.required({
@@ -27,7 +27,7 @@ export const createEmployeeSchema = employeeSchema.required({
 export const updateEmployeeSchema = employeeSchema.extend({
   password: z
     .string()
-    .min(6, 'Password must be at least 6 characters')
+    .min(6, 'La contraseña debe tener al menos 6 caracteres')
     .optional(),
 });
 

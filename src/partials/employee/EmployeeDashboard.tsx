@@ -20,8 +20,8 @@ import { useVideosActions } from '@/actions/useVideosActions'
 const sampleVideos: Video[] = [
   {
     id: 'sample-1',
-    title: 'Workplace Safety Fundamentals',
-    description: 'Learn the essential safety protocols every employee should know',
+    title: 'Fundamentos de Seguridad en el Lugar de Trabajo',
+    description: 'Aprende los protocolos de seguridad esenciales que todo empleado debe conocer',
     thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
     videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
     uploadDate: '2023-10-01T12:00:00Z',
@@ -30,8 +30,8 @@ const sampleVideos: Video[] = [
   },
   {
     id: 'sample-2',
-    title: 'Effective Communication Skills',
-    description: 'Master the art of communication in the workplace',
+    title: 'Habilidades de Comunicación Efectiva',
+    description: 'Domina el arte de la comunicación en el lugar de trabajo',
     thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
     videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
     uploadDate: '2023-10-02T12:00:00Z',
@@ -40,8 +40,8 @@ const sampleVideos: Video[] = [
   },
   {
     id: 'sample-3',
-    title: 'Time Management Techniques',
-    description: 'Boost your productivity with these time management tips',
+    title: 'Técnicas de Gestión del Tiempo',
+    description: 'Mejora tu productividad con estos consejos de gestión del tiempo',
     thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
     videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
     uploadDate: '2023-10-03T12:00:00Z',
@@ -52,24 +52,24 @@ const sampleVideos: Video[] = [
 
 function VideoCarousel() {
   return (
-    <div className="max-w-full mx-auto px-10">
-      <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-primary to-black rounded-full flex items-center justify-center mx-auto mb-4"> 
+    <div className="min-w-full px-10 flex items-center justify-center flex-col">
+      <div className="text-center mb-8 mx-auto flex flex-col items-center">
+        <div className="w-16 h-16 bg-gradient-to-br from-primary to-black rounded-full flex items-center justify-center mb-4"> 
           <Play className="w-8 h-8 text-white" />
         </div>
-        <h2 className="text-2xl font-bold text-dark-900 mb-2">Your Training Content is Coming Soon!</h2>
-        <p className="text-dark-600">Here's a preview of the type of engaging content you'll have access to</p>
+        <h2 className="text-2xl font-bold text-dark-900 mb-2">¡Tu contenido de capacitación llegará pronto!</h2>
+        <p className="text-dark-600">Aquí tienes una vista previa del tipo de contenido atractivo al que tendrás acceso</p>
       </div>
 
-      <Carousel className="w-fit mx-auto">
+      <Carousel className="w-fit">
         <CarouselContent>
           {sampleVideos.map((video) => (
             <CarouselItem key={video.id}>
               <div className="p-1">
-                <video controls width="100%" height="100%" className=' rounded-2xl'>
+                <video controls width="100%" height="100%" className="rounded-2xl">
                   <source src={video.videoUrl} type="video/mp4" />
                   Tu navegador no soporta videos HTML5.
-              </video>
+                </video>
               </div>
             </CarouselItem>
           ))}
@@ -80,10 +80,9 @@ function VideoCarousel() {
 
       <Card className="mt-8 bg-primary/10 border-black/20 shadow-lg shadow-black">
         <CardContent className="p-6 text-center">
-          <h3 className="font-semibold text-dark mb-2">What to Expect</h3>
+          <h3 className="font-semibold text-dark mb-2">Qué esperar</h3>
           <p className="text-dark text-sm">
-            Interactive video lessons, progress tracking, quizzes, and certificates. Your personalized training library
-            will be available soon!
+            Lecciones interactivas en video, seguimiento de progreso, cuestionarios y certificados. ¡Tu biblioteca de capacitación personalizada estará disponible pronto!
           </p>
         </CardContent>
       </Card>
@@ -105,45 +104,69 @@ export default function EmployeeDashboard() {
     fetchPendingVideos()
   }, [])
   
-
   return (
     <div className="animate-fade-in">
-
       {videos.length === 0 ? (
         <div className="py-12">
           <VideoCarousel />
         </div>
       ) : (
-        <>
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-dark-900 mb-2">Welcome back!</h1>
-            <p className="text-dark-600">Access your training materials and track your progress</p>
+        <div className="min-w-full p-0 md:px-6 md:py-8">
+          <div className="mb-10">
+            <h1 className="text-xl md:text-3xl font-bold text-dark-900 mb-2">¡Bienvenido de nuevo! 👋</h1>
+            <p className="text-dark-600 text-md md:text-lg">Continúa tu camino de aprendizaje y sigue tu progreso</p>
           </div>
 
-          <div className="mb-8">
-            <div className="flex items-center mb-4">
-              <BookOpen size={20} className="text-primary-500 mr-2" />
-              <h2 className="text-xl font-semibold text-dark-900">Required Training</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {pendingVideos.map((video) => (
-                <VideoCard key={video.id} video={video} />
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <Film size={20} className="text-primary-500 mr-2" />
-                <h2 className="text-xl font-semibold text-dark-900">All Training Videos</h2>
+          {pendingVideos.length > 0 && (
+            <div className="mb-12">
+              <div className="flex items-center gap-3 mb-6 flex-wrap flex-col md:flex-row">
+                <div className='flex gap-2 '>
+                   <div className="flex items-center justify-center w-fit h-fit bg-primary/20 rounded-xl">
+                    <BookOpen className="text-primary size-4 md:size-6 m-2" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg md:text-xl font-semibold text-dark-900">Capacitación obligatoria</h2>
+                    <p className="text-dark-600 text-xs md:text-sm">Completa estos cursos para mantenerte en cumplimiento</p>
+                  </div>
+                </div>
+                <div className="ml-auto">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">
+                    {pendingVideos.length} pendientes
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {pendingVideos.map((video) => (
+                  <VideoCard key={video.id} video={video} />
+                ))}
               </div>
             </div>
-            {videos.map((video) => (
+          )}
+
+          <div>
+            <div className="flex items-center gap-3 mb-6 flex-wrap flex-col md:flex-row">
+              <div className="flex gap-2">
+                <div className="flex items-center justify-center w-fit h-fit bg-primary/20 rounded-xl">
+                  <Film className="text-primary size-4 md:size-6 m-2" />
+                </div>
+                <div>
+                  <h2 className="text-lg md:text-xl font-semibold text-dark-900">Biblioteca de capacitación</h2>
+                  <p className="text-dark-600 text-xs md:text-sm">Explora todo el contenido de capacitación disponible</p>
+                </div>
+              </div>
+              <div className="ml-auto">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">
+                  {videos.length} videos
+                </span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {videos.map((video) => (
                 <VideoCard key={video.id} video={video} />
               ))}
+            </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   )

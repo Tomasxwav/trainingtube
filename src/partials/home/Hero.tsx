@@ -57,7 +57,7 @@ export const Hero = () => {
                 <div className="space-y-6">
                   <div className="flex items-center space-x-3">
                     <div className="bg-primary p-2 rounded-lg">
-                      <Film className="h-5 w-5 text-foreground" />
+                      <Film className="h-5 w-5 text-white" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground">Dashboard de Capacitación</h3>

@@ -16,80 +16,79 @@ export default function Sidebar() {
     showFor: Authority[];
   }> = [
     {
-      name: 'Home',
+      name: 'Inicio',
       icon: Home,
       path: '/home',
       showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
-      name: 'Pending Videos',
+      name: 'Videos pendientes',
       icon: Clock,
       path: '/videos/pending',
       showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
-      name: 'All Videos',
+      name: 'Todos los videos',
       icon: PlayCircle,
       path: '/videos',
       showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR', 'ROLE_ADMIN'],
     },
-/*     {
-      name: 'Liked Videos',
-      icon: ThumbsUp,
-      path: '/videos/liked',
-      showFor: ['canViewMyInteractions'],
-    }, */
+    // {
+    //   name: 'Videos que me gustan',
+    //   icon: ThumbsUp,
+    //   path: '/videos/liked',
+    //   showFor: ['canViewMyInteractions'],
+    // },
     {
-      name: 'Favorites',
+      name: 'Favoritos',
       icon: Heart,
       path: '/videos/favorites',
       showFor: ['canViewMyInteractions'],
     },
+    // {
+    //   name: 'Mis métricas',
+    //   icon: Home,
+    //   path: '/metrics',
+    //   showFor: ['canViewMyMetrics'],
+    // },
     {
-      name: 'My metrics',
-      icon: Home,
-      path: '/metrics',
-      showFor: ['canViewMyMetrics'],
-    },
-    {
-      name: 'Admin Videos',
+      name: 'Gestion de videos',
       icon: Film,
       path: '/admin/videos-management',
       showFor: ['ROLE_ADMIN'],
     },
     {
-      name: 'Admin Employees',
+      name: 'Empleados',
       icon: Users,
       path: '/admin/employees',
       showFor: ['ROLE_ADMIN'],
     },
-     {
-      name: 'Employees',
+    {
+      name: 'Empleados',
       icon: Users,
       path: '/supervisor/employees',
       showFor: ['ROLE_SUPERVISOR'],
     },
     {
-      name: 'Settings',
+      name: 'Configuración',
       icon: Settings,
       path: '/settings',
       showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
-      name: 'Help',
+      name: 'Ayuda',
       icon: HelpCircle,
       path: '/help',
       showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
   ];
-  
   const filteredNavItems = navItems.filter(item => 
     item.showFor.some(permission => authorities.includes(permission))
   );
 
   if (loading) {
     return (
-      <aside className="hidden md:flex md:flex-col w-64 min-h-full bg-background border-r border-dark-100 overflow-hidden">
+      <aside className="hidden md:flex md:flex-col w-64 min-h-screen bg-background border-r border-dark-100 overflow-hidden">
         <div className="flex items-center p-4 border-b border-dark-100">
           <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
           <div className="ml-2 h-6 bg-gray-200 rounded animate-pulse w-24"></div>
@@ -111,10 +110,10 @@ export default function Sidebar() {
   }
   
   return (
-    <aside className="hidden md:flex md:flex-col w-64 min-h-full bg-background border-r border-dark-100 overflow-hidden">
-      <div className="flex items-center p-4 border-b border-dark-100">
-        <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
-          <Film size={18} className="text-foreground" />
+    <aside className="hidden md:flex md:flex-col w-64 min-h-screen bg-background border-r border-dark-100 overflow-hidden">
+      <Link href='/' className="flex items-center p-4 border-b border-dark-100">
+        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+          <Film size={18} className="text-white" />
         </div>
         <span className="ml-2 text-xl font-bold text-dark-900">TrainTube</span>
         {authorities.includes('ROLE_ADMIN') && (
@@ -127,7 +126,7 @@ export default function Sidebar() {
             Supervisor
           </span>
         )}
-      </div>
+      </Link>
       
       <nav className="flex-1 pt-4">
         <ul>

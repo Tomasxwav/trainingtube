@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { departments } from '@/constants/departments';
 
 interface EmployeeModalProps {
   isOpen: boolean;
@@ -31,18 +32,6 @@ interface EmployeeModalProps {
   onSubmit: (data: EmployeeFormData) => void;
   employee?: Employee | null;
 }
-
-const departments = [
-  'Engineering',
-  'marketing',
-  'sales',
-  'Human Resources',
-  'Finance',
-  'Operations',
-  'Customer Support',
-  'Product',
-  'Design',
-];
 
 export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeModalProps) {
   const {
@@ -106,80 +95,80 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {employee ? 'Edit Employee' : 'Add New Employee'}
+            {employee ? 'Editar Empleado' : 'Agregar Nuevo Empleado'}
           </DialogTitle>
           <DialogDescription>
             {employee
-              ? 'Update the employee information below.'
-              : 'Fill in the details to create a new employee account.'}
+              ? 'Actualiza la información del empleado abajo.'
+              : 'Completa los datos para crear una nueva cuenta de empleado.'}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
-          {/* Name */}
+          {/* Nombre */}
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name</Label>
+            <Label htmlFor="name">Nombre Completo</Label>
             <Input
               id="name"
               {...register('name', {
-                required: 'Name is required',
+                required: 'El nombre es obligatorio',
                 minLength: {
                   value: 2,
-                  message: 'Name must be at least 2 characters',
+                  message: 'El nombre debe tener al menos 2 caracteres',
                 },
               })}
-              placeholder="Enter full name"
+              placeholder="Ingresa el nombre completo"
             />
             {errors.name && (
               <p className="text-sm text-destructive">{errors.name.message}</p>
             )}
           </div>
 
-          {/* Email */}
+          {/* Correo */}
           <div className="space-y-2">
-            <Label htmlFor="email">Email Address</Label>
+            <Label htmlFor="email">Correo Electrónico</Label>
             <Input
               id="email"
               type="email"
               {...register('email', {
-                required: 'Email is required',
+                required: 'El correo es obligatorio',
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address',
+                  message: 'Correo electrónico inválido',
                 },
               })}
-              placeholder="Enter email address"
+              placeholder="Ingresa el correo electrónico"
             />
             {errors.email && (
               <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
 
-          {/* Password */}
+          {/* Contraseña */}
           <div className="space-y-2">
             <Label htmlFor="password">
-              {employee ? 'New Password (leave empty to keep current)' : 'Password'}
+              {employee ? 'Nueva Contraseña (deja vacío para mantener la actual)' : 'Contraseña'}
             </Label>
             <Input
               id="password"
               type="password"
               {...register('password', {
-                required: employee ? false : 'Password is required',
+                required: employee ? false : 'La contraseña es obligatoria',
                 minLength: {
                   value: 6,
-                  message: 'Password must be at least 6 characters',
+                  message: 'La contraseña debe tener al menos 6 caracteres',
                 },
               })}
-              placeholder={employee ? 'Enter new password (optional)' : 'Enter password'}
+              placeholder={employee ? 'Ingresa nueva contraseña (opcional)' : 'Ingresa la contraseña'}
             />
             {errors.password && (
               <p className="text-sm text-destructive">{errors.password.message}</p>
             )}
           </div>
 
-          {/* Role */}
+          {/* Rol */}
           <div className="space-y-2">
-            <Label>Role</Label>
+            <Label>Rol</Label>
             <Select
               value={watchedRole}
               onValueChange={(value: Roles) => setValue('role', value)}
@@ -204,10 +193,10 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
                 <SelectItem value="EMPLOYEE">
                   <div className="flex items-center space-x-2">
                     <Badge variant="secondary" className="capitalize">
-                      Employee
+                      Empleado
                     </Badge>
                     <span className="text-sm text-muted-foreground">
-                      Basic access to training content
+                      Acceso básico al contenido de capacitación
                     </span>
                   </div>
                 </SelectItem>
@@ -217,17 +206,17 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
                       Supervisor
                     </Badge>
                     <span className="text-sm text-muted-foreground">
-                      Can manage team and content
+                      Puede gestionar equipo y contenido
                     </span>
                   </div>
                 </SelectItem>
                 <SelectItem value="ADMIN">
                   <div className="flex items-center space-x-2">
                     <Badge variant="destructive" className="capitalize">
-                      Admin
+                      Administrador
                     </Badge>
                     <span className="text-sm text-muted-foreground">
-                      Full system access
+                      Acceso total al sistema
                     </span>
                   </div>
                 </SelectItem>
@@ -239,15 +228,15 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
             
           </div>
 
-          {/* Department */}
+          {/* Departamento */}
           <div className="space-y-2">
-            <Label>Department</Label>
+            <Label>Departamento</Label>
             <Select
               value={watch('department')}
               onValueChange={(value) => setValue('department', value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select department" />
+                <SelectValue placeholder="Selecciona un departamento" />
               </SelectTrigger>
               <SelectContent>
                 {departments.map((dept) => (
@@ -264,14 +253,14 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
 
           <DialogFooter className="flex gap-2 pt-4">
             <Button type="button" variant="outline" onClick={handleClose}>
-              Cancel
+              Cancelar
             </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting
-                ? 'Saving...'
+                ? 'Guardando...'
                 : employee
-                ? 'Update Employee'
-                : 'Create Employee'}
+                ? 'Actualizar Empleado'
+                : 'Crear Empleado'}
             </Button>
           </DialogFooter>
         </form>

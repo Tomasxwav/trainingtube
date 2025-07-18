@@ -21,7 +21,7 @@ export function EmployeeManagement() {
 
   const handleCreateEmployee = async (employeeData: EmployeeFormData) => {
     try {
-      const loadingToast = toast.loading('Creating employee...');
+      const loadingToast = toast.loading('Creando empleado...');
       
       await createEmployee(employeeData);
       
@@ -41,11 +41,11 @@ export function EmployeeManagement() {
       setIsModalOpen(false);
       
       toast.dismiss(loadingToast);
-      toast.success(`${employeeData.role.toLowerCase()} ${employeeData.name} created successfully!`);
+      toast.success(`${employeeData.role.toLowerCase()} ${employeeData.name} creado exitosamente!`);
       
     } catch (error) {
-      console.error('Error creating employee:', error);
-      toast.error('Failed to create employee. Please try again.');
+      console.error('Error al crear empleado:', error);
+      toast.error('No se pudo crear el empleado. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -86,29 +86,29 @@ export function EmployeeManagement() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Encabezado */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="p-2 bg-primary/10 rounded-lg">
             <Users className="h-6 w-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Employee Management</h1>
-            <p className="text-muted-foreground">Manage your team members and their roles</p>
+            <h1 className="text-2xl font-bold text-foreground">Gestión de Empleados</h1>
+            <p className="text-muted-foreground">Administra los miembros de tu equipo y sus roles</p>
           </div>
         </div>
         <Button onClick={openCreateModal} className="flex items-center space-x-2">
           <Plus className="h-4 w-4" />
-          <span>Add Employee</span>
+          <span>Agregar Empleado</span>
         </Button>
       </div>
 
-      {/* Stats Cards */}
+      {/* Tarjetas de Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-card rounded-lg border p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Employees</p>
+              <p className="text-sm font-medium text-muted-foreground">Total de Empleados</p>
               <p className="text-2xl font-bold text-foreground">{employees.length}</p>
             </div>
             <div className="p-2 bg-blue-500/10 rounded-lg">
@@ -120,7 +120,7 @@ export function EmployeeManagement() {
         <div className="bg-card rounded-lg border p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Supervisors</p>
+              <p className="text-sm font-medium text-muted-foreground">Supervisores</p>
               <p className="text-2xl font-bold text-foreground">
                 {employees.filter(emp => emp.role.name === 'SUPERVISOR').length}
               </p>
@@ -134,7 +134,7 @@ export function EmployeeManagement() {
         <div className="bg-card rounded-lg border p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Regular Employees</p>
+              <p className="text-sm font-medium text-muted-foreground">Empleados Regulares</p>
               <p className="text-2xl font-bold text-foreground">
                 {employees.filter(emp => emp.role.name === 'EMPLOYEE').length}
               </p>
@@ -146,7 +146,7 @@ export function EmployeeManagement() {
         </div>
       </div>
 
-      {/* Employee Table */}
+      {/* Tabla de Empleados */}
       <div className="bg-card rounded-lg border">
         <EmployeeTable
           employees={employees}

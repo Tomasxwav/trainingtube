@@ -13,12 +13,12 @@ export default function VideoCard({video, type = 'default' }: {video: Video, typ
   return (
     <div className={clsx(
       "w-full bg-transparent rounded-lg overflow-hidden duration-300",
-      type === 'default' && 'max-w-[20vw]',
+      type === 'default' && 'w-[20vw] ',
       type === 'large' && 'max-w-full'
     )}>
-      <Link href={`/video?url=${encodeURIComponent(videoUrl)}`} className={clsx(type === 'default' && 'block', type === 'large' && 'flex')}> 
+      <Link href={`/video?url=${encodeURIComponent(videoUrl)}`} className={clsx(type === 'default' && 'block', type === 'large' && 'sm:flex block')}> 
         {/* Thumbnail Container */}
-        <div className={clsx('relative aspect-video overflow-hidden rounded-2xl', type === 'large' && 'w-[30%]')}>
+        <div className={clsx('relative aspect-video overflow-hidden rounded-2xl', type === 'large' && 'sm:w-[30%]')}>
           <Image
             src={thumbnailUrl || "/placeholder.svg"}
             alt={title}

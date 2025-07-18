@@ -8,5 +8,9 @@ export const departments = [
     'sales',
     'academy',
     'legal',
+    'development', 
+    'support', 
+    'design', 
+    'management',
     'other',
 ]
