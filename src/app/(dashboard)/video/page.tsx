@@ -20,36 +20,39 @@ export default function VideoPage() {
   const video = videos.find((video) => video.videoUrl === videoUrl.replaceAll(' ', '%20'));
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-12 p-2 md:p-8">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-8  2xl:gap-12 p-2 md:p-8">
 
       {/* Video Player */}
-      <div className="col-span-5 flex gap-8">
+      <div className="lg:col-span-5 flex lg:gap-8 flex-col xl:flex-row gap-4">
         <VideoPlayer videoUrl={videoUrl} />
 
         {/* Rating Section */}
-        <Card >
-          <CardHeader>
-            <h3 className="font-semibold">Acciones</h3>
-          </CardHeader>
-          <CardContent className="space-y-3">
+        <Card className='gap-2 m-0 p-0 md:py-4 '>
+          <span className='hidden md:inline-block'>
+            <CardHeader>
+              <h3 className="font-semibold md:mb-2">Acciones</h3>
+            </CardHeader>
+            <Separator />
+          </span>
+          <CardContent className="flex justify-around gap-2 flex-wrap py-4"> 
             <Button
-              className="w-full justify-start gap-3"
+              className="md:w-full justify-start md:gap-3" 
             >
               <ThumbsUp className={`w-4 h-4 `} />
-              Me gusta
+              <span className='hidden md:inline-block'>Me gusta</span>
             </Button>
             <Button
-              className="w-full justify-start gap-3"
+              className="md:w-full justify-start md:gap-3"
               onClick={() => addFavoriteVideo(video?.id)}
             >
               <Heart className={`w-4 h-4 `} />
-              Agregar a Favoritos
+              <span className='hidden md:inline-block'>Agregar a Favoritos</span>
             </Button>
             <Button
-              className="w-full justify-start gap-3"
+              className="md:w-full justify-start md:gap-3"
             >
               <BookMarked className={`w-4 h-4 `} />
-              Ver más tarde
+              <span className='hidden md:inline-block'>Ver más tarde</span>
             </Button>
 
           </CardContent>
@@ -58,7 +61,7 @@ export default function VideoPage() {
 
 
       {/* Description Section */}
-      <Card className='col-span-3'>
+      <Card className='lg:col-span-3'>
         <CardContent className="p-6">
           <div className="space-y-4">
             <div>
@@ -121,7 +124,7 @@ export default function VideoPage() {
       </Card>
 
       {/* Comments Section */}
-      <div className='bg-card rounded-lg  col-span-2'>
+      <div className='bg-card rounded-lg  lg:col-span-2'>
         <div className='p-4 border-b flex items-center justify-between'>
           <h1 className='text-2xl font-bold '>Comentarios </h1>
           <span className='text-sm text-foreground/40 flex gap-2 items-center'><MessageSquare className='size-4' />0 Comentarios</span>

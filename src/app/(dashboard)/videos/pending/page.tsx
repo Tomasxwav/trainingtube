@@ -12,18 +12,18 @@ export default function Pending() {
       <div className="min-w-full mx-auto px-6 py-8">
         {/* Sección de encabezado */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-primary/20 rounded-xl">
-              <Clock size={24} className="text-primary" />
+          <div className="flex items-center gap-3 mb-4 w-full">
+            <div className="flex items-center justify-center w-fit h-fit bg-primary/20 rounded-xl">
+              <Clock className="text-primary size-4 md:size-6 m-2" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-dark-900">Capacitación pendiente</h1>
-              <p className="text-dark-600">Completa estos cursos requeridos para mantenerte en cumplimiento</p>
+              <h1 className="text-xl md:text-3xl font-bold text-dark-900">Capacitación pendiente</h1>
+              <p className="text-dark-600 md:text-lg text-sm">Completa estos cursos requeridos para mantenerte en cumplimiento</p>
             </div>
           </div>
           
           {/* Información de estado */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-primary rounded-full"></div>
               <span className="text-sm text-dark-600">Capacitación requerida</span>

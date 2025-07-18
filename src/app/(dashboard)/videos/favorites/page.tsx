@@ -68,13 +68,13 @@ export default function Favorites() {
       <div className="min-w-full px-6 py-8">
         {/* Header Section */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-primary/20 rounded-xl">
-              <Heart size={24} className="text-primary" />
+          <div className="flex items-center gap-3 mb-4 w-full">
+            <div className="flex items-center justify-center w-fit h-fit bg-primary/20 rounded-xl">
+              <Heart className="text-primary size-4 md:size-6 m-2" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-dark-900">Videos Favoritos</h1>
-              <p className="text-dark-600">Tu colección personal de contenido de entrenamiento</p>
+              <h1 className="text-xl md:text-3xl font-bold text-dark-900">Videos Favoritos</h1>
+              <p className="text-dark-600 text-md md:text-lg">Tu colección personal de contenido de entrenamiento</p>
             </div>
           </div>
           

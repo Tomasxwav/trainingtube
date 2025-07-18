@@ -89,11 +89,11 @@ export const Header = () => {
 
         <div className="flex items-center space-x-4">
             <Link href="/home" >
-              <Button variant="ghost" className="hidden sm:inline-flex cursor-pointer">
+              <Button variant="ghost" className="bg-white/10">
                 Dashboard
               </Button>
             </Link>
-            <Button onClick={handleLogout} className="text-white "> 
+            <Button onClick={handleLogout} className="text-white hidden sm:inline-flex "> 
               Cerrar Sesión
             </Button>
           </div>

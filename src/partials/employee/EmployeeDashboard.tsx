@@ -111,21 +111,23 @@ export default function EmployeeDashboard() {
           <VideoCarousel />
         </div>
       ) : (
-        <div className="min-w-full px-6 py-8">
+        <div className="min-w-full p-0 md:px-6 md:py-8">
           <div className="mb-10">
-            <h1 className="text-3xl font-bold text-dark-900 mb-2">¡Bienvenido de nuevo! 👋</h1>
-            <p className="text-dark-600 text-lg">Continúa tu camino de aprendizaje y sigue tu progreso</p>
+            <h1 className="text-xl md:text-3xl font-bold text-dark-900 mb-2">¡Bienvenido de nuevo! 👋</h1>
+            <p className="text-dark-600 text-md md:text-lg">Continúa tu camino de aprendizaje y sigue tu progreso</p>
           </div>
 
           {pendingVideos.length > 0 && (
             <div className="mb-12">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="flex items-center justify-center w-10 h-10 bg-primary/20 rounded-xl">
-                  <BookOpen size={20} className="text-primary" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-dark-900">Capacitación obligatoria</h2>
-                  <p className="text-dark-600 text-sm">Completa estos cursos para mantenerte en cumplimiento</p>
+              <div className="flex items-center gap-3 mb-6 flex-wrap flex-col md:flex-row">
+                <div className='flex gap-2 '>
+                   <div className="flex items-center justify-center w-fit h-fit bg-primary/20 rounded-xl">
+                    <BookOpen className="text-primary size-4 md:size-6 m-2" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg md:text-xl font-semibold text-dark-900">Capacitación obligatoria</h2>
+                    <p className="text-dark-600 text-xs md:text-sm">Completa estos cursos para mantenerte en cumplimiento</p>
+                  </div>
                 </div>
                 <div className="ml-auto">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">
@@ -142,13 +144,15 @@ export default function EmployeeDashboard() {
           )}
 
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex items-center justify-center w-10 h-10 bg-primary/20 rounded-xl">
-                <Film size={20} className="text-primary" />
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold text-dark-900">Biblioteca de capacitación</h2>
-                <p className="text-dark-600 text-sm">Explora todo el contenido de capacitación disponible</p>
+            <div className="flex items-center gap-3 mb-6 flex-wrap flex-col md:flex-row">
+              <div className="flex gap-2">
+                <div className="flex items-center justify-center w-fit h-fit bg-primary/20 rounded-xl">
+                  <Film className="text-primary size-4 md:size-6 m-2" />
+                </div>
+                <div>
+                  <h2 className="text-lg md:text-xl font-semibold text-dark-900">Biblioteca de capacitación</h2>
+                  <p className="text-dark-600 text-xs md:text-sm">Explora todo el contenido de capacitación disponible</p>
+                </div>
               </div>
               <div className="ml-auto">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary">

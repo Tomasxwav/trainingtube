@@ -33,13 +33,13 @@ export default function Videos() {
       <div className="w-full px-6 py-8">
         {/* Header Section */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-primary/20 rounded-xl">
-              <Film size={24} className="text-primary" />
+          <div className="flex items-center gap-3 mb-4 w-full">
+            <div className="flex items-center justify-center w-fit h-fit bg-primary/20 rounded-xl">
+              <Film className="text-primary size-4 md:size-6 m-2" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-dark-900">Biblioteca de Entrenamiento</h1>
-              <p className="text-dark-600">Explora y accede a todo el contenido de entrenamiento disponible</p>
+              <h1 className="text-xl md:text-3xl font-bold text-dark-900">Biblioteca de Entrenamiento</h1>
+              <p className="text-dark-600 md:text-lg text-sm">Explora y accede a todo el contenido de entrenamiento disponible</p>
             </div>
           </div>
           
