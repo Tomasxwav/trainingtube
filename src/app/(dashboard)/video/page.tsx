@@ -10,10 +10,10 @@ import { Textarea } from '@/components/ui/textarea';
 import VideoPlayer from '@/components/VideoPlayer';
 import { sinceDate } from '@/utils/sinceDate';
 import { BookMarked, Calendar, Eye, Heart, MessageSquare, Send, ThumbsUp } from 'lucide-react';
-import {  useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function VideoPage() {
-
+function VideoPageContent() {
   const { videos, addFavoriteVideo } = useVideosActions();
   const searchParams = useSearchParams();
   const videoUrl = searchParams.get('url') ? decodeURIComponent(searchParams.get('url')!) : '';
@@ -159,5 +159,13 @@ export default function VideoPage() {
         </div> 
       </div>
     </div>
+  );
+}
+
+export default function VideoPage() {
+  return (
+    <Suspense fallback={<div>Cargando video...</div>}>
+      <VideoPageContent />
+    </Suspense>
   );
 }

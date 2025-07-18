@@ -26,11 +26,10 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      bodySizeLimit: '10mb', // Ajusta este valor según tus necesidades
+      bodySizeLimit: '20mb', 
     },
   },
   publicRuntimeConfig: {
-    // Disponible tanto en servidor como cliente
     publicBackendUrl: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'
   }
   
