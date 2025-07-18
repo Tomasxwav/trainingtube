@@ -1,11 +1,8 @@
 'use client';
 
-import { useVideosActions } from '@/actions/useVideosActions';
 import VideoCard from '@/components/VideoCard';
 import { useVideoStore } from '@/stores/videoStore';
-import { Video } from '@/types/videos';
-import { Film, VideoOff, Play } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Film, VideoOff } from 'lucide-react';
 
 export default function Videos() {
 
@@ -14,15 +11,15 @@ export default function Videos() {
   if (videos.length === 0) {
     return (
       <div className="animate-fade-in">
-        <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="w-full px-6 py-8">
           <div className="text-center py-16">
-            <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-6">
               <VideoOff className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold text-dark-900 mb-2">
               No Videos Available
             </h3>
-            <p className="text-dark-600 max-w-md mx-auto leading-relaxed">
+            <p className="text-dark-600 max-w-md leading-relaxed">
               There are no training videos available at the moment. New content will appear here when added to the library.
             </p>
           </div>
@@ -33,7 +30,7 @@ export default function Videos() {
   
   return (
     <div className="animate-fade-in">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="w-full px-6 py-8">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">

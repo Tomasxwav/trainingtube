@@ -52,16 +52,16 @@ const sampleVideos: Video[] = [
 
 function VideoCarousel() {
   return (
-    <div className="max-w-full mx-auto px-10">
+    <div className="min-w-full px-10">
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-primary to-black rounded-full flex items-center justify-center mx-auto mb-4"> 
+        <div className="w-16 h-16 bg-gradient-to-br from-primary to-black rounded-full flex items-center justify-center mb-4"> 
           <Play className="w-8 h-8 text-white" />
         </div>
         <h2 className="text-2xl font-bold text-dark-900 mb-2">Your Training Content is Coming Soon!</h2>
         <p className="text-dark-600">Here's a preview of the type of engaging content you'll have access to</p>
       </div>
 
-      <Carousel className="w-fit mx-auto">
+      <Carousel className="w-fit">
         <CarouselContent>
           {sampleVideos.map((video) => (
             <CarouselItem key={video.id}>
@@ -112,7 +112,7 @@ export default function EmployeeDashboard() {
           <VideoCarousel />
         </div>
       ) : (
-        <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="min-w-full px-6 py-8">
           {/* Welcome Header */}
           <div className="mb-10">
             <h1 className="text-3xl font-bold text-dark-900 mb-2">Welcome back! 👋</h1>

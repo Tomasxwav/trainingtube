@@ -31,7 +31,7 @@ export default function Favorites() {
   if (isLoading) {
     return (
       <div className="animate-fade-in">
-        <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="min-w-full px-6 py-8">
           <div className="flex items-center justify-center py-16">
             <div className="flex items-center gap-3">
               <Loader2 className="w-5 h-5 text-primary animate-spin" />
@@ -46,15 +46,15 @@ export default function Favorites() {
   if (favoritesVideos.length === 0) {
     return (
       <div className="animate-fade-in">
-        <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="min-w-full px-6 py-8">
           <div className="text-center py-16">
-            <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-6">
               <Heart className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold text-dark-900 mb-2">
               No Favorite Videos Yet
             </h3>
-            <p className="text-dark-600 max-w-md mx-auto leading-relaxed">
+            <p className="text-dark-600 max-w-md leading-relaxed">
               You haven't marked any videos as favorites yet. Start exploring the training library and save your favorite content here.
             </p>
           </div>
@@ -65,7 +65,7 @@ export default function Favorites() {
   
   return (
     <div className="animate-fade-in">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="min-w-full px-6 py-8">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">

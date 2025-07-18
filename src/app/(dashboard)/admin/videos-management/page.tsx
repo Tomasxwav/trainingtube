@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function AdminVideos() {
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <div className=" px-4 py-6 min-w-full">
       <VideoManagement />
     </div>
   );

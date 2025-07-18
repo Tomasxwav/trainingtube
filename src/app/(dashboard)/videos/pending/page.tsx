@@ -9,7 +9,7 @@ export default function Pending() {
     
   return (
     <div className="animate-fade-in">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="min-w-full mx-auto px-6 py-8">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
