@@ -8,7 +8,7 @@ import { Roles } from '@/partials/home/Roles';
 export default function Home() {
 
   return (
-    <div className="scroll-smooth">
+    <div>
       <Header />
       <Hero />
       <Features />

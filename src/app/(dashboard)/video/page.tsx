@@ -20,7 +20,7 @@ export default function VideoPage() {
   const video = videos.find((video) => video.videoUrl === videoUrl.replaceAll(' ', '%20'));
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-12 grid-rows-2 p-2 md:p-8">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-12 p-2 md:p-8">
 
       {/* Video Player */}
       <div className="col-span-5 flex gap-8">

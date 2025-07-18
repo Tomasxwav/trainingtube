@@ -37,7 +37,7 @@ export const Header = () => {
     checkSession();
   }, []);
   return (
-    <header className="border-b bg-background text-foreground backdrop-blur supports-[backdrop-filter]:bg-background scroll-smooth sticky top-0 z-40">
+    <header className="border-b bg-background/95 text-foreground backdrop-blur supports-[backdrop-filter]:bg-background/95 sticky top-0 z-40">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="bg-primary p-2 rounded-lg">
