@@ -41,7 +41,7 @@ export const Header = () => {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="bg-primary p-2 rounded-lg">
-            <Film className="h-6 w-6 text-foreground" />
+            <Film className="h-6 w-6 text-white" />
           </div>
           <span className="text-xl font-bold ">TrainTube</span>
         </div>
@@ -80,7 +80,7 @@ export const Header = () => {
                 Iniciar Sesión
               </Button>
             </Link>
-            <Button className="bg-primary cursor-pointer text-foreground transition-colors"> 
+            <Button className="bg-primary text-foreground transition-colors"> 
               Solicitar Demo
             </Button>
           </div> 
@@ -93,8 +93,8 @@ export const Header = () => {
                 Dashboard
               </Button>
             </Link>
-            <Button onClick={handleLogout} className="bg-primary cursor-pointer text-foreground transition-colors" > 
-              Logout
+            <Button onClick={handleLogout} className="text-white bg-primary/90 hover:bg-primary" variant={'default'}> 
+              Cerrar Sesión
             </Button>
           </div>
         }
