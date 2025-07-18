@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTheme } from "next-themes";
 
-export default function Navbar() {
+export default function Navbar({handleSearchChange} : { handleSearchChange: (value: string) => void }) {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function Navbar() {
               type="text"
               placeholder="Search videos..."
               className="border-none w-full ml-2 focus:outline-none text-dark-900"
-              
+              onChange={(e) => handleSearchChange(e.target.value)}
               onFocus={() => setIsSearchExpanded(true)}
               onBlur={() => setIsSearchExpanded(false)}
 
