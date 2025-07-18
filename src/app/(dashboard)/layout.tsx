@@ -31,9 +31,9 @@ export default function DashboardLayout( {
       <div className='flex-1 '>
         <Navbar handleSearchChange={handleSearchChange}/>
         {searchValue ?
-          <div className='p-12'>
+          <div className='p-12 space-y-6'>
             {videos.filter(video => video.title.toLowerCase().startsWith(searchValue.toLowerCase())).map((video) => (
-            <VideoCard key={video.id} video={video} />
+            <VideoCard key={video.id} video={video} type='large' />
             ))}
           </div>
         
