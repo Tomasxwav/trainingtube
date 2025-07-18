@@ -93,7 +93,7 @@ export const Header = () => {
                 Dashboard
               </Button>
             </Link>
-            <Button onClick={handleLogout} className="text-white bg-primary/90 hover:bg-primary" variant={'default'}> 
+            <Button onClick={handleLogout} className="text-white "> 
               Cerrar Sesión
             </Button>
           </div>

@@ -8,7 +8,7 @@ export const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="bg-primary p-2 rounded-lg">
-                <Film className="h-5 w-5 text-foreground" />
+                <Film className="h-5 w-5 text-white" />
               </div>
               <span className="text-xl font-bold">TrainTube</span>
             </div>

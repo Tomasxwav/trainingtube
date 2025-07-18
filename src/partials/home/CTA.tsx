@@ -15,11 +15,11 @@ export const CTA = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-foreground   text-lg px-8">
+            <Button size="lg" className="text-lg px-8 shadow-dark-600 shadow-md">
               Solicitar Demo Gratuita
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-white hover:text-blue-600 text-lg px-8">
+            <Button size="lg" variant="outline" className="shadow-dark-600 shadow-md border-foreground text-foreground hover:bg-white hover:text-blue-600 text-lg px-8">
               <Phone className="mr-2 h-5 w-5" />
               Hablar con Ventas
             </Button>

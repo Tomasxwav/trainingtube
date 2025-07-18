@@ -52,13 +52,13 @@ export default function Sidebar() {
     //   showFor: ['canViewMyMetrics'],
     // },
     {
-      name: 'Videos de administrador',
+      name: 'Gestion de videos',
       icon: Film,
       path: '/admin/videos-management',
       showFor: ['ROLE_ADMIN'],
     },
     {
-      name: 'Empleados admin',
+      name: 'Empleados',
       icon: Users,
       path: '/admin/employees',
       showFor: ['ROLE_ADMIN'],
@@ -112,8 +112,8 @@ export default function Sidebar() {
   return (
     <aside className="hidden md:flex md:flex-col w-64 min-h-screen bg-background border-r border-dark-100 overflow-hidden">
       <Link href='/' className="flex items-center p-4 border-b border-dark-100">
-        <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
-          <Film size={18} className="text-foreground" />
+        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+          <Film size={18} className="text-white" />
         </div>
         <span className="ml-2 text-xl font-bold text-dark-900">TrainTube</span>
         {authorities.includes('ROLE_ADMIN') && (
