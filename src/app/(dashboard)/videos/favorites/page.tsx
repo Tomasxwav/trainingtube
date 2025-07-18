@@ -46,8 +46,8 @@ export default function Favorites() {
   if (favoritesVideos.length === 0) {
     return (
       <div className="animate-fade-in">
-        <div className="min-w-full px-6 py-8">
-          <div className="text-center py-16">
+        <div className="min-w-full px-6 py-8 flex items-center justify-center">
+          <div className="text-center py-16 flex flex-col items-center">
             <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-6">
               <Heart className="w-8 h-8 text-primary" />
             </div>

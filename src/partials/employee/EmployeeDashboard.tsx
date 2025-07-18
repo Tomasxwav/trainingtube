@@ -52,8 +52,8 @@ const sampleVideos: Video[] = [
 
 function VideoCarousel() {
   return (
-    <div className="min-w-full px-10">
-      <div className="text-center mb-8">
+    <div className="min-w-full px-10 flex items-center justify-center flex-col">
+      <div className="text-center mb-8 mx-auto flex flex-col items-center">
         <div className="w-16 h-16 bg-gradient-to-br from-primary to-black rounded-full flex items-center justify-center mb-4"> 
           <Play className="w-8 h-8 text-white" />
         </div>
