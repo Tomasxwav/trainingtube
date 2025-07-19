@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Home, Film, Users, PlayCircle, ThumbsUp, Clock, Settings, HelpCircle, Heart } from 'lucide-react';
+import { Film } from 'lucide-react';
 import { useAuthActions } from '@/actions/useAuthActions';
 import { Authority } from '@/types/auth';
 import { navItems } from '@/constants/sidebar-items';

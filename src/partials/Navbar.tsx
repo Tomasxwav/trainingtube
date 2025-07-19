@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Bell, Menu, User, LogOut, Sun } from 'lucide-react';
 import { Input } from '@/components/ui/input';
