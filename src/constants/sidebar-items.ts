@@ -1,7 +1,7 @@
 import { Authority } from '@/types/auth';
 import { Clock, Film, Heart, HelpCircle, Home, PlayCircle, Settings, Users } from 'lucide-react';
 
-export   const navItems: Array<{
+export const navItems: Array<{
     name: string;
     icon: any;
     path: string;
@@ -74,3 +74,10 @@ export   const navItems: Array<{
       showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
   ];
+
+// Función para filtrar los items del sidebar basado en las autoridades del usuario
+export const getFilteredNavItems = (authorities: Authority[]) => {
+  return navItems.filter(item => 
+    item.showFor.some(permission => authorities.includes(permission))
+  );
+};

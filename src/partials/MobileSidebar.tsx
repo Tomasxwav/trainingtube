@@ -3,7 +3,7 @@
 import { useAuthActions } from '@/actions/useAuthActions';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { navItems } from '@/constants/sidebar-items';
+import { getFilteredNavItems } from '@/constants/sidebar-items';
 import clsx from 'clsx';
 import { Film, X } from 'lucide-react';
 import Link from 'next/link';
@@ -17,11 +17,7 @@ export default function MobileSidebar( { isOpen, onClose }: MobileSidebarProps) 
   const { getAuthorities } = useAuthActions();
   const { authorities, loading } = getAuthorities();
 
-  const filteredNavItems = navItems.filter(item => 
-    item.showFor.some(permission => authorities.includes(permission))
-  );
-
-  console.log('Filtered Nav Items:', filteredNavItems);
+  const filteredNavItems = getFilteredNavItems(authorities);
 
   return (
     <aside className={clsx("fixed inset-0 z-50 bg-background shadow-lg flex flex-col w-[80vw] h-full transition-transform duration-300 ease-in-out", isOpen ? "translate-x-0" : "-translate-x-full")}>

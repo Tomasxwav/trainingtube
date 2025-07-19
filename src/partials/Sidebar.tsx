@@ -4,16 +4,14 @@ import Link from 'next/link'
 import { Film } from 'lucide-react';
 import { useAuthActions } from '@/actions/useAuthActions';
 import { Authority } from '@/types/auth';
-import { navItems } from '@/constants/sidebar-items';
+import { getFilteredNavItems } from '@/constants/sidebar-items';
 
 export default function Sidebar() {
   const { getAuthorities } = useAuthActions();
   const { authorities, loading } = getAuthorities();
 
 
-  const filteredNavItems = navItems.filter(item => 
-    item.showFor.some(permission => authorities.includes(permission))
-  );
+  const filteredNavItems = getFilteredNavItems(authorities);
 
   if (loading) {
     return (
