@@ -1,90 +1,17 @@
 'use client'
 
 import Link from 'next/link'
-import { Home, Film, Users, PlayCircle, ThumbsUp, Clock, Settings, HelpCircle, Heart } from 'lucide-react';
+import { Film } from 'lucide-react';
 import { useAuthActions } from '@/actions/useAuthActions';
 import { Authority } from '@/types/auth';
+import { getFilteredNavItems } from '@/constants/sidebar-items';
 
 export default function Sidebar() {
   const { getAuthorities } = useAuthActions();
   const { authorities, loading } = getAuthorities();
 
-  const navItems: Array<{
-    name: string;
-    icon: any;
-    path: string;
-    showFor: Authority[];
-  }> = [
-    {
-      name: 'Inicio',
-      icon: Home,
-      path: '/home',
-      showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
-    },
-    {
-      name: 'Videos pendientes',
-      icon: Clock,
-      path: '/videos/pending',
-      showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
-    },
-    {
-      name: 'Todos los videos',
-      icon: PlayCircle,
-      path: '/videos',
-      showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR', 'ROLE_ADMIN'],
-    },
-    // {
-    //   name: 'Videos que me gustan',
-    //   icon: ThumbsUp,
-    //   path: '/videos/liked',
-    //   showFor: ['canViewMyInteractions'],
-    // },
-    {
-      name: 'Favoritos',
-      icon: Heart,
-      path: '/videos/favorites',
-      showFor: ['canViewMyInteractions'],
-    },
-    // {
-    //   name: 'Mis métricas',
-    //   icon: Home,
-    //   path: '/metrics',
-    //   showFor: ['canViewMyMetrics'],
-    // },
-    {
-      name: 'Gestion de videos',
-      icon: Film,
-      path: '/admin/videos-management',
-      showFor: ['ROLE_ADMIN'],
-    },
-    {
-      name: 'Empleados',
-      icon: Users,
-      path: '/admin/employees',
-      showFor: ['ROLE_ADMIN'],
-    },
-    {
-      name: 'Empleados',
-      icon: Users,
-      path: '/supervisor/employees',
-      showFor: ['ROLE_SUPERVISOR'],
-    },
-    {
-      name: 'Configuración',
-      icon: Settings,
-      path: '/settings',
-      showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
-    },
-    {
-      name: 'Ayuda',
-      icon: HelpCircle,
-      path: '/help',
-      showFor: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
-    },
-  ];
-  const filteredNavItems = navItems.filter(item => 
-    item.showFor.some(permission => authorities.includes(permission))
-  );
+
+  const filteredNavItems = getFilteredNavItems(authorities);
 
   if (loading) {
     return (

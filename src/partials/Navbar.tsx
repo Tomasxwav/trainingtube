@@ -1,16 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Bell, Menu, User, LogOut, Sun } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTheme } from "next-themes";
+import MobileSidebar from './MobileSidebar';
+import { Button } from '@/components/ui/button';
 
 export default function Navbar({handleSearchChange} : { handleSearchChange: (value: string) => void }) {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  }
+
+
   const router = useRouter();
   const { setTheme } = useTheme();
   
@@ -24,15 +32,19 @@ export default function Navbar({handleSearchChange} : { handleSearchChange: (val
   
   return (
     <header className="bg-background border-b border-sidebar-border shadow-sm z-10 w-full">
+      <MobileSidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center md:hidden">
-          <button 
+          <Button
+            variant="ghost" 
             className="text-dark-900 hover:text-primary-500 focus:outline-none"
             aria-label="Toggle menu"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
             <Menu size={24} />
-          </button>
+          </Button>
         </div>
+
         
         <div className={`flex items-center transition-all duration-200 ${isSearchExpanded ? 'flex-grow' : ''}`}>
           <div className={`hidden md:flex items-center h-10  rounded-full px-4 transition-all duration-200 ${isSearchExpanded ? 'w-full' : 'w-96'}`}>
