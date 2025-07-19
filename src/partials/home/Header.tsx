@@ -76,11 +76,11 @@ export const Header = () => {
 
           <div className="flex items-center space-x-4">
             <Link href="/login" >
-              <Button variant="ghost" className="hidden sm:inline-flex cursor-pointer">
+              <Button variant="ghost" className="cursor-pointer">
                 Iniciar Sesión
               </Button>
             </Link>
-            <Button className="bg-primary text-foreground transition-colors"> 
+            <Button className="hidden sm:inline-flex bg-primary text-foreground transition-colors"> 
               Solicitar Demo
             </Button>
           </div> 
