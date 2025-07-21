@@ -25,7 +25,7 @@ const sampleVideos: Video[] = [
     thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
     videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
     uploadDate: '2023-10-01T12:00:00Z',
-    department: 'all',
+    department: { id: 'all', name: 'Todos los Departamentos', description: 'Todos los empleados', active: true },
     rating: 4.5,
   },
   {
@@ -35,7 +35,7 @@ const sampleVideos: Video[] = [
     thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
     videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
     uploadDate: '2023-10-02T12:00:00Z',
-    department: 'all',
+    department: { id: 'hr', name: 'Recursos Humanos' , description: 'Gestión de personal y desarrollo organizacional' , active: true },
     rating: 4.7,
   },
   {
@@ -45,7 +45,7 @@ const sampleVideos: Video[] = [
     thumbnailUrl: '	https://storage.googleapis.com/download/storage/v1/b/trainidb.appspot.com/o/enano.jpg?generation=1752620895077816&alt=media',
     videoUrl: 'gs://trainidb.appspot.com/Screencast from 2025-01-09 17-08-27.webm',
     uploadDate: '2023-10-03T12:00:00Z',
-    department: 'all',
+    department: { id: 'all', name: 'Todos los Departamentos', description: 'Todos los empleados', active: true },
     rating: 4.8,
   },
 ]

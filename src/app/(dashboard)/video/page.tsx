@@ -136,7 +136,7 @@ function VideoPageContent() {
               <div className='flex items-center justify-between w-full'>
                 <div className='flex items-center space-x-2'>
                   <h1 className='text-lg font-bold'>Tomasxwav</h1>
-                  <p className='text-sm text-foreground/40'>{video?.department}</p>
+                  <p className='text-sm text-foreground/40'>{video?.department.name}</p>
                 </div>
                 <span className='text-sm text-foreground/40'>{sinceDate(video?.uploadDate)}</span>
               </div>
