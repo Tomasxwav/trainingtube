@@ -15,7 +15,7 @@ export const useVideosActions = () => {
       formData.append('description', video.description);
       formData.append('thumbnail', video.thumbnail);
       formData.append('video', video.video);
-      formData.append('department', video.department?.toLocaleLowerCase() || 'other');
+      formData.append('department_id', video.department_id.toString());
 
       await fetchWithToken('/videos/admin', {
         method: 'POST',

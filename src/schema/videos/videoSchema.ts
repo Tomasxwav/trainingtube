@@ -36,8 +36,6 @@ export const videoSchema = z.object({
       (file) => !file || ACCEPTED_VIDEO_TYPES.includes(file.type),
       "Solo se permiten formatos de video .mp4, .webm y .ogg"
     ),
-  department:  z
-    .string()
-    .min(1, 'El departamento es obligatorio'),
+  department_id:  z.number().positive(),
   tags: z.array(z.string()).optional(),
 });

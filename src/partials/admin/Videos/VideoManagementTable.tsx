@@ -63,20 +63,15 @@ export default function VideoManagementTable({ searchTerm, categoryFilter, refre
       const matchesSearch = 
         video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         video.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        video.department.toLowerCase().includes(searchTerm.toLowerCase())
+        video.department.name.toLowerCase().includes(searchTerm.toLowerCase())
       
       const matchesCategory = 
         categoryFilter === 'all' || 
-        video.department.toLowerCase() === categoryFilter.toLowerCase()
+        video.department.name.toLowerCase() === categoryFilter.toLowerCase()
       
       return matchesSearch && matchesCategory
     })
   }, [videos, searchTerm, categoryFilter])
-
-  interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
 
   const table = useReactTable({
     data: filteredVideos,
