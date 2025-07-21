@@ -4,6 +4,7 @@ import VideoCard from '@/components/VideoCard';
 import Navbar from '@/partials/Navbar'
 import Sidebar from '@/partials/Sidebar'
 import {useVideoStore} from '@/stores/videoStore';
+import {useDepartmentStore} from '@/stores/departmentStore';
 import React, { useEffect, useState } from 'react'
 
 export default function DashboardLayout( {
@@ -13,6 +14,7 @@ export default function DashboardLayout( {
 }) {
 
   const { fetchVideos, videos } = useVideoStore();
+  const { fetchDepartments } = useDepartmentStore();
 
   const [searchValue, setSearchValue] = useState('');
   
@@ -23,6 +25,7 @@ export default function DashboardLayout( {
 
   useEffect(() => {
     fetchVideos();
+    fetchDepartments();
   }, [fetchVideos]);
 
   return (

@@ -6,13 +6,20 @@ export type Role = {
 
 export type Roles = 'ADMIN' | 'SUPERVISOR' | 'EMPLOYEE';
 
+export type Department = {
+    id: string;
+    name: string;
+    description: string;
+    active: boolean;
+  };
+
 export type Employee = {
     id: string;
     name: string;
     email: string;
     password: string;
     role: Role;
-    department?: string;
+    department: Department;
     createdAt: string;
   };
 
