@@ -7,8 +7,7 @@ import { Department } from '@/types/employees';
 import { useDepartmentsActions } from '@/actions/useDepartmentsActions';
 import { useDepartmentStore } from '@/stores/departmentStore'; 
 import { toast } from 'sonner';
-import { DepartmentsTable } from './DepartmentsTable';
-import { DepartmentsModal } from './DepartmentsModal';
+import { DepartmentsModal } from '@/partials/admin/Departments/DepartmentsModal';
 
 export type DepartmentFormData = {
   name: string;
