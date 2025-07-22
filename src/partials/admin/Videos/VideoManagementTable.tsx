@@ -87,18 +87,31 @@ export default function VideoManagementTable({ searchTerm, departmentFilter, ref
 
   if (loading) {
     return (
-      <div className="space-y-3">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="flex items-center space-x-4">
-            <Skeleton className="h-16 w-24 rounded" />
-            <div className="space-y-2 flex-1">
-              <Skeleton className="h-4 w-[250px]" />
-              <Skeleton className="h-4 w-[200px]" />
-            </div>
-            <Skeleton className="h-4 w-[100px]" />
-            <Skeleton className="h-4 w-[80px]" />
-          </div>
-        ))}
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader >
+            <TableRow >
+              <TableHead >
+                <Skeleton className="h-4 w-full" />
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {Array.from({ length: 3 }).map((_, i) => (
+            <TableRow key={i}>
+              <TableCell colSpan={columns.length} className="text-center">
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="h-12 w-18 rounded-md" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-3 w-[200px]" />
+                  </div>
+                </div>
+              </TableCell>
+            </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     )
   }

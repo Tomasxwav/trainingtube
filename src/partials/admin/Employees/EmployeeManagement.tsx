@@ -5,7 +5,7 @@ import { Employee, EmployeeFormData, Role, Roles } from '@/types/employees';
 import { EmployeeTable } from '@/partials/admin/Employees/EmployeeTable';
 import { EmployeeModal } from '@/partials/admin/Employees/EmployeeModal';
 import { Button } from '@/components/ui/button';
-import { Plus, Users } from 'lucide-react';
+import { Loader2, Plus, Users } from 'lucide-react';
 import { useEmployeesActions } from '@/actions/useEmployeesActions';
 import { toast } from 'sonner';
 
@@ -13,10 +13,15 @@ export function EmployeeManagement() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { getEmployees, createEmployee } = useEmployeesActions();
   useEffect(() => {
-    getEmployees().then(data => setEmployees(data));
+    setIsLoading(true);
+    getEmployees().then(data => {
+      setEmployees(data);
+      setIsLoading(false);
+    });
   }, []);
 
   const handleCreateEmployee = async (employeeData: EmployeeFormData) => {
@@ -159,6 +164,7 @@ export function EmployeeManagement() {
           onEdit={handleEditEmployee}
           onDelete={handleDeleteEmployee}
           onRoleChange={handleRoleChange}
+          isLoading={isLoading}
         />
       </div>
 

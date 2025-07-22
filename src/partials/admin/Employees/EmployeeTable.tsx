@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -30,226 +29,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
-  ChevronDown,
-  ChevronUp,
-  Edit,
-  Trash2,
   Search,
   Filter,
   ChevronLeft,
   ChevronRight,
+  Loader2,
 } from 'lucide-react';
-import { sinceDate } from '@/utils/sinceDate';
+import { createColumns } from './EmployeeColumns';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface EmployeeTableProps {
   employees: Employee[];
   onEdit: (employee: Employee) => void;
   onDelete: (id: string) => void;
   onRoleChange: (id: string, role: Roles) => void;
+  isLoading: boolean;
 }
 
-const getRoleBadgeVariant = (role: Roles) => {
-  switch (role) {
-    case 'ADMIN':
-      return 'destructive';
-    case 'SUPERVISOR':
-      return 'default';
-    case 'EMPLOYEE':
-      return 'secondary';
-    default:
-      return 'outline';
-  }
-};
 
-export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: EmployeeTableProps) {
+export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange, isLoading }: EmployeeTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
-
-  const columns: ColumnDef<Employee>[] = [
-    {
-      accessorKey: 'name',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            className="h-auto p-0 font-semibold"
-          >
-            Empleado
-            {column.getIsSorted() === 'asc' ? (
-              <ChevronUp className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
-              <ChevronDown className="ml-2 h-4 w-4" />
-            ) : null}
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const employee = row.original;
-        const displayName = employee.name || 'Empleado desconocido';
-        const initials = displayName
-          .split(' ')
-          .map(n => n[0])
-          .join('')
-          .toUpperCase();
-        
-        return (
-          <div className="flex items-center space-x-3">
-            <Avatar className="h-8 w-8">
-              <AvatarFallback className="text-xs">{initials}</AvatarFallback>
-            </Avatar>
-            <div>
-              <div className="font-medium">{displayName}</div>
-              <div className="text-sm text-muted-foreground">{employee.email}</div>
-            </div>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'role',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            className="h-auto p-0 font-semibold"
-          >
-            Rol
-            {column.getIsSorted() === 'asc' ? (
-              <ChevronUp className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
-              <ChevronDown className="ml-2 h-4 w-4" />
-            ) : null}
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const employee = row.original;
-        return (
-          <Select
-            value={employee.role.name}
-            onValueChange={(value: Roles) => onRoleChange(employee.id, value.toUpperCase() as Roles)}
-          >
-            <SelectTrigger className="w-32">
-              <SelectValue>
-                <Badge variant={getRoleBadgeVariant(employee.role.name)} className="capitalize">
-                  {employee.role.name.toLocaleLowerCase()}
-                </Badge>
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="employee">
-                <Badge variant="secondary" className="capitalize">
-                  Empleado
-                </Badge>
-              </SelectItem>
-              <SelectItem value="supervisor">
-                <Badge variant="default" className="capitalize">
-                  Supervisor
-                </Badge>
-              </SelectItem>
-              <SelectItem value="admin">
-                <Badge variant="destructive" className="capitalize">
-                  Administrador
-                </Badge>
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        );
-      },
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id));
-      },
-    },
-    {
-      accessorKey: 'department',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            className="h-auto p-0 font-semibold"
-          >
-            Departamento
-            {column.getIsSorted() === 'asc' ? (
-              <ChevronUp className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
-              <ChevronDown className="ml-2 h-4 w-4" />
-            ) : null}
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const department = row.original.department.name;
-        
-        return (
-          <span className="text-muted-foreground capitalize">
-
-            {department || 'No asignado'} 
-          </span>
-        );
-      },
-    },
-    {
-      accessorKey: 'createdAt',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            className="h-auto p-0 font-semibold"
-          >
-            Ingreso
-            {column.getIsSorted() === 'asc' ? (
-              <ChevronUp className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
-              <ChevronDown className="ml-2 h-4 w-4" />
-            ) : null}
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <span className="text-muted-foreground">
-            {sinceDate(row.getValue('createdAt'))}
-          </span>
-        );
-      },
-    },
-    {
-      id: 'actions',
-      header: 'Acciones',
-      cell: ({ row }) => {
-        const employee = row.original;
-        
-        return (
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onEdit(employee)}
-              className="h-8 w-8 p-0"
-            >
-              <Edit className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onDelete(employee.id)}
-              className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-        );
-      },
-    },
-  ];
+  const columns = useMemo(() => createColumns({ onEdit, onDelete, onRoleChange }), [onEdit, onDelete, onRoleChange]);
+ 
 
   const table = useReactTable({
     data: employees,
@@ -292,8 +96,8 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             onValueChange={(value) => {
               table.getColumn('role')?.setFilterValue(value && value !== 'all' ? [value] : undefined);
             }}
-          >
-            <SelectTrigger className="w-40">
+            >
+            <SelectTrigger className="w-fit px-5">
               <Filter className="h-4 w-4 mr-2" />
               <SelectValue placeholder="Filtrar por rol" />
             </SelectTrigger>
@@ -312,6 +116,36 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
       </div>
 
       {/* Tabla */}
+
+      {isLoading ? (
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader >
+              <TableRow >
+                <TableHead >
+                  <Skeleton className="h-4 w-full" />
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: 3 }).map((_, i) => (
+              <TableRow key={i}>
+                <TableCell colSpan={columns.length} className="text-center">
+                  <div className="flex items-center space-x-4">
+                    <Skeleton className="h-6 w-6 rounded-full" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-[250px]" />
+                      <Skeleton className="h-3 w-[200px]" />
+                    </div>
+                  </div>
+                </TableCell>
+              </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -350,8 +184,9 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
             )}
           </TableBody>
         </Table>
+    
       </div>
-
+      )}
       {/* Paginación */}
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
