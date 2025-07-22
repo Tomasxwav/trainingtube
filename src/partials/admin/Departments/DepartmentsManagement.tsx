@@ -185,14 +185,14 @@ export default function DepartmentsManagement() {
           onDelete={handleDeleteDepartment}
           onToggle={handleToggleDepartment}
         />
-      </div>
+      </div>*/}
 
       <DepartmentsModal
         isOpen={isModalOpen}
         onClose={closeModal}
         onSubmit={editingDepartment ? handleUpdateDepartment : handleCreateDepartment}
         department={editingDepartment}
-      /> */}
+      /> 
     </div>
   );
 }
