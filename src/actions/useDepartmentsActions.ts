@@ -34,7 +34,7 @@ export const useDepartmentsActions = () => {
 
   const toggleDepartment = async (id: string) => {
     const response = await fetchWithToken(`/departments/${id}/toggle-status`, {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },

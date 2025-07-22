@@ -8,6 +8,7 @@ import { useDepartmentsActions } from '@/actions/useDepartmentsActions';
 import { useDepartmentStore } from '@/stores/departmentStore'; 
 import { toast } from 'sonner';
 import { DepartmentsModal } from '@/partials/admin/Departments/DepartmentsModal';
+import DepartmentsTable from './DepartmentsTable';
 
 export type DepartmentFormData = {
   name: string;
@@ -84,7 +85,7 @@ export default function DepartmentsManagement() {
     }
   };
 
-  const handleToggleDepartment = async (id: string) => {
+  const handleToggleDepartment = async (id: string, isActive: boolean, departmentName: string) => {
     try {
       const loadingToast = toast.loading('Cambiando estado del departamento...');
       
@@ -93,7 +94,7 @@ export default function DepartmentsManagement() {
       await fetchDepartments();
       
       toast.dismiss(loadingToast);
-      toast.success('Estado del departamento actualizado exitosamente!');
+      toast.success(`Estado del departamento ${departmentName} actualizado exitosamente!`);
       
     } catch (error) {
       console.error('Error al cambiar estado del departamento:', error);
@@ -177,14 +178,14 @@ export default function DepartmentsManagement() {
         </div>
       </div>
 
-     {/*  <div className="bg-card rounded-lg border">
+      <div className="bg-card rounded-lg border">
         <DepartmentsTable
           departments={departments}
           onEdit={handleEditDepartment}
           onDelete={handleDeleteDepartment}
           onToggle={handleToggleDepartment}
         />
-      </div>*/}
+      </div>
 
       <DepartmentsModal
         isOpen={isModalOpen}
