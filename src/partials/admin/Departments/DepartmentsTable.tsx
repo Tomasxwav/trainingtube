@@ -20,23 +20,26 @@ import {
 import { createColumns } from "./DepartmentsColumns"
 import React, { useEffect, useState, useMemo } from "react"
 import { Skeleton } from '@/components/ui/skeleton'
-import { useDepartmentsActions } from '@/actions/useDepartmentsActions'
-import { useDepartmentStore } from '@/stores/departmentStore'
 import { Department } from '@/types/employees'
 import { Building2 } from 'lucide-react'
 
 interface DepartmentsTableProps {
   departments: Department[];
+  isLoading: boolean;
   onEdit: (department: Department) => void;
   onDelete: (id: string) => void;
   onToggle: (id: string, isActive: boolean, departmentName: string) => void;
 }
 
-export default function DepartmentsTable({ departments, onEdit, onDelete, onToggle }: DepartmentsTableProps) {
-  const [loading, setLoading] = useState(true) 
+export default function DepartmentsTable({ departments, isLoading, onEdit, onDelete, onToggle }: DepartmentsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
+  const [loading, setLoading] = useState(true)
   const departmentFilter = 'all' 
   const searchTerm = ''
+
+  useEffect(() => {
+    setLoading(isLoading)
+  }, [isLoading])
 
   const columns = useMemo(() => createColumns({
     onEdit,
@@ -44,10 +47,7 @@ export default function DepartmentsTable({ departments, onEdit, onDelete, onTogg
     onToggle
   }), [onEdit, onDelete, onToggle])
 
-  useEffect(() => {
-    setLoading(true)
-    setLoading(false)
-  }, [])
+
 
   const filteredDepartments = useMemo(() => {
     if (!departments) return []
@@ -95,7 +95,7 @@ export default function DepartmentsTable({ departments, onEdit, onDelete, onTogg
     )
   }
 
-  if (!departments || departments.length === 0) {
+  if (( departments.length === 0 || !departments ) && !isLoading) {
     return (
       <div className="text-center py-12">
         <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
@@ -123,7 +123,7 @@ export default function DepartmentsTable({ departments, onEdit, onDelete, onTogg
 
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4">
       <div className="flex items-center justify-between text-sm text-muted-foreground">
         <span>
           Mostrando {table.getRowModel().rows.length} de {departments.length} departamentos

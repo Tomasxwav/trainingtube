@@ -72,7 +72,7 @@ export const createColumns = (meta: DepartmentTableMeta): ColumnDef<Department>[
         cell: ({ row }) => {
           return (
             <div className="w-full flex items-center justify-center"> 
-              <Badge variant={row.original.active ? 'destructive' : 'default'}>
+              <Badge variant={row.original.active ? 'destructive' : 'secondary'}>
                 {row.original.active ? 'Activo' : 'Inactivo'}
               </Badge>
             </div>
@@ -101,9 +101,9 @@ export const createColumns = (meta: DepartmentTableMeta): ColumnDef<Department>[
             className="h-8 w-8 p-0 text-foreground hover:text-foreground/80 hover:bg-green-50" 
           >
             {row.original.active ? (
-              <Eye size={16} />
-              ) : (
                 <EyeOff size={16} className='text-foreground/50' />
+            ) : (
+                  <Eye size={16} />
               )}
               
           </Button>
@@ -113,7 +113,7 @@ export const createColumns = (meta: DepartmentTableMeta): ColumnDef<Department>[
             onClick={() => {
               meta.onEdit(row.original)
             }}
-            className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+            className="h-8 w-8 p-0 text-foreground hover:text-foreground/80 hover:bg-green-50"
           >
             <Pencil size={16} />
           </Button>

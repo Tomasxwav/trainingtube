@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Plus, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Department } from '@/types/employees';
@@ -17,15 +17,12 @@ export type DepartmentFormData = {
 };
 
 export default function DepartmentsManagement() {
-  const { departments, fetchDepartments } = useDepartmentStore();
+  const { departments, fetchDepartments, isLoading } = useDepartmentStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDepartment, setEditingDepartment] = useState<Department | null>(null);
 
   const { addDepartment, updateDepartment, deleteDepartment, toggleDepartment } = useDepartmentsActions();
 
-  useEffect(() => {
-    fetchDepartments();
-  }, [fetchDepartments]);
 
   const handleCreateDepartment = async (department: DepartmentFormData) => {
     try {
@@ -178,9 +175,10 @@ export default function DepartmentsManagement() {
         </div>
       </div>
 
-      <div className="bg-card rounded-lg border">
+      <div className="bg-card rounded-lg border p-6">
         <DepartmentsTable
           departments={departments}
+          isLoading={isLoading}
           onEdit={handleEditDepartment}
           onDelete={handleDeleteDepartment}
           onToggle={handleToggleDepartment}
