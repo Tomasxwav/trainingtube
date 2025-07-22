@@ -34,6 +34,12 @@ export function EmployeeManagement() {
           name: employeeData.role as Roles,
           authorities: [],
         },
+        department: {
+          id: crypto.randomUUID(),
+          description: '',
+          name: employeeData.department,
+          active: true,
+        },
       };
       
       setEmployees(prev => [...prev, employeeToAdd]);
