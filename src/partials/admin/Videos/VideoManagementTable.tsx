@@ -92,7 +92,7 @@ export default function VideoManagementTable({ searchTerm, departmentFilter, ref
           <TableHeader >
             <TableRow >
               <TableHead >
-                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-[250px]" />
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -147,14 +147,6 @@ export default function VideoManagementTable({ searchTerm, departmentFilter, ref
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>
-          Mostrando {table.getRowModel().rows.length} de {videos.length} videos
-          {searchTerm && ` para "${searchTerm}"`}
-          {departmentFilter !== 'all' && ` en ${departmentFilter}`}
-        </span>
-      </div>
-
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -186,6 +178,13 @@ export default function VideoManagementTable({ searchTerm, departmentFilter, ref
             ))}
           </TableBody>
         </Table>
+      </div>
+      <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <span>
+          Mostrando {table.getRowModel().rows.length} de {videos.length} videos
+          {searchTerm && ` para "${searchTerm}"`}
+          {departmentFilter !== 'all' && ` en ${departmentFilter}`}
+        </span>
       </div>
     </div>
   )

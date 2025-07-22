@@ -84,7 +84,7 @@ export default function DepartmentsTable({ departments, isLoading, onEdit, onDel
           <TableHeader >
             <TableRow >
               <TableHead >
-                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-[250px]" />
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -92,8 +92,8 @@ export default function DepartmentsTable({ departments, isLoading, onEdit, onDel
             {Array.from({ length: 6 }).map((_, i) => (
             <TableRow key={i}>
               <TableCell colSpan={columns.length} className="text-center">
-                <div className="flex items-center space-x-4">
-                  <Skeleton className="h-8 w-full rounded-md" />
+                <div className="flex items-center space-x-4 py-2 ">
+                  <Skeleton className="h-4 w-full rounded-md" />
                 </div>
               </TableCell>
             </TableRow>
@@ -133,13 +133,7 @@ export default function DepartmentsTable({ departments, isLoading, onEdit, onDel
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>
-          Mostrando {table.getRowModel().rows.length} de {departments.length} departamentos
-          {searchTerm && ` para "${searchTerm}"`}
-          {departmentFilter !== 'all' && ` en ${departmentFilter}`}
-        </span>
-      </div>
+      
 
       <div className="rounded-md border">
         <Table>
@@ -172,6 +166,13 @@ export default function DepartmentsTable({ departments, isLoading, onEdit, onDel
             ))}
           </TableBody>
         </Table>
+      </div>
+      <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <span>
+          Mostrando {table.getRowModel().rows.length} de {departments.length} departamentos
+          {searchTerm && ` para "${searchTerm}"`}
+          {departmentFilter !== 'all' && ` en ${departmentFilter}`}
+        </span>
       </div>
     </div>
   )

@@ -123,7 +123,7 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange, isLoa
             <TableHeader >
               <TableRow >
                 <TableHead >
-                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-[250px]" />
                 </TableHead>
               </TableRow>
             </TableHeader>
