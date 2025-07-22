@@ -185,9 +185,12 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange }: Emp
         );
       },
       cell: ({ row }) => {
+        const department = row.original.department.name;
+        
         return (
           <span className="text-muted-foreground capitalize">
-            {row.getValue('department') || 'No asignado'} 
+
+            {department || 'No asignado'} 
           </span>
         );
       },

@@ -1,5 +1,5 @@
 import { Authority } from '@/types/auth';
-import { Clock, Film, Heart, HelpCircle, Home, PlayCircle, Settings, Users } from 'lucide-react';
+import { Building2, Clock, Film, Heart, HelpCircle, Home, PlayCircle, Settings, Users } from 'lucide-react';
 
 export const navItems: Array<{
     name: string;
@@ -60,6 +60,12 @@ export const navItems: Array<{
       icon: Users,
       path: '/supervisor/employees',
       showFor: ['ROLE_SUPERVISOR'],
+    },
+    {
+      name: 'Departamentos',
+      icon: Building2,
+      path: '/admin/departments',
+      showFor: ['ROLE_ADMIN'],
     },
     {
       name: 'Configuración',

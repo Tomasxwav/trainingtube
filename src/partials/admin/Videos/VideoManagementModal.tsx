@@ -25,8 +25,7 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 import { useActionState, useTransition } from 'react';
-import { Department } from '@/types/videos';
-import { departments } from '@/constants/departments';
+import { useDepartmentStore } from '@/stores/departmentStore';
 
 interface ChildComponentProps {
   isOpen: boolean;
@@ -37,14 +36,15 @@ interface ChildComponentProps {
 export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdded }: ChildComponentProps) {
     const { addVideo } = useVideosActions();
     const [isPending, startTransition] = useTransition();
-    
+    const { departments } = useDepartmentStore();
+
     const [state, action, pending] = useActionState<
         boolean,
         z.infer<typeof videoSchema> 
         >(
         async (prevState, values) => {
             try {
-            await addVideo({ ...values, department: values.department as Department }, () => {
+            await addVideo({ ...values, department_id: values.department_id }, () => {
               if (onVideoAdded) {
                 onVideoAdded();
               }
@@ -64,7 +64,7 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
           description: '',
           thumbnail: {} as File,
           video: {} as File,
-          department: '' as Department,
+          department_id: 0 ,
         },
       })
 
@@ -202,21 +202,24 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                     
                     <FormField
                         control={form.control}
-                        name="department"
+                        name="department_id"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel className="text-sm font-medium">Departamento *</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} value={field.value}>
+                                    <Select
+                                        value={field.value ? String(field.value) : ""}
+                                        onValueChange={(val) => field.onChange(Number(val))}
+                                    >
                                         <SelectTrigger className="h-10">
-                                            <SelectValue placeholder="Selecciona el departamento objetivo"  /> 
+                                            <SelectValue placeholder="Selecciona el departamento objetivo" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
                                                 <SelectLabel>Departamentos</SelectLabel>
                                                 {departments.map((department) => (
-                                                    <SelectItem key={department} value={department}>
-                                                        {department}
+                                                    <SelectItem key={department.id} value={String(department.id)}>
+                                                        {department.name}
                                                     </SelectItem>
                                                 ))}
                                             </SelectGroup>

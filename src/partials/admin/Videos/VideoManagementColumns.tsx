@@ -7,16 +7,24 @@ import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Link from 'next/link'
 
-const departmentColors: Record<string, string> = {
-  'engineering': 'bg-blue-100 text-blue-800 border-blue-200',
-  'product': 'bg-purple-100 text-purple-800 border-purple-200',
-  'marketing': 'bg-green-100 text-green-800 border-green-200',
-  'finance': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  'hr': 'bg-pink-100 text-pink-800 border-pink-200',
-  'it': 'bg-gray-100 text-gray-800 border-gray-200',
-  'sales': 'bg-orange-100 text-orange-800 border-orange-200',
-  'academy': 'bg-indigo-100 text-indigo-800 border-indigo-200',
-  'legal': 'bg-red-100 text-red-800 border-red-200',
+function getDepartmentColor(departmentName: string): string {
+  let hash = 0;
+  for (let i = 0; i < departmentName.length; i++) {
+    hash = departmentName.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const palette = [
+    'bg-blue-100 text-blue-800 border-blue-200',
+    'bg-purple-100 text-purple-800 border-purple-200',
+    'bg-green-100 text-green-800 border-green-200',
+    'bg-yellow-100 text-yellow-800 border-yellow-200',
+    'bg-pink-100 text-pink-800 border-pink-200',
+    'bg-gray-100 text-gray-800 border-gray-200',
+    'bg-orange-100 text-orange-800 border-orange-200',
+    'bg-indigo-100 text-indigo-800 border-indigo-200',
+    'bg-red-100 text-red-800 border-red-200',
+  ];
+  const index = Math.abs(hash) % palette.length;
+  return palette[index];
 }
 
 
@@ -83,8 +91,8 @@ export const columns: ColumnDef<Video>[] = [
       enableSorting: true,
       enableColumnFilter: true,
       cell: ({ row }) => {
-        const department = row.original.department.toLowerCase()
-        const colorClass = departmentColors[department] || 'bg-gray-100 text-gray-800 border-gray-200'
+        const department = row.original.department.name.toLowerCase()
+        const colorClass = getDepartmentColor(department) || 'bg-gray-100 text-gray-800 border-gray-200' 
         
         return (
           <div className={`flex items-center w-full justify-center`}>
@@ -92,7 +100,7 @@ export const columns: ColumnDef<Video>[] = [
               variant="outline" 
               className={`capitalize ${colorClass}`}
             >
-              {row.original.department}
+              {row.original.department.name}
             </Badge>
           </div>
         )

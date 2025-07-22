@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Plus, Search, Filter, Film, BarChart3, Eye, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import VideoManagementModal from '@/partials/admin/Videos/VideoManagementModal';
 import {
   Select,
@@ -17,27 +16,19 @@ import {
 } from "@/components/ui/select"
 import { Input } from '@/components/ui/input';
 import VideoManagementTable from '@/partials/admin/Videos/VideoManagementTable';
-import { departments } from '@/constants/departments';
+import { useDepartmentStore } from '@/stores/departmentStore'; 
 
 export default function VideoManagement() {
-
+  const departments = useDepartmentStore((state) => state.departments);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [departmentFilter, setDepartmentFilter] = useState('all');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   
   const handleVideoAdded = () => {
     setRefreshTrigger(prev => prev + 1);
   };
   
-  // Estadísticas simuladas - puedes reemplazar con datos reales de tu API
-  const stats = {
-    totalVideos: 127,
-    totalViews: 15420,
-    avgRating: 4.6,
-    recentUploads: 8
-  };
-
   
   return (
     <div className="animate-fade-in space-y-6">
@@ -139,7 +130,7 @@ export default function VideoManagement() {
             
             <div className="flex items-center gap-2 shrink-0">
               <Filter size={18} className="text-muted-foreground" />
-              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
                 <SelectTrigger className="w-[200px]">
                   <SelectValue placeholder="Filtrar por departamento" />
                 </SelectTrigger>
@@ -147,9 +138,9 @@ export default function VideoManagement() {
                   <SelectGroup>
                     <SelectLabel>Departamentos</SelectLabel>
                     <SelectItem value="all">Todos los Departamentos</SelectItem>
-                    {departments.map((category) => (
-                      <SelectItem key={category} value={category.toLowerCase()}>
-                        {category}
+                    {departments.map((dpto) => (
+                      <SelectItem key={dpto.id} value={dpto.name}>
+                        {dpto.name}
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -171,7 +162,7 @@ export default function VideoManagement() {
         <CardContent>
           <VideoManagementTable 
             searchTerm={searchTerm} 
-            categoryFilter={categoryFilter} 
+            departmentFilter={departmentFilter} 
             refreshTrigger={refreshTrigger}
           />
         </CardContent>

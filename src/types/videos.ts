@@ -1,4 +1,4 @@
-export type Department = 'sales' | 'marketing' | 'development' | 'it' | 'support' | 'design' | 'hr' | 'customer service' | 'finance' | 'legal' | 'operations' | 'all';
+import { Department } from './employees';
 
 export interface Video {
   id: string;
@@ -19,7 +19,7 @@ export interface VideoUpload {
   description: string;
   thumbnail: File;
   video: File;
-  department?: Department;
+  department_id: number;
 }
 
 export type Comment = {

@@ -24,7 +24,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { departments } from '@/constants/departments';
+import { useDepartmentStore } from '@/stores/departmentStore';
+
 
 interface EmployeeModalProps {
   isOpen: boolean;
@@ -34,6 +35,7 @@ interface EmployeeModalProps {
 }
 
 export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeModalProps) {
+  const departments = useDepartmentStore((state) => state.departments);
   const {
     register,
     handleSubmit,
@@ -61,7 +63,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
         email: employee.email,
         password: '',
         role: employee.role.name,
-        department: employee.department || '',
+        department: employee.department.name || '',
       });
     } else {
       reset({
@@ -240,8 +242,8 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
               </SelectTrigger>
               <SelectContent>
                 {departments.map((dept) => (
-                  <SelectItem key={dept} value={dept}>
-                    {dept}
+                  <SelectItem key={dept.id} value={dept.name}>
+                    {dept.name}
                   </SelectItem>
                 ))}
               </SelectContent>

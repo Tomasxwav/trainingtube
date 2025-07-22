@@ -26,11 +26,11 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 interface VideoManagementTableProps {
   searchTerm: string;
-  categoryFilter: string;
+  departmentFilter: string;
   refreshTrigger?: number; 
 }
 
-export default function VideoManagementTable({ searchTerm, categoryFilter, refreshTrigger }: VideoManagementTableProps) {
+export default function VideoManagementTable({ searchTerm, departmentFilter, refreshTrigger }: VideoManagementTableProps) {
   const { getAllVideos } = useVideosActions()
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
@@ -63,20 +63,15 @@ export default function VideoManagementTable({ searchTerm, categoryFilter, refre
       const matchesSearch = 
         video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         video.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        video.department.toLowerCase().includes(searchTerm.toLowerCase())
+        video.department.name.toLowerCase().includes(searchTerm.toLowerCase())
       
       const matchesCategory = 
-        categoryFilter === 'all' || 
-        video.department.toLowerCase() === categoryFilter.toLowerCase()
+        departmentFilter === 'all' || 
+        video.department.name.toLowerCase() === departmentFilter.toLowerCase()
       
       return matchesSearch && matchesCategory
     })
-  }, [videos, searchTerm, categoryFilter])
-
-  interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
+  }, [videos, searchTerm, departmentFilter])
 
   const table = useReactTable({
     data: filteredVideos,
@@ -143,7 +138,7 @@ export default function VideoManagementTable({ searchTerm, categoryFilter, refre
         <span>
           Mostrando {table.getRowModel().rows.length} de {videos.length} videos
           {searchTerm && ` para "${searchTerm}"`}
-          {categoryFilter !== 'all' && ` en ${categoryFilter}`}
+          {departmentFilter !== 'all' && ` en ${departmentFilter}`}
         </span>
       </div>
 

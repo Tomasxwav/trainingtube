@@ -47,9 +47,9 @@ export default function VideoCard({video, type = 'default' }: {video: Video, typ
 
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs font-bold">{department?.charAt(0).toUpperCase()}</span>
+              <span className="text-white text-xs font-bold">{department.name.charAt(0).toUpperCase()}</span>
             </div>
-            <span className="text-gray-600 font-medium">{department}</span>
+            <span className="text-gray-600 font-medium">{department.name}</span>
           </div>
          </div>
 
