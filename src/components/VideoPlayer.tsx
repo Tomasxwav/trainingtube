@@ -20,7 +20,8 @@ export default function VideoPlayer({
 }: VideoPlayerProps) {
   const video = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [volume, setVolume] = useState(100)
+  const [isFinished, setIsFinished] = useState(progress === 100)
+  const [volume, setVolume] = useState(50)
   const [showVolumeSlider, setShowVolumeSlider] = useState(false)
   const [currentProgress, setCurrentProgress] = useState(progress)
 
@@ -29,7 +30,6 @@ export default function VideoPlayer({
     e.currentTarget.currentTime = Math.round(
       (progress / 100) * (currentVideo.duration || 0)
     )
-    // Set initial volume
     currentVideo.volume = volume / 100
     console.log(
       'Setting video time to:',
@@ -69,18 +69,6 @@ export default function VideoPlayer({
     setShowVolumeSlider(!showVolumeSlider)
   }
 
-  const isValidUrl = (url: string) => {
-    try {
-      new URL(url)
-      return true
-    } catch (e) {
-      return false
-    }
-  }
-
-  if (!isValidUrl(videoUrl))
-    return <div className='h-full w-full'>Video no encontrado</div>
-
   const handleUpdateProgress = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const currentVideo = e.currentTarget
     const calculatedProgress =
@@ -88,12 +76,13 @@ export default function VideoPlayer({
 
     setCurrentProgress(calculatedProgress)
 
-    if (calculatedProgress >= 95) {
+    if (progress >= 95 && !isFinished) {
       console.log('video terminado')
+      setIsFinished(true)
       onFinish()
       return
     }
-    if (progress < calculatedProgress - 5) {
+    if (progress < calculatedProgress - 5 && !isFinished) {
       console.log('ha avanzado 5%')
       onProgress?.(calculatedProgress)
     }
@@ -106,6 +95,18 @@ export default function VideoPlayer({
       setVolume(currentVideo.muted ? 0 : 100)
     }
   }
+
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url)
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+
+  if (!isValidUrl(videoUrl))
+    return <div className='h-full w-full'>Video no encontrado</div>
 
   return (
     <div className='relative h-full w-full flex justify-center items-center'>
@@ -137,7 +138,7 @@ export default function VideoPlayer({
           </Button>
 
           <Slider
-            disabled
+            disabled={!isFinished}
             min={0}
             max={100}
             className='w-full'
