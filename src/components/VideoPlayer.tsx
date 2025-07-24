@@ -119,6 +119,12 @@ export default function VideoPlayer({
   if (!isValidUrl(videoUrl))
     return <div className='h-full w-full'>Video no encontrado</div>
 
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60)
+    const secs = Math.floor(seconds % 60)
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`
+  }
+
   return (
     <div className='relative h-full w-full flex justify-center items-center'>
       <video
@@ -156,6 +162,13 @@ export default function VideoPlayer({
             value={[currentProgress]}
             onValueChange={(value) => handleChangeProgress(value[0])}
           />
+
+          <div
+            className=' bg-black/10 text-white text-xs p-2 rounded-full w-max text-center whitespace-nowrap text-ellipsis'
+          >
+            {formatTime(video.current?.currentTime || 0)} /{' '}
+            {formatTime(video.current?.duration || 0)}
+          </div>
 
           <div className='flex items-center gap-2'>
             <div className='relative flex items-center justify-center'>
