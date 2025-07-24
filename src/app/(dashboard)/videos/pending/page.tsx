@@ -1,5 +1,6 @@
 'use client';
 
+import VideoCard from '@/components/VideoCard';
 import EmployeeVideosScroller from '@/partials/employee/videos/EmployeeVideoScroller';
 import { useVideoStore } from '@/stores/videoStore';
 import { BookOpen, Clock } from 'lucide-react';
@@ -36,7 +37,11 @@ export default function Pending() {
 
         {/* Contenido */}
         {videos.length > 0 ? (
-          <EmployeeVideosScroller videos={videos} />
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {videos.map((video) => {
+              return <VideoCard key={video.id} video={video} />
+            })}
+           </div>
         ) : (
           <div className="text-center py-16">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">

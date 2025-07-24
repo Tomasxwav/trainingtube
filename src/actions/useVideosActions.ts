@@ -1,6 +1,7 @@
 import {useVideoStore} from '@/stores/videoStore';
-import { Video, VideoUpload } from '@/types/videos';
+import { Interaction, Video, VideoUpload } from '@/types/videos';
 import { fetchWithToken } from '@/utils/fetchWithToken';
+import { formatDuration, getVideoDuration } from '@/utils/videoUtils';
 import { toast } from "sonner"
 
 
@@ -9,20 +10,37 @@ export const useVideosActions = () => {
 
   const addVideo = async (video: VideoUpload, onSuccess?: () => void) => {
     try {
+
+      const modifiedVideoName = video.video.name.replace(/\s+/g, '-').toLowerCase();
+      const modifiedThumbnailName = video.thumbnail.name.replace(/\s+/g, '-').toLowerCase();
+      const modifiedVideoFile = new File([video.video], modifiedVideoName, {
+        type: video.video.type,
+        lastModified: video.video.lastModified
+      });
+      const modifiedThumbnailFile = new File([video.thumbnail], modifiedThumbnailName, {
+        type: video.thumbnail.type,
+        lastModified: video.thumbnail.lastModified
+      });
+
+      const duration = await getVideoDuration(modifiedVideoFile);
+      if (duration < 1) {
+        throw new Error('Video duration must be greater than 0 seconds');
+      }
       const formData = new FormData();
       
       formData.append('title', video.title);
       formData.append('description', video.description);
-      formData.append('thumbnail', video.thumbnail);
-      formData.append('video', video.video);
+      formData.append('thumbnail', modifiedThumbnailFile);
+      formData.append('video', modifiedVideoFile);
       formData.append('department_id', video.department_id.toString());
+      formData.append('duration', Math.floor(duration).toString());
 
       await fetchWithToken('/videos/admin', {
         method: 'POST',
         body: formData,
       });
       toast.success(`Video uploaded successfully`)
-      
+      fetchVideos();
       if (onSuccess) {
         onSuccess();
       }
@@ -88,6 +106,29 @@ export const useVideosActions = () => {
     return data;
   };
 
+  const getInteractions = async (id: string) => {
+    const response = await fetchWithToken(`/interactions/${id}`)
+    const data = await response.data
+    return data
+  }
+
+  const updateVideoEmployeeInteractions = async (id: string, interaction: Interaction) => {
+    const response = await fetchWithToken(`/interactions/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(interaction)
+    })
+
+    const data = await response.data
+    if (response.ok) {
+      toast.success(`Video interactions updated successfully`)
+      return data;
+    }
+    return response.error
+  } 
+
   return {
     addVideo,
     updateVideo,
@@ -99,6 +140,8 @@ export const useVideosActions = () => {
     getLikedVideos,
     addLikedVideo,
     getAllVideos,
+    getInteractions,
+    updateVideoEmployeeInteractions,
     videos
   };
 };

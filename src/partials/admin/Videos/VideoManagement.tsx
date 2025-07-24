@@ -131,7 +131,7 @@ export default function VideoManagement() {
             <div className="flex items-center gap-2 shrink-0">
               <Filter size={18} className="text-muted-foreground" />
               <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-                <SelectTrigger className="w-[200px]">
+                <SelectTrigger className="px-5">
                   <SelectValue placeholder="Filtrar por departamento" />
                 </SelectTrigger>
                 <SelectContent>

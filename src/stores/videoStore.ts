@@ -9,7 +9,7 @@ type VideoStore = {
 export const useVideoStore = create<VideoStore>((set) => ({
   videos: [],
   fetchVideos: async () => {
-    const response = await fetchWithToken('/interactions/pending')
+    const response = await fetchWithToken('/videos/department')
     console.log('response', response)
     set({ videos: response.ok && response.data ? response.data : [] })
   },

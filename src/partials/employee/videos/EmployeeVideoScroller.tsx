@@ -79,7 +79,7 @@ export default function EmployeeVideosScroller({ videos }: { videos: any[] }) {
   }
 
   return (
-    <div className="relative bg-background rounded-xl border border-dark-400 p-6 shadow-sm">
+    <div className="relative bg-background rounded-xl border border-dark-400 p-6 shadow-sm w-full">
       <div className="absolute top-4 right-4 flex gap-2 z-10">
         <Button
           variant="outline"
@@ -101,7 +101,7 @@ export default function EmployeeVideosScroller({ videos }: { videos: any[] }) {
 
       <div
         ref={scrollContainerRef}
-        className="overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] "
       >
         <div
           ref={scrollContentRef}
@@ -110,7 +110,7 @@ export default function EmployeeVideosScroller({ videos }: { videos: any[] }) {
           {videos.map((video, index) => (
             <div
               key={video.id}
-              className="flex-shrink-0 w-80 translate-y-5 animate-[fadeInUp_0.6s_ease-out_forwards]"
+              className="flex-shrink-0 w-full md:w-60 translate-y-5 animate-[fadeInUp_0.6s_ease-out_forwards] "
               style={{
                 animationDelay: `${index * 0.1}s`
               }}
@@ -121,10 +121,10 @@ export default function EmployeeVideosScroller({ videos }: { videos: any[] }) {
 
           {videos.map((video, index) => (
             <div
-              key={`duplicate-${video.id}`}
-              className="flex-shrink-0 w-80 translate-y-5 animate-[fadeInUp_0.6s_ease-out_forwards]"
+              key={video.id}
+              className="flex-shrink-0 w-full md:w-60 translate-y-5 animate-[fadeInUp_0.6s_ease-out_forwards] "
               style={{
-                animationDelay: `${(videos.length + index) * 0.1}s`
+                animationDelay: `${index * 0.1}s`
               }}
             >
               <VideoCard video={video} />
