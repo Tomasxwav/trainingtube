@@ -39,8 +39,8 @@ export default function VideoPage() {
     (video) => video.videoUrl === videoUrl.replaceAll(' ', '%20')
   )
   const [interactions, setInteractions] = useState<Interaction>({
-    pending: true,
-    favorite: false,
+    isPending: true,
+    isFavorite: false,
     progress: 0,
   })
   const [loading, setLoading] = useState(true)
@@ -61,7 +61,7 @@ export default function VideoPage() {
     if (video) {
       const updatedInteraction: Interaction = {
         ...interactions,
-        pending: false,
+        isPending: false,
         progress: 100,
       }
       await updateVideoEmployeeInteractions(video.id, updatedInteraction)
@@ -112,7 +112,7 @@ export default function VideoPage() {
               className='md:w-full justify-start md:gap-3'
               onClick={() => addFavoriteVideo(video?.id)}
             >
-              {interactions?.favorite ? (
+              {interactions?.isFavorite ? (
                 <HeartOff className={`w-4 h-4 text-foreground`} />
               ) : (
                 <Heart className={`w-4 h-4 `} />

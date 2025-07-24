@@ -27,17 +27,15 @@ export default function VideoPlayer({
 
   const handleLoad = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const currentVideo = e.currentTarget
-    e.currentTarget.currentTime = Math.round(
-      (progress / 100) * (currentVideo.duration || 0)
-    )
+    if (!isFinished) {
+      e.currentTarget.currentTime = Math.round(
+        (progress / 100) * (currentVideo.duration || 0)
+      )
+    }
     currentVideo.volume = volume / 100
-    console.log(
-      'Setting video time to:',
-      Math.round((progress / 100) * (currentVideo.duration || 0))
-    )
   }
 
-  const handlePlay = () => {
+  const togglePlay = () => {
     const currentVideo = video.current
     if (currentVideo) {
       if (isPlaying) {
@@ -46,6 +44,17 @@ export default function VideoPlayer({
         currentVideo.play()
       }
       setIsPlaying(!isPlaying)
+    }
+  }
+
+  const handleChangeProgress = (value: number) => {
+    const currentVideo = video.current
+    if (currentVideo) {
+      currentVideo.pause()
+      currentVideo.currentTime = currentVideo.duration * (value / 100)
+      setCurrentProgress(value)
+      currentVideo.play()
+      setIsPlaying(true)
     }
   }
 
@@ -76,14 +85,16 @@ export default function VideoPlayer({
 
     setCurrentProgress(calculatedProgress)
 
-    if (progress >= 95 && !isFinished) {
+    const savingPercentage = 200 / Math.pow(currentVideo.duration, 0.5)
+    if (!isFinished && progress >= 100 - savingPercentage) {
       console.log('video terminado')
       setIsFinished(true)
       onFinish()
       return
     }
-    if (progress < calculatedProgress - 5 && !isFinished) {
-      console.log('ha avanzado 5%')
+
+    if (!isFinished && progress < calculatedProgress - savingPercentage) {
+      console.log('ha avanzado ', savingPercentage, ' %')
       onProgress?.(calculatedProgress)
     }
   }
@@ -132,7 +143,7 @@ export default function VideoPlayer({
         <div className='flex justify-between items-center gap-2 w-full px-4'>
           <Button
             className=' bg-black bg-opacity-50 text-white p-2 rounded-full left-0 '
-            onClick={handlePlay}
+            onClick={togglePlay}
           >
             {isPlaying ? <Pause /> : <Play />}
           </Button>
@@ -143,7 +154,7 @@ export default function VideoPlayer({
             max={100}
             className='w-full'
             value={[currentProgress]}
-            onValueChange={(value) => setCurrentProgress(value[0])}
+            onValueChange={(value) => handleChangeProgress(value[0])}
           />
 
           <div className='flex items-center gap-2'>
