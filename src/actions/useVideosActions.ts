@@ -9,12 +9,24 @@ export const useVideosActions = () => {
 
   const addVideo = async (video: VideoUpload, onSuccess?: () => void) => {
     try {
+
+      const modifiedVideoName = video.video.name.replace(/\s+/g, '-').toLowerCase();
+      const modifiedThumbnailName = video.thumbnail.name.replace(/\s+/g, '-').toLowerCase();
+      const modifiedVideoFile = new File([video.video], modifiedVideoName, {
+        type: video.video.type,
+        lastModified: video.video.lastModified
+      });
+      const modifiedThumbnailFile = new File([video.thumbnail], modifiedThumbnailName, {
+        type: video.thumbnail.type,
+        lastModified: video.thumbnail.lastModified
+      });
+
       const formData = new FormData();
       
       formData.append('title', video.title);
       formData.append('description', video.description);
-      formData.append('thumbnail', video.thumbnail);
-      formData.append('video', video.video);
+      formData.append('thumbnail', modifiedThumbnailFile);
+      formData.append('video', modifiedVideoFile);
       formData.append('department_id', video.department_id.toString());
 
       await fetchWithToken('/videos/admin', {
@@ -22,7 +34,7 @@ export const useVideosActions = () => {
         body: formData,
       });
       toast.success(`Video uploaded successfully`)
-      
+      fetchVideos();
       if (onSuccess) {
         onSuccess();
       }
