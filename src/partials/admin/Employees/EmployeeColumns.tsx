@@ -121,7 +121,8 @@ export const createColumns = (meta: DepartmentTableMeta): ColumnDef<Employee>[] 
         );
       },
       filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id));
+        const employee = row.original as Employee;
+        return value.includes(employee.role.name);
       },
     },
     {

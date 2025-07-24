@@ -92,9 +92,9 @@ export function EmployeeTable({ employees, onEdit, onDelete, onRoleChange, isLoa
             />
           </div>
           <Select
-            value={(table.getColumn('role')?.getFilterValue() as string[])?.join(',') ?? ''}
+            value={(table.getColumn('role')?.getFilterValue() as string[])?.join(',') ?? 'all'}
             onValueChange={(value) => {
-              table.getColumn('role')?.setFilterValue(value && value !== 'all' ? [value] : undefined);
+              table.getColumn('role')?.setFilterValue(value === 'all' ? undefined : [value]);
             }}
             >
             <SelectTrigger className="w-fit px-5">
