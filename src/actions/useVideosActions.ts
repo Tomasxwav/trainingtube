@@ -1,6 +1,7 @@
 import {useVideoStore} from '@/stores/videoStore';
 import { Interaction, Video, VideoUpload } from '@/types/videos';
 import { fetchWithToken } from '@/utils/fetchWithToken';
+import { formatDuration, getVideoDuration } from '@/utils/videoUtils';
 import { toast } from "sonner"
 
 
@@ -21,6 +22,10 @@ export const useVideosActions = () => {
         lastModified: video.thumbnail.lastModified
       });
 
+      const duration = await getVideoDuration(modifiedVideoFile);
+      if (duration < 1) {
+        throw new Error('Video duration must be greater than 0 seconds');
+      }
       const formData = new FormData();
       
       formData.append('title', video.title);
@@ -28,6 +33,7 @@ export const useVideosActions = () => {
       formData.append('thumbnail', modifiedThumbnailFile);
       formData.append('video', modifiedVideoFile);
       formData.append('department_id', video.department_id.toString());
+      formData.append('duration', Math.floor(duration).toString());
 
       await fetchWithToken('/videos/admin', {
         method: 'POST',

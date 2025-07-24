@@ -1,10 +1,12 @@
 import Link from 'next/link'; 
 import Image from 'next/image'
-import { Star, Calendar } from 'lucide-react';
+import { Star, Calendar, Eye } from 'lucide-react';
 import { Video } from '@/types/videos';
 
 import { sinceDate } from '@/utils/sinceDate';
 import clsx from 'clsx';
+import { formatDuration } from '@/utils/videoUtils';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 export default function VideoCard({video, type = 'default' }: {video: Video, type?: string}) {
   const { id, title, thumbnailUrl, videoUrl, duration, views, uploadDate, department } = video;
@@ -12,7 +14,7 @@ export default function VideoCard({video, type = 'default' }: {video: Video, typ
 
   return (
     <div className={clsx(
-      "w-full bg-transparent rounded-lg overflow-hidden duration-300",
+      "w-full bg-transparent rounded-lg overflow-hidden duration-300 cursor-pointer",
       type === 'default' && 'w-[20vw] ',
       type === 'large' && 'max-w-full'
     )}>
@@ -25,9 +27,9 @@ export default function VideoCard({video, type = 'default' }: {video: Video, typ
             className="hover:scale-105 transition-transform duration-300 min-w-[40%]" 
             fill
           />
-          {/* Duration overlay - hardcoded por ahora */}
+          {/* Duration overlay */}
           <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-            12:34
+            {formatDuration(duration || 0)}
           </div>
         </div>
 
@@ -35,15 +37,24 @@ export default function VideoCard({video, type = 'default' }: {video: Video, typ
         <div className={clsx("p-2 flex justify-between min-h-full min-w-[70%]", type === 'large' && 'px-8')}>
            {/* Title & Department */}
          <div>
-          <h3 
-            className={clsx(
-              "font-semibold text-foreground line-clamp-2  leading-5 mb-2 hover:text-blue-600 transition-colors",
-              type === 'default' && 'text-sm',
-              type === 'large' && 'text-lg'
-            )}
-          >
-            {title}
-          </h3>
+           <Tooltip
+            delayDuration={700}
+           >
+              <TooltipTrigger>
+                <h3 
+                  className={clsx(
+                    "font-semibold text-foreground line-clamp-2 text-left leading-5 mb-2 hover:text-blue-600 transition-colors cursor-pointer",
+                    type === 'default' && 'text-sm',
+                    type === 'large' && 'text-lg'
+                  )}
+                  >
+                    {title}
+                </h3>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className='text-xs text-foreground'>{title}</p>
+              </TooltipContent>
+          </Tooltip>
 
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -55,7 +66,7 @@ export default function VideoCard({video, type = 'default' }: {video: Video, typ
 
           {/* Rating and Date */}
           <div className="text-xs text-gray-500 min-h-full flex flex-col justify-between items-end ">
-            <div className="flex items-center gap-1">
+            {/* <div className="flex items-center gap-1">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -65,11 +76,15 @@ export default function VideoCard({video, type = 'default' }: {video: Video, typ
                 ))}
               </div>
               <span className="ml-1 font-medium">4.2</span>
-            </div>
+            </div> */}
+             <div className='flex items-center gap-1'>
+                <Eye className='w-4 h-4' />
+                <span className='text-nowrap'>{views?.toLocaleString() || '0'} vistas</span>
+              </div>
 
             <div className="flex items-center gap-1">
               <Calendar className="w-3 h-3" />
-              <span>{sinceDate(uploadDate)}</span>
+              <span className='text-nowrap'>{sinceDate(uploadDate)}</span>
             </div>
           </div>
         </div>

@@ -56,7 +56,7 @@ export type VideoState = {
 
 export interface Interaction {
   isPending: boolean
-  isFavorite: boolean
+  favorite: boolean
   progress: number
 }
 

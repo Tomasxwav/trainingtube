@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { Button } from './ui/button'
 import { Fullscreen, Pause, Play, Volume2, VolumeOff } from 'lucide-react'
 import { Slider } from './ui/slider'
+import { formatDuration, isValidUrl } from '@/utils/videoUtils'
 
 interface VideoPlayerProps {
   videoUrl: string
@@ -107,23 +108,10 @@ export default function VideoPlayer({
     }
   }
 
-  const isValidUrl = (url: string) => {
-    try {
-      new URL(url)
-      return true
-    } catch (e) {
-      return false
-    }
-  }
-
   if (!isValidUrl(videoUrl))
     return <div className='h-full w-full'>Video no encontrado</div>
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`
-  }
+
 
   return (
     <div className='relative h-full w-full flex justify-center items-center'>
@@ -166,8 +154,8 @@ export default function VideoPlayer({
           <div
             className=' bg-black/10 text-white text-xs p-2 rounded-full w-max text-center whitespace-nowrap text-ellipsis'
           >
-            {formatTime(video.current?.currentTime || 0)} /{' '}
-            {formatTime(video.current?.duration || 0)}
+            {formatDuration(video.current?.currentTime || 0)} /{' '}
+            {formatDuration(video.current?.duration || 0)}
           </div>
 
           <div className='flex items-center gap-2'>

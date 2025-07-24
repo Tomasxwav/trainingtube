@@ -11,6 +11,7 @@ import VideoPlayer from '@/components/VideoPlayer'
 import EmployeeVideoPlayerSkeleton from '@/partials/employee/videos/EmployeeVideoPlayerSkeleton'
 import { Interaction } from '@/types/videos'
 import { sinceDate } from '@/utils/sinceDate'
+import clsx from 'clsx'
 import {
   BookMarked,
   Calendar,
@@ -40,7 +41,7 @@ export default function VideoPage() {
   )
   const [interactions, setInteractions] = useState<Interaction>({
     isPending: true,
-    isFavorite: false,
+    favorite: false,
     progress: 0,
   })
   const [loading, setLoading] = useState(true)
@@ -104,24 +105,38 @@ export default function VideoPage() {
             <Separator />
           </span>
           <CardContent className='flex justify-around gap-2 flex-wrap py-4'>
-            <Button className='md:w-full justify-start md:gap-3'>
+            <Button className='md:w-full justify-start md:gap-3 bg-red-500/20 text-white/50 hover:bg-red-500/30 hover:text-white'>
               <ThumbsUp className={`w-4 h-4 `} />
               <span className='hidden md:inline-block'>Me gusta</span>
             </Button>
             <Button
-              className='md:w-full justify-start md:gap-3'
-              onClick={() => addFavoriteVideo(video?.id)}
-            >
-              {interactions?.isFavorite ? (
-                <HeartOff className={`w-4 h-4 text-foreground`} />
-              ) : (
-                <Heart className={`w-4 h-4 `} />
+              className={clsx(
+                'md:w-full justify-start ',
+                !interactions.favorite && 'bg-red-500/20 text-white/50 hover:bg-red-500/30 hover:text-white'
               )}
-              <span className='hidden md:inline-block'>
-                Agregar a Favoritos
-              </span>
+              onClick={() => {
+                addFavoriteVideo(video?.id)
+                setInteractions(prev => ({...prev, favorite: !prev.favorite}))
+              }}
+            >
+              {interactions.favorite ? (
+                <span className='flex items-center gap-3'> 
+                  <HeartOff className={`w-4 h-4 text-foreground`} />
+                  <span className='hidden md:inline-block'>
+                    Quitar de Favoritos
+                  </span>
+                </span>
+              ) : (
+                <span className='flex items-center gap-3'>
+                  <Heart className={`w-4 h-4 `} />
+                  <span className='hidden md:inline-block'>
+                    Agregar a Favoritos
+                  </span>
+                </span>
+              )}
+              
             </Button>
-            <Button className='md:w-full justify-start md:gap-3'>
+            <Button className='md:w-full justify-start md:gap-3 bg-red-500/20 text-white/50 hover:bg-red-500/30 hover:text-white'>
               <BookMarked className={`w-4 h-4 `} />
               <span className='hidden md:inline-block'>Ver más tarde</span>
             </Button>
@@ -140,15 +155,13 @@ export default function VideoPage() {
               <div className='flex flex-wrap items-center gap-4 mt-3 text-sm text-muted-foreground'>
                 <div className='flex items-center gap-1'>
                   <Eye className='w-4 h-4' />
-                  <span>24,567 vistas</span>
+                  <span>{video?.views?.toLocaleString() || '0'} vistas</span>
                 </div>
                 <div className='flex items-center gap-1'>
                   <Calendar className='w-4 h-4' />
                   <span>{sinceDate(video?.uploadDate)}</span>
                 </div>
-                <Badge variant='secondary'>Ventas</Badge>
-                <Badge variant='secondary'>TI</Badge>
-                <Badge variant='secondary'>Marketing</Badge>
+                <Badge variant='secondary'>{video?.department.name}</Badge>
               </div>
             </div>
 
@@ -174,18 +187,9 @@ export default function VideoPage() {
             <div className='space-y-3'>
               <h3 className='font-semibold'>Descripción</h3>
               <p className='text-muted-foreground leading-relaxed'>
-                {video?.description
-                  .concat(`En este tutorial completo, exploraremos formularios avanzados para vender productos en línea. 
-                Cubriremos administración, pagos y marketing, y cómo evaluar el éxito de tu campaña.
-                También veremos cómo manejar reembolsos y disputas, y cómo prevenir fraudes.
-                En este tutorial completo, exploraremos formularios avanzados para vender productos en línea. 
-                Cubriremos administración, pagos y marketing, y cómo evaluar el éxito de tu campaña.
-                También veremos cómo manejar reembolsos y disputas, y cómo prevenir fraudes.`)}
+                {video?.description}
               </p>
-              <p className='text-muted-foreground leading-relaxed'>
-                Temas cubiertos: • Formularios • Validación • Pagos • Reembolsos
-                • Disputas • Prevención de Fraudes • Seguridad • Marketing
-              </p>
+              
             </div>
           </div>
         </CardContent>
