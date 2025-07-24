@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { Button } from './ui/button'
-import { Fullscreen, Pause, Play, Volume } from 'lucide-react'
+import { Fullscreen, Pause, Play, Volume2, VolumeOff } from 'lucide-react'
 import { Slider } from './ui/slider'
 
 interface VideoPlayerProps {
@@ -83,17 +83,27 @@ export default function VideoPlayer({
 
   const handleUpdateProgress = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const currentVideo = e.currentTarget
-    const currentProgress =
+    const calculatedProgress =
       (currentVideo.currentTime / currentVideo.duration) * 100
 
-    if (currentProgress >= 95) {
+    setCurrentProgress(calculatedProgress)
+
+    if (calculatedProgress >= 95) {
       console.log('video terminado')
       onFinish()
       return
     }
-    if (progress < currentProgress - 5) {
+    if (progress < calculatedProgress - 5) {
       console.log('ha avanzado 5%')
-      onProgress?.(currentProgress)
+      onProgress?.(calculatedProgress)
+    }
+  }
+
+  const handleMute = () => {
+    const currentVideo = video.current
+    if (currentVideo) {
+      currentVideo.muted = !currentVideo.muted
+      setVolume(currentVideo.muted ? 0 : 100)
     }
   }
 
@@ -131,7 +141,8 @@ export default function VideoPlayer({
             min={0}
             max={100}
             className='w-full'
-            defaultValue={[Math.round(progress)]}
+            value={[currentProgress]}
+            onValueChange={(value) => setCurrentProgress(value[0])}
           />
 
           <div className='flex items-center gap-2'>
@@ -154,8 +165,13 @@ export default function VideoPlayer({
               <Button
                 className='bg-black bg-opacity-50 text-white p-2 rounded-full'
                 onMouseEnter={toggleVolumeSlider}
+                onClick={handleMute}
               >
-                <Volume className='w-4 h-4' />
+                {volume !== 0 ? (
+                  <Volume2 className='w-4 h-4' />
+                ) : (
+                  <VolumeOff className='w-4 h-4' />
+                )}
               </Button>
             </div>
 
