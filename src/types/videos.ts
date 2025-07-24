@@ -54,3 +54,9 @@ export type VideoState = {
   deleteComment: (id: string) => void;
 };
 
+export interface Interaction {
+  pending: boolean
+  favorite: boolean
+  progress: number
+}
+

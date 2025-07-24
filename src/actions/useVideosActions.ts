@@ -1,5 +1,5 @@
 import {useVideoStore} from '@/stores/videoStore';
-import { Video, VideoUpload } from '@/types/videos';
+import { Interaction, Video, VideoUpload } from '@/types/videos';
 import { fetchWithToken } from '@/utils/fetchWithToken';
 import { toast } from "sonner"
 
@@ -88,6 +88,29 @@ export const useVideosActions = () => {
     return data;
   };
 
+  const getInteractions = async (id: string) => {
+    const response = await fetchWithToken(`/interactions/${id}`)
+    const data = await response.data
+    return data
+  }
+
+  const updateVideoEmployeeInteractions = async (id: string, interaction: Interaction) => {
+    const response = await fetchWithToken(`/interactions/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(interaction)
+    })
+
+    const data = await response.data
+    if (response.ok) {
+      toast.success(`Video interactions updated successfully`)
+      return data;
+    }
+    return response.error
+  } 
+
   return {
     addVideo,
     updateVideo,
@@ -99,6 +122,8 @@ export const useVideosActions = () => {
     getLikedVideos,
     addLikedVideo,
     getAllVideos,
+    getInteractions,
+    updateVideoEmployeeInteractions,
     videos
   };
 };
