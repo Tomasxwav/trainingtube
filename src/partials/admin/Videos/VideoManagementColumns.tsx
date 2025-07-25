@@ -27,8 +27,13 @@ function getDepartmentColor(departmentName: string): string {
   return palette[index];
 }
 
+interface VideoMeta {
+  onEdit: (video: Video) => void;
+  onDelete: (id: string) => void;
+  onRatingChange?: (id: string, rating: number) => void;
+}
 
-export const columns: ColumnDef<Video>[] = [
+export const createColumns = (meta: VideoMeta): ColumnDef<Video>[] => [
     {
       accessorKey: 'title',
       header: ({ column }) => {
@@ -234,8 +239,7 @@ export const columns: ColumnDef<Video>[] = [
             variant="ghost"
             size="sm"
             onClick={() => {
-              // TODO: Implementar funcionalidad de edición
-              console.log('Editar video:', row.original.id)
+              meta.onEdit(row.original)
             }}
             className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
           >
@@ -245,8 +249,7 @@ export const columns: ColumnDef<Video>[] = [
             variant="ghost"
             size="sm"
             onClick={() => {
-              // TODO: Implementar funcionalidad de eliminación
-              console.log('Eliminar video:', row.original.id)
+              meta.onDelete(row.original.id)
             }}
             className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
           >

@@ -24,17 +24,20 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-import { useActionState, useTransition } from 'react';
+import { useActionState, useTransition, useEffect } from 'react';
 import { useDepartmentStore } from '@/stores/departmentStore';
+import { Video, VideoUpload } from '@/types/videos';
+import { Circle } from 'lucide-react';
 
 interface ChildComponentProps {
   isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onVideoAdded?: () => void;
+  onClose: () => void;
+  video?: Video | null;
+  handleAction: (video: VideoUpload ) => Promise<void>;
+  onVideosChanged?: () => void;
 }
 
-export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdded }: ChildComponentProps) {
-    const { addVideo } = useVideosActions();
+export default function VideoManagementModal({ isOpen, onClose, handleAction, video, onVideosChanged }: ChildComponentProps) {
     const [isPending, startTransition] = useTransition();
     const { departments } = useDepartmentStore();
 
@@ -44,11 +47,8 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
         >(
         async (prevState, values) => {
             try {
-            await addVideo({ ...values, department_id: values.department_id }, () => {
-              if (onVideoAdded) {
-                onVideoAdded();
-              }
-            });
+            await handleAction({ ...values });
+            onClose();
             return true; 
             } catch {
             return false; 
@@ -62,24 +62,43 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
         defaultValues: {
           title: '',
           description: '',
-          thumbnail: {} as File,
-          video: {} as File,
-          department_id: 0 ,
+          thumbnail: ({} as File),
+          video: ({} as File),
+          department_id: 0,
         },
-      })
+    });
 
-      function onSubmit(values: z.infer<typeof videoSchema>) {
+    useEffect(() => {
+        if (video) {
+            form.reset({
+                title: video.title,
+                description: video.description,
+                thumbnail: ({} as File),
+                video: ({} as File),
+                department_id: Number(video.department.id),
+            });
+        } else {
+            form.reset({
+                title: '',
+                description: '',
+                thumbnail: ({} as File),
+                video: ({} as File),
+                department_id: 0,
+            });
+        }
+    }, [video, form]);
+
+    function onSubmit(values: z.infer<typeof videoSchema>) {
         console.log('onSubmit', values);
         startTransition(() => {
           action(values);
         });
-        form.reset();
-        onOpenChange(false)
     }
 
     const handleOpenChange = (open: boolean) => {
-        form.reset();
-        onOpenChange(open);
+        if (!open) {
+            onClose();
+        }
     }
       
     return (
@@ -92,10 +111,13 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
             </div>
-            Subir Nuevo Video de Capacitación
+            {video ? 'Editar Video de Capacitación' : 'Subir Nuevo Video de Capacitación'}
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Agrega un nuevo video de capacitación a tu biblioteca. Completa la información requerida a continuación.
+            {video 
+              ? 'Modifica la información del video de capacitación.' 
+              : 'Agrega un nuevo video de capacitación a tu biblioteca. Completa la información requerida a continuación.'
+            }
           </DialogDescription>
         </DialogHeader>
         
@@ -249,12 +271,8 @@ export default function VideoManagementModal({ isOpen, onOpenChange, onVideoAdde
                             className="flex-1"
                         > 
                             {(pending || isPending) ? (
-                                <>
-                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                    Subiendo...
+                                <><Circle className="animate-spin -ml-1 mr-2 h-4 w-4" /> 
+                                  Subiendo...
                                 </>
                             ) : (
                                 "Subir Video"
