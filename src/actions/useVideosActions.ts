@@ -129,6 +129,13 @@ export const useVideosActions = () => {
     return response.error
   } 
 
+  const getVideosCount = async () => {
+    const response = await fetchWithToken(`/videos/department/count`)
+    const data = await response.data
+    return data
+  }
+
+
   return {
     addVideo,
     updateVideo,
@@ -141,6 +148,7 @@ export const useVideosActions = () => {
     addLikedVideo,
     getAllVideos,
     getInteractions,
+    getVideosCount,
     updateVideoEmployeeInteractions,
     videos
   };
