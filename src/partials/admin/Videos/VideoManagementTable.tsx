@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { columns } from "./VideoManagementColumns"
+import { createColumns } from "./VideoManagementColumns"
 import { useVideosActions } from '@/actions/useVideosActions'
 
 import React, { useEffect, useState, useMemo } from "react"
@@ -25,36 +25,23 @@ import { Video } from '@/types/videos'
 import { Skeleton } from '@/components/ui/skeleton'
 
 interface VideoManagementTableProps {
+  videos: Video[];
   searchTerm: string;
   departmentFilter: string;
   refreshTrigger?: number; 
+  onEdit: (video: Video) => void;
+  onDelete: (id: string) => void;
+  isLoading: boolean;
 }
 
-export default function VideoManagementTable({ searchTerm, departmentFilter, refreshTrigger }: VideoManagementTableProps) {
-  const { getAllVideos } = useVideosActions()
-  const [videos, setVideos] = useState<Video[]>([])
-  const [loading, setLoading] = useState(true)
+export default function VideoManagementTable({ searchTerm, departmentFilter, refreshTrigger, onDelete, onEdit, isLoading, videos }: VideoManagementTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
 
-  useEffect(() => {
-    setLoading(true)
-    getAllVideos()
-      .then((data: Video[]) => {
-        setVideos(data || [])
-      })
-      .finally(() => setLoading(false))
-  }, [])
+  const columns = useMemo(() => createColumns({
+    onEdit,
+    onDelete,
+  }), [onEdit, onDelete])
 
-  useEffect(() => {
-    if (refreshTrigger && refreshTrigger > 0) {
-      setLoading(true)
-      getAllVideos()
-        .then((data: Video[]) => {
-          setVideos(data || [])
-        })
-        .finally(() => setLoading(false))
-    }
-  }, [refreshTrigger])
 
   const filteredVideos = useMemo(() => {
     if (!videos) return []
@@ -85,7 +72,7 @@ export default function VideoManagementTable({ searchTerm, departmentFilter, ref
     onSortingChange: setSorting,
   })
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="rounded-md border">
         <Table>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Plus, Search, Filter, Film, BarChart3, Eye, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,19 +17,102 @@ import {
 import { Input } from '@/components/ui/input';
 import VideoManagementTable from '@/partials/admin/Videos/VideoManagementTable';
 import { useDepartmentStore } from '@/stores/departmentStore'; 
+import { useVideosActions } from '@/actions/useVideosActions';
+import { Video, VideoUpload } from '@/types/videos';
+import { toast } from 'sonner';
 
 export default function VideoManagement() {
   const departments = useDepartmentStore((state) => state.departments);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const { getAllVideos, updateVideo, deleteVideo, addVideo } = useVideosActions();
   const [searchTerm, setSearchTerm] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('all');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  
-  const handleVideoAdded = () => {
+  const [loading, setLoading] = useState(false);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingVideo, setEditingVideo] = useState<Video | null>(null);
+
+  useEffect(() => {
+    setLoading(true)
+    getAllVideos()
+      .then((data: Video[]) => {
+        setVideos(data || [])
+      })
+      .finally(() => setLoading(false))
+  }, [refreshTrigger])
+
+  const handleVideosChanged = () => {
     setRefreshTrigger(prev => prev + 1);
   };
-  
-  
+
+  const handleAddVideo = async (video: VideoUpload) => {
+    try {
+      await addVideo(video);
+      
+      const updatedVideos = await getAllVideos();
+      setVideos(updatedVideos || []);
+      
+      setIsModalOpen(false);
+      toast.success('Video agregado exitosamente!');
+    } catch (error) {
+      console.error('Error al agregar video:', error);
+      toast.error('No se pudo agregar el video. Por favor, inténtalo de nuevo.');
+    }
+  };
+
+  const handleUpdateVideo = async (video: VideoUpload) => {
+    if (!editingVideo) return;
+    
+    try {
+      const updatedVideoData: Video = {
+        ...editingVideo,
+        title: video.title,
+        description: video.description,
+        department: departments.find(d => d.id === video.department_id.toString()) || editingVideo.department
+      };
+
+      await updateVideo(updatedVideoData);
+      
+      setVideos(prev => prev.map(v => v.id === editingVideo.id ? updatedVideoData : v));
+      
+      setEditingVideo(null);
+      setIsModalOpen(false);
+      toast.success('Video actualizado exitosamente!');
+    } catch (error) {
+      console.error('Error al actualizar video:', error);
+      toast.error('No se pudo actualizar el video. Por favor, inténtalo de nuevo.');
+    }
+  };
+
+  const handleDeleteVideo = async (id: string) => {
+    try {
+      await deleteVideo(id);
+      
+      // Actualizar el estado local removiendo el video
+      setVideos(prev => prev.filter(v => v.id !== id));
+      
+      toast.success('Video eliminado exitosamente!');
+    } catch (error) {
+      console.error('Error al eliminar video:', error);
+      toast.error('No se pudo eliminar el video. Por favor, inténtalo de nuevo.');
+    }
+  };
+
+  const handleEditVideo = (video: Video) => {
+    setEditingVideo(video);
+    setIsModalOpen(true);
+  };
+
+  const openCreateModal = () => {
+    setEditingVideo(null);
+    setIsModalOpen(true);
+  };
+
+   const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingVideo(null);
+  };
+
   return (
     <div className="animate-fade-in space-y-6">
       {/* Sección de encabezado */}
@@ -45,7 +128,7 @@ export default function VideoManagement() {
         </div>
         
         <Button
-          onClick={() => setIsAddModalOpen(true)}
+          onClick={openCreateModal}
           className="flex items-center gap-2 mt-4 sm:mt-0" 
         >
           <Plus size={18} />
@@ -115,7 +198,7 @@ export default function VideoManagement() {
       
       {/* Sección de filtros */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent>
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div className="relative flex-1">
               <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
@@ -161,6 +244,10 @@ export default function VideoManagement() {
         </CardHeader>
         <CardContent>
           <VideoManagementTable 
+            videos={videos}
+            onEdit={handleEditVideo}
+            onDelete={handleDeleteVideo}
+            isLoading={loading}
             searchTerm={searchTerm} 
             departmentFilter={departmentFilter} 
             refreshTrigger={refreshTrigger}
@@ -169,9 +256,10 @@ export default function VideoManagement() {
       </Card>
 
       <VideoManagementModal 
-        isOpen={isAddModalOpen} 
-        onOpenChange={setIsAddModalOpen}
-        onVideoAdded={handleVideoAdded}
+        isOpen={isModalOpen} 
+        onClose={closeModal}
+        video={editingVideo}
+        handleAction={editingVideo ? handleUpdateVideo : handleAddVideo}
       />
     </div>
   );
