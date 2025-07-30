@@ -50,7 +50,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
       email: '',
       password: '',
       role: 'EMPLOYEE',
-      department: '',
+      department_id: 0,
     },
   });
 
@@ -63,7 +63,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
         email: employee.email,
         password: '',
         role: employee.role.name as Roles,
-        department: employee.department.name || '',
+        department_id: Number(employee.department.id) || 0,
       });
     } else {
       reset({
@@ -71,7 +71,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
         email: '',
         password: '',
         role: 'EMPLOYEE',
-        department: '',
+        department_id: 0,
       });
     }
   }, [employee, reset]);
@@ -81,7 +81,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
     const submitData = {
       ...data,
       password: data.password || (employee ? employee.password : ''),
-      department: data.department || '',
+      department_id: data.department_id || 0,
       role: data.role.toUpperCase() as Roles,
     };
     onSubmit(submitData);
@@ -235,22 +235,22 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
           <div className="space-y-2">
             <Label>Departamento</Label>
             <Select
-              value={watch('department')}
-              onValueChange={(value) => setValue('department', value)}
+              onValueChange={(value) => setValue('department_id', Number(value))}
+              defaultValue={String(employee?.department.id || '')}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona un departamento" />
               </SelectTrigger>
               <SelectContent>
                 {departments.map((dept) => (
-                  <SelectItem key={dept.id} value={dept.name}>
+                  <SelectItem key={dept.id} value={String(dept.id)}>
                     {dept.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {errors.department && (
-              <p className="text-sm text-destructive">{errors.department.message}</p>
+            {errors.department_id && (
+              <p className="text-sm text-destructive">{errors.department_id.message}</p>
             )}  
           </div>
 

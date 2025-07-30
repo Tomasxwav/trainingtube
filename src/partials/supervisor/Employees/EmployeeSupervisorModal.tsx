@@ -237,6 +237,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
           <div className="space-y-2">
             <Label>Departamento</Label>
             <Select
+              disabled
               onValueChange={(value) => {
                 setValue('department_id', Number(value))
                 console.log('Selected Department ID:', value);

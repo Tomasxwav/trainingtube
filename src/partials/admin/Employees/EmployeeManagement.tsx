@@ -8,12 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Plus, Users } from 'lucide-react';
 import { useEmployeesActions } from '@/actions/useEmployeesActions';
 import { toast } from 'sonner';
+import { useDepartmentStore } from '@/stores/departmentStore';
 
 export function EmployeeManagement() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const departments = useDepartmentStore((state) => state.departments);
 
   const { getEmployees, createEmployee, updateEmployee, deleteEmployee } = useEmployeesActions();
   useEffect(() => {
@@ -27,9 +29,9 @@ export function EmployeeManagement() {
   const handleCreateEmployee = async (employeeData: EmployeeFormData) => {
     try {
       const loadingToast = toast.loading('Creando empleado...');
-      
+
       await createEmployee(employeeData);
-      
+
       const employeeToAdd: Employee = {
         ...employeeData,
         id: crypto.randomUUID(),
@@ -40,9 +42,9 @@ export function EmployeeManagement() {
           authorities: [],
         },
         department: {
-          id: crypto.randomUUID(),
+          id: employeeData.department_id.toString(),
           description: '',
-          name: employeeData.department,
+          name: departments.find(dep => dep.id === employeeData.department_id.toString())?.name || 'Departamento Desconocido',
           active: true,
         },
       };
@@ -74,10 +76,7 @@ export function EmployeeManagement() {
                   ...emp.role,
                   name: employeeData.role as Roles,
                 },
-                department: {
-                  ...emp.department,
-                  name: employeeData.department,
-                },
+                department_id: employeeData.department_id,
               }
             : emp
         )
