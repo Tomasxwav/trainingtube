@@ -52,24 +52,48 @@ export const useEmployeesActions = () => {
     return data;
   };
 
-  const getDepartmentEmployees = async (id: string) => {
-    const response = await fetchWithToken(`/employees/departments`);
+  const getDepartmentEmployees = async () => {
+    const response = await fetchWithToken(`/employees/department`);
     const data = await response.data;
     return data;
   };
 
-  const updateDepartmentEmployees = async (id: string, employees: EmployeeFormData[]) => {
-    const response = await fetchWithToken(`/employees/departments/${id}`, {
+  const updateDepartmentEmployee = async (id: string, employee: EmployeeFormData) => {
+    const response = await fetchWithToken(`/employees/department/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(employees),
+      body: JSON.stringify(employee),
     });
     const data = await response.data;
     return data;
   };
 
+  const createDepartmentEmployee = async (employee: EmployeeFormData ) => {
+    const response = await fetchWithToken('/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(employee),
+    });
+    const data = await response.data;
+    return data;
+  };
+
+  const deleteDepartmentEmployee = async (id: string) => {
+    const response = await fetchWithToken(`/employees/department/${id}`, {
+      method: 'DELETE',
+    });
+    const data = await response.data;
+    if (response.ok) {
+      toast.success(`Employee deleted successfully`);
+      return data;
+    }
+    toast.error(`Error deleting employee: ${response.error}`);
+    return data;
+  };
   
   return {
     getEmployees,
@@ -78,6 +102,8 @@ export const useEmployeesActions = () => {
     updateEmployee,
     deleteEmployee,
     getDepartmentEmployees,
-    updateDepartmentEmployees,
+    updateDepartmentEmployee,
+    createDepartmentEmployee,
+    deleteDepartmentEmployee
   };
 };

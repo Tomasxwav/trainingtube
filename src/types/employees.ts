@@ -28,7 +28,7 @@ export type EmployeeFormData = {
     email: string;
     password: string;
     role: Roles;
-    department: string;
+    department_id: number;
   };
   
   

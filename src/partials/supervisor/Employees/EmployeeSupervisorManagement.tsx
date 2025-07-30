@@ -1,0 +1,205 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { Employee, EmployeeFormData, Role, Roles } from '@/types/employees';
+import { EmployeeTable } from '@/partials/admin/Employees/EmployeeTable';
+import { EmployeeModal } from '@/partials/supervisor/Employees/EmployeeSupervisorModal';
+import { Button } from '@/components/ui/button';
+import { Loader2, Plus, Users } from 'lucide-react';
+import { useEmployeesActions } from '@/actions/useEmployeesActions';
+import { toast } from 'sonner';
+import { useDepartmentStore } from '@/stores/departmentStore';
+
+export function EmployeeSupervisorManagement() {
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const departments = useDepartmentStore((state) => state.departments);
+  
+
+  const { getDepartmentEmployees, createDepartmentEmployee, updateDepartmentEmployee, deleteDepartmentEmployee } = useEmployeesActions();
+  useEffect(() => {
+    setIsLoading(true);
+    getDepartmentEmployees().then(data => {
+      setEmployees(data);
+      setIsLoading(false);
+    });
+  }, []);
+
+  const handleCreateEmployee = async (employeeData: EmployeeFormData) => {
+    try {
+      const loadingToast = toast.loading('Creando empleado...');
+
+      await createDepartmentEmployee(employeeData);
+
+      const employeeToAdd: Employee = {
+        ...employeeData,
+        id: crypto.randomUUID(),
+        createdAt: new Date().toISOString(),
+        role: {
+          id: crypto.randomUUID(),
+          name: employeeData.role as Roles,
+          authorities: [],
+        },
+        department: {
+          id: employeeData.department_id.toString(),
+          description: '',
+          name: departments.find(dep => dep.id === employeeData.department_id.toString())?.name || 'Departamento Desconocido',
+          active: true,
+        },
+      };
+      
+      setEmployees(prev => [...prev, employeeToAdd]);
+      
+      setIsModalOpen(false);
+      
+      toast.dismiss(loadingToast);
+      toast.success(`${employeeData.role.toLowerCase()} ${employeeData.name} creado exitosamente!`);
+      
+    } catch (error) {
+      console.error('Error al crear empleado:', error);
+      toast.error('No se pudo crear el empleado. Por favor, inténtalo de nuevo.');
+    }
+  };
+
+  const handleUpdateEmployee = (employeeData: EmployeeFormData) => {
+    if (!editingEmployee) return;
+
+    updateDepartmentEmployee(editingEmployee.id, employeeData).then(() => {
+      setEmployees(prev =>
+        prev.map(emp =>
+          emp.id === editingEmployee.id
+            ? {
+                ...emp,
+                ...employeeData,
+                role: {
+                  ...emp.role,
+                  name: employeeData.role as Roles,
+                },
+                department: {
+                  ...emp.department,
+                  id: employeeData.department_id.toString(),
+                  name: departments.find(dep => dep.id === employeeData.department_id.toString())?.name || 'Departamento Desconocido',
+                },
+              }
+            : emp
+        )
+      );
+      setEditingEmployee(null);
+      setIsModalOpen(false);
+    });
+
+    setEditingEmployee(null);
+    setIsModalOpen(false);
+  };
+
+  const handleDeleteEmployee = (id: string) => {
+    deleteDepartmentEmployee(id).then(() => {
+      setEmployees(prev => prev.filter(emp => emp.id !== id));
+    });
+  };
+
+  const handleEditEmployee = (employee: Employee) => {
+    setEditingEmployee(employee);
+    setIsModalOpen(true);
+  };
+
+  const handleRoleChange = (id: string, newRole: Roles) => {
+    // TODO
+    console.log('handleRoleChange', id, newRole);
+  };
+
+  const openCreateModal = () => {
+    setEditingEmployee(null);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingEmployee(null);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Encabezado */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <Users className="h-6 w-6 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Gestión de Empleados</h1>
+            <p className="text-muted-foreground">Administra los miembros de tu equipo y sus roles</p>
+          </div>
+        </div>
+        <Button onClick={openCreateModal} className="flex items-center space-x-2">
+          <Plus className="h-4 w-4" />
+          <span>Agregar Empleado</span>
+        </Button>
+      </div>
+
+      {/* Tarjetas de Estadísticas */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-card rounded-lg border p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Total de Empleados</p>
+              <p className="text-2xl font-bold text-foreground">{employees.length}</p>
+            </div>
+            <div className="p-2 bg-blue-500/10 rounded-lg">
+              <Users className="h-5 w-5 text-blue-500" />
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-card rounded-lg border p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Supervisores</p>
+              <p className="text-2xl font-bold text-foreground">
+                {employees.filter(emp => emp.role.name === 'SUPERVISOR').length}
+              </p>
+            </div>
+            <div className="p-2 bg-green-500/10 rounded-lg">
+              <Users className="h-5 w-5 text-green-500" />
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-card rounded-lg border p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Empleados Regulares</p>
+              <p className="text-2xl font-bold text-foreground">
+                {employees.filter(emp => emp.role.name === 'EMPLOYEE').length}
+              </p>
+            </div>
+            <div className="p-2 bg-orange-500/10 rounded-lg">
+              <Users className="h-5 w-5 text-orange-500" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tabla de Empleados */}
+      <div className="bg-card rounded-lg border">
+        <EmployeeTable
+          employees={employees}
+          onEdit={handleEditEmployee}
+          onDelete={handleDeleteEmployee}
+          onRoleChange={handleRoleChange}
+          isLoading={isLoading}
+        />
+      </div>
+
+      {/* Modal */}
+      <EmployeeModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSubmit={editingEmployee ? handleUpdateEmployee : handleCreateEmployee}
+        employee={editingEmployee}
+      />
+    </div>
+  );
+}
