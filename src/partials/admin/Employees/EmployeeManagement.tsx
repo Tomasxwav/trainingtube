@@ -15,7 +15,7 @@ export function EmployeeManagement() {
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { getEmployees, createEmployee } = useEmployeesActions();
+  const { getEmployees, createEmployee, updateEmployee, deleteEmployee } = useEmployeesActions();
   useEffect(() => {
     setIsLoading(true);
     getEmployees().then(data => {
@@ -63,16 +63,37 @@ export function EmployeeManagement() {
   const handleUpdateEmployee = (employeeData: EmployeeFormData) => {
     if (!editingEmployee) return;
 
-    // TODO
-    console.log('handleUpdateEmployee', employeeData);
+    updateEmployee(editingEmployee.id, employeeData).then(() => {
+      setEmployees(prev =>
+        prev.map(emp =>
+          emp.id === editingEmployee.id
+            ? {
+                ...emp,
+                ...employeeData,
+                role: {
+                  ...emp.role,
+                  name: employeeData.role as Roles,
+                },
+                department: {
+                  ...emp.department,
+                  name: employeeData.department,
+                },
+              }
+            : emp
+        )
+      );
+      setEditingEmployee(null);
+      setIsModalOpen(false);
+    });
 
     setEditingEmployee(null);
     setIsModalOpen(false);
   };
 
   const handleDeleteEmployee = (id: string) => {
-    // TODO
-    console.log('handleDeleteEmployee', id);
+    deleteEmployee(id).then(() => {
+      setEmployees(prev => prev.filter(emp => emp.id !== id));
+    });
   };
 
   const handleEditEmployee = (employee: Employee) => {

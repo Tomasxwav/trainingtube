@@ -89,35 +89,9 @@ export const createColumns = (meta: DepartmentTableMeta): ColumnDef<Employee>[] 
             }
         };
         return (
-          <Select
-            value={employee.role.name}
-            onValueChange={(value: Roles) => meta.onRoleChange(employee.id, value.toUpperCase() as Roles)}
-          >
-            <SelectTrigger className="w-32">
-              <SelectValue>
-                <Badge variant={getRoleBadgeVariant(employee.role.name)} className="capitalize">
-                  {employee.role.name.toLocaleLowerCase()}
-                </Badge>
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="employee">
-                <Badge variant="secondary" className="capitalize">
-                  Empleado
-                </Badge>
-              </SelectItem>
-              <SelectItem value="supervisor">
-                <Badge variant="default" className="capitalize">
-                  Supervisor
-                </Badge>
-              </SelectItem>
-              <SelectItem value="admin">
-                <Badge variant="destructive" className="capitalize">
-                  Administrador
-                </Badge>
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          <Badge variant={getRoleBadgeVariant(employee.role.name)} className="capitalize">
+            {employee.role.name.toLocaleLowerCase()}
+          </Badge>
         );
       },
       filterFn: (row, id, value) => {

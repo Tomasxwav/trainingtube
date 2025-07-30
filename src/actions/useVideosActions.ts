@@ -53,8 +53,18 @@ export const useVideosActions = () => {
     console.log('updateVideo', video);
   };
 
-  const deleteVideo = (id: string) => {
-    console.log('deleteVideo', id);
+  const deleteVideo = async (id: string) => {
+    const response = await fetchWithToken(`/videos/admin/${id}`, {
+      method: 'DELETE',
+    });
+    const data = await response.data;
+    if (response.ok) {
+      toast.success(`Video eliminado exitosamente!`);
+      fetchVideos();
+      return data;
+    }
+    toast.error(`Error eliminando video: ${response.error}`);
+    return data;
   };
 
   const getAverageRating = (id: string) => {

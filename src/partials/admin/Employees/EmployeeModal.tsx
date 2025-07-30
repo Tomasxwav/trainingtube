@@ -62,7 +62,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
         name: employee.name,
         email: employee.email,
         password: '',
-        role: employee.role.name,
+        role: employee.role.name as Roles,
         department: employee.department.name || '',
       });
     } else {
@@ -77,6 +77,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
   }, [employee, reset]);
 
   const onFormSubmit = (data: EmployeeFormData) => {
+    console.log('onFormSubmit', data);
     const submitData = {
       ...data,
       password: data.password || (employee ? employee.password : ''),
