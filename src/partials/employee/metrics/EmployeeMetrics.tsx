@@ -1,15 +1,20 @@
-import SupervisorMetricsProgressChart from '@/partials/supervisor/metrics/SupervisorMetricsProgressChart';
+import SupervisorMetricsProgressChart from '@/partials/admin/metrics/SupervisorMetricsProgressChart';
 import EmployeeMetricsActivityChart from './EmployeeMetricsActivityChart';
-import { SupervisorMetricsVideoCountChart } from '@/partials/supervisor/metrics/SupervisorMetricsVideoCountChart';
+import { SupervisorMetricsVideoCountChart } from '@/partials/admin/metrics/SupervisorMetricsVideoCountChart';
 
 export default function EmployeeMetrics() {
   return (
     <div className="p-8 space-y-8">
-        EmployeeMetrics
+      <h1 className="text-2xl font-bold">Métricas de Empleados</h1>
+
         <div className="h-[300px] max-h-[300px] w-full">
           <EmployeeMetricsActivityChart />
         </div>
         
+      <h1 className="text-2xl font-bold">Métricas de Supervisores</h1>
+
+
+      <h1 className="text-2xl font-bold">Métricas de Admins</h1>
         <div className=" w-full">
           <SupervisorMetricsProgressChart />
         </div>

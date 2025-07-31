@@ -17,7 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { dataRadialChart, radialChartConfig } from "../../supervisor/metrics/dataRadialChart"
+import { dataRadialChart, radialChartConfig } from "../../admin/metrics/dataRadialChart"
 
 export const description = "Gráfico radial de progreso de capacitación por departamento"
 
