@@ -1,7 +1,9 @@
+import EmployeeMetrics from '@/partials/employee/metrics/EmployeeMetrics';
+
 export default function MyMetricsPage() {
   return (
     <div>
-      <h1>Mis Métricas</h1>
+      <EmployeeMetrics />
     </div>
   )
 }
