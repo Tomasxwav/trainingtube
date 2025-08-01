@@ -22,7 +22,6 @@ import { dataRadialChart, radialChartConfig } from "../../admin/metrics/dataRadi
 export const description = "Gráfico radial de progreso de capacitación por departamento"
 
 export default function EmployeeMetricsChart() {
-  // Calcular estadísticas generales
   const totalEmployees = dataRadialChart.reduce((acc, dept) => acc + dept.totalEmployees, 0);
   const totalCompleted = dataRadialChart.reduce((acc, dept) => acc + dept.completedEmployees, 0);
   const overallPercentage = Math.round((totalCompleted / totalEmployees) * 100);
@@ -83,13 +82,12 @@ export default function EmployeeMetricsChart() {
                 dataKey="department"
                 className="fill-white text-xs font-medium mix-blend-luminosity"
                 fontSize={10}
-                formatter={(value: string) => value.split(' ')[0]} // Solo mostrar la primera palabra
+                formatter={(value: string) => value.split(' ')[0]}
               />
             </RadialBar>
           </RadialBarChart>
         </ChartContainer>
         
-        {/* Estadísticas adicionales */}
         <div className="grid grid-cols-2 gap-4 mt-4 text-center">
           <div className="space-y-1">
             <div className="text-2xl font-bold text-primary">{overallPercentage}%</div>

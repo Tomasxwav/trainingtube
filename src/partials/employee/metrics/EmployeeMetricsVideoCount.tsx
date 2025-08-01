@@ -34,7 +34,7 @@ export function EmployeeMetricsVideoCount() {
   ]
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col max-h-[300px] h-[300px] overflow-hidden">
       <CardHeader className="items-center pb-0">
         <CardTitle>Progreso de Videos</CardTitle>
         <CardDescription>Videos completados vs pendientes</CardDescription>

@@ -41,12 +41,11 @@ export const DailyData = [
     { day: "31", interactions: 3 },
 ]
 
-// Data for video completion metrics
 export const videoMetricsData = [
     { 
         category: "videos", 
-        total: 20,    // Will be populated from API
-        pending: 5   // Will be populated from API
+        total: 20,
+        pending: 5
     }
 ]
 

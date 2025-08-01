@@ -16,8 +16,8 @@ export default function EmployeeMetricsActivityChart() {
   } satisfies ChartConfig
 
   return (
-    <div className="h-full w-full">
-        <ChartContainer config={chartConfig} className="h-full w-full">
+    <div className="h-fit max-h-[300px] w-full">
+        <ChartContainer config={chartConfig} className="h-fit max-h-[300px] w-full">
           <AreaChart
             accessibilityLayer
             data={chartData}

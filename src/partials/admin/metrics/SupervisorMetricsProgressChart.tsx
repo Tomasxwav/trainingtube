@@ -83,13 +83,12 @@ export default function SupervisorMetricsProgressChart() {
                 dataKey="department"
                 className="fill-white text-xs font-medium mix-blend-luminosity"
                 fontSize={10}
-                formatter={(value: string) => value.split(' ')[0]} // Solo mostrar la primera palabra
+                formatter={(value: string) => value.split(' ')[0]}
               />
             </RadialBar>
           </RadialBarChart>
         </ChartContainer>
         
-        {/* Estadísticas adicionales */}
         <div className="grid grid-cols-2 gap-4 mt-4 text-center">
           <div className="space-y-1">
             <div className="text-2xl font-bold text-primary">{overallPercentage}%</div>
