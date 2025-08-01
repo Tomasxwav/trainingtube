@@ -40,3 +40,23 @@ export const DailyData = [
     { day: "30", interactions: 8 },
     { day: "31", interactions: 3 },
 ]
+
+// Data for video completion metrics
+export const videoMetricsData = [
+    { 
+        category: "videos", 
+        total: 20,    // Will be populated from API
+        pending: 5   // Will be populated from API
+    }
+]
+
+export const videoChartConfig = {
+    completed: {
+        label: "Videos Finalizados",
+        color: "var(--chart-1)",
+    },
+    pending: {
+        label: "Videos Pendientes", 
+        color: "var(--chart-2)",
+    },
+}
