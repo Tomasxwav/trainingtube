@@ -34,21 +34,22 @@ export function EmployeeMetricsVideoCount() {
   ]
 
   return (
-    <Card className="flex flex-col max-h-[300px] h-[300px] overflow-hidden">
+    <Card className="flex flex-col max-h-full h-full overflow-hidden">
       <CardHeader className="items-center pb-0">
         <CardTitle>Progreso de Videos</CardTitle>
         <CardDescription>Videos completados vs pendientes</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-1 items-center pb-0">
+      <CardContent className="flex flex-1 items-center pb-0 ">
         <ChartContainer
           config={videoChartConfig}
-          className="mx-auto aspect-square w-full max-w-[250px]"
+          className="mx-auto w-full max-w-[250px] "
         >
           <RadialBarChart
             data={chartData}
             endAngle={180}
             innerRadius={80}
             outerRadius={130}
+            cy={110}
           >
             <ChartTooltip
               cursor={false}
@@ -65,7 +66,7 @@ export function EmployeeMetricsVideoCount() {
                           y={(viewBox.cy || 0) - 16}
                           className="fill-foreground text-2xl font-bold"
                         >
-                          {totalVideos}
+                          {completedVideos}/{totalVideos}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -85,23 +86,21 @@ export function EmployeeMetricsVideoCount() {
               fill="var(--color-pending)"
               stackId="a"
               cornerRadius={5}
-              className="stroke-transparent stroke-2"
             />
             <RadialBar
               dataKey="completed"
               stackId="a"
               cornerRadius={5}
               fill="var(--color-completed)"
-              className="stroke-transparent stroke-2"
             />
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
+        <div className="flex items-center gap-2 font-medium">
           Videos en progreso <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="text-muted-foreground leading-none">
+        <div className="text-muted-foreground">
           Progreso de finalización de videos de entrenamiento
         </div>
       </CardFooter>
