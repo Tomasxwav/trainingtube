@@ -21,7 +21,7 @@ import { dataPieChart, pieChartConfig } from "./dataPieChart"
 
 export const description = "Gráfico de distribución de videos por departamento"
 
-export function SupervisorMetricsVideoCountChart() {
+export function AdminMetricsVideoCountChart() {
   const totalVideos = dataPieChart.reduce((acc, dept) => acc + dept.videoCount, 0);
   const departmentWithMostVideos = dataPieChart.reduce((prev, current) => 
     prev.videoCount > current.videoCount ? prev : current

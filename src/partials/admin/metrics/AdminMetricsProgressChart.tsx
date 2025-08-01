@@ -21,7 +21,7 @@ import { dataRadialChart, radialChartConfig } from './dataRadialChart'
 
 export const description = "Gráfico radial de progreso de capacitación por departamento"
 
-export default function SupervisorMetricsProgressChart() {
+export default function AdminMetricsProgressChart() {
   // Calcular estadísticas generales
   const totalEmployees = dataRadialChart.reduce((acc, dept) => acc + dept.totalEmployees, 0);
   const totalCompleted = dataRadialChart.reduce((acc, dept) => acc + dept.completedEmployees, 0);
