@@ -5,6 +5,7 @@ import { EmployeeMetricsVideoCount } from './EmployeeMetricsVideoCount';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heart, MessageCircle, Users } from 'lucide-react';
 import { SupervisorMetricsEmployeesChart } from '@/partials/supervisor/Employees/metrics/SupervisorMetricsEmployeesChart';
+import { getDepartmentsLatestComments } from '@/partials/supervisor/Employees/metrics/employeeMetricsConfig';
 
 export default function EmployeeMetrics() {
   return (
@@ -111,7 +112,28 @@ export default function EmployeeMetrics() {
             </div>
             
           </CardContent>
-          
+        </Card>
+
+        <Card className='col-span-2 md:col-span-5 h-full'>
+          <CardHeader className="border-b pb-4">
+            <CardTitle>
+              Comentarios
+            </CardTitle>
+            <CardDescription>
+              Ultimos comentarios recibidos por los empleados
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {
+              getDepartmentsLatestComments().map((comment, index) => (
+                <div key={index} className="border-b border-muted py-2">
+                  <h2 className="text-sm font-medium text-foreground">{comment.employee} en {comment.video}</h2>
+                  <p className="text-sm text-muted-foreground">{comment.textComment}</p>
+                  <p className="text-xs text-muted-foreground">{comment.date}</p>
+                </div>
+              ))
+            }
+          </CardContent>
         </Card>
       
       </div>
