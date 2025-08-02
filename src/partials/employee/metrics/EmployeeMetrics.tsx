@@ -138,13 +138,16 @@ export default function EmployeeMetrics() {
       
       </div>
 
-      <h1 className="text-2xl font-bold">Métricas de Admins</h1>
-        <div className=" w-full">
-          <AdminMetricsProgressChart />
-        </div>
+      <h1 className="text-2xl font-bold ">Métricas de Admins</h1>
+        <div className="grid grid-cols-2 gap-4">
+          <div className=" w-full col-span-1">
+            <AdminMetricsProgressChart />
+          </div>
 
-        <div className="w-full h-[300px] max-h-[300px]">
-          <AdminMetricsVideoCountChart />
+          <div className="w-full h-[300px] max-h-[300px] col-span-1">
+            <AdminMetricsVideoCountChart />
+          </div>
+
         </div>
         
     </div>
