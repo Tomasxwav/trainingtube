@@ -18,14 +18,33 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { dataRadialChart, radialChartConfig } from './dataRadialChart'
+import { useMetricsActions } from '@/actions/useMetricsActons'
+import { useEffect, useState } from 'react'
 
 export const description = "Gráfico radial de progreso de capacitación por departamento"
 
 export default function AdminMetricsProgressChart() {
-  // Calcular estadísticas generales
+  const [loading, setLoading] = useState(false);
+  const [metrics, setMetrics] = useState([]);
+  const { getAdminMetrics } = useMetricsActions();
+
+  useEffect(() => {
+    setLoading(true)
+    getAdminMetrics()
+      .then((data) => {
+        setMetrics(data || [])
+        console.log("Metrics data:", data);
+      })
+      .finally(() => setLoading(false))
+  }, [])
+  
   const totalEmployees = dataRadialChart.reduce((acc, dept) => acc + dept.totalEmployees, 0);
   const totalCompleted = dataRadialChart.reduce((acc, dept) => acc + dept.completedEmployees, 0);
   const overallPercentage = Math.round((totalCompleted / totalEmployees) * 100);
+
+
+  // const totalEmployees = metrics.
+
   
   return (
     <Card className="flex flex-col w-full h-full">

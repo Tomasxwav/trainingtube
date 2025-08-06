@@ -21,15 +21,14 @@ import { videoMetricsData, videoChartConfig } from "./chartData"
 
 export const description = "Gráfico radial de progreso de videos"
 
-export function EmployeeMetricsVideoCount() {
-  const totalVideos = videoMetricsData[0].total
-  const completedVideos = videoMetricsData[0].total - videoMetricsData[0].pending
-  
+export function EmployeeMetricsVideoCount({pendingVideos, totalVideos}: {pendingVideos: number, totalVideos: number}) {
+  const completedVideos = totalVideos - pendingVideos
+
   const chartData = [
     {
       category: "videos",
       completed: completedVideos,
-      pending: videoMetricsData[0].pending
+      pending: pendingVideos
     }
   ]
 
