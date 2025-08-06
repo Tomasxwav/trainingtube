@@ -1,9 +1,27 @@
+'use client'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { SupervisorMetricsEmployeesChart } from './SupervisorMetricsEmployeesChart';
 import { Heart, MessageCircle, Users } from 'lucide-react';
 import { getDepartmentsLatestComments } from './employeeMetricsConfig';
+import { useEffect, useState } from 'react';
+import { useMetricsActions } from '@/actions/useMetricsActons';
+import { Skeleton } from '@/components/ui/skeleton';
+import { GeneralMetrics } from '@/types/employees';
 
 export default function SupervisorMetrics() {
+  const { getDepartmentMetrics } = useMetricsActions()
+  const [loading, setLoading] = useState(true)
+  const [metrics, setMetrics] = useState<GeneralMetrics>()
+  useEffect(() => {
+            setLoading(true)
+            getDepartmentMetrics()
+              .then((data) => {
+                setMetrics(data)
+              })
+              .finally(() => setLoading(false))
+          }, [])
+
   return (
     <div className="p-8 space-y-8">
       <h1 className="text-2xl font-bold">Métricas de Supervisores</h1>
@@ -23,7 +41,13 @@ export default function SupervisorMetrics() {
             <div className="flex items-center justify-between ">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Total de comentarios</p>
-                <p className="text-xl font-bold text-foreground">000</p>
+                {
+                  loading ? (
+                    <Skeleton className="w-full h-6"/>
+                  ) : (
+                    <p className="text-xl font-bold text-foreground">{metrics?.totalComments}</p>
+                  )
+                }
               </div>
               <div className="p-2 bg-blue-500/10 rounded-lg">
                 <MessageCircle className="h-5 w-5 text-blue-500" />
@@ -33,7 +57,13 @@ export default function SupervisorMetrics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Total de favoritos</p>
-                <p className="text-xl font-bold text-foreground">000</p>
+                {
+                  loading ? (
+                    <Skeleton className="w-full h-6"/>
+                  ) : (
+                    <p className="text-xl font-bold text-foreground">{metrics?.totalFavorites}</p>
+                  )
+                }
               </div>
               <div className="p-2 bg-red-500/10 rounded-lg">
                 <Heart className="h-5 w-5 text-red-500" />
@@ -43,7 +73,13 @@ export default function SupervisorMetrics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Total de interacciones</p>
-                <p className="text-xl font-bold text-foreground">000</p>
+                {
+                  loading ? (
+                    <Skeleton className="w-full h-6"/>
+                  ) : (
+                    <p className="text-xl font-bold text-foreground">{metrics?.totalInteractions}</p>
+                  )
+                }
               </div>
               <div className="p-2 bg-red-500/10 rounded-lg">
                 <Users className="h-5 w-5 text-red-500" />
