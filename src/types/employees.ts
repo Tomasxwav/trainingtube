@@ -39,4 +39,9 @@ export type GeneralMetrics = {
     totalInteractions?: number;
   };
   
-  
+export type SupervisorMetrics = {
+      departmentName: string;
+      totalEmployees: number;
+      totalFinalized: number;
+      averageCompletionRate: number;
+    };

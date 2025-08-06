@@ -17,34 +17,60 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { dataRadialChart, radialChartConfig } from './dataRadialChart'
 import { useMetricsActions } from '@/actions/useMetricsActons'
 import { useEffect, useState } from 'react'
+import { Skeleton } from '@/components/ui/skeleton'
+import { SupervisorMetrics } from '@/types/employees'
 
-export const description = "Gráfico radial de progreso de capacitación por departamento"
 
 export default function AdminMetricsProgressChart() {
-  const [loading, setLoading] = useState(false);
-  const [metrics, setMetrics] = useState([]);
-  const { getAdminMetrics } = useMetricsActions();
+  const [loading, setLoading] = useState(true);
+  const [dataSplitted, setDataSplitted] = useState<SupervisorMetrics[][]>([]);
+  const [metrics, setMetrics] = useState<SupervisorMetrics[]>([]);
 
+  const { getAdminMetrics } = useMetricsActions();
   useEffect(() => {
     setLoading(true)
     getAdminMetrics()
-      .then((data) => {
-        setMetrics(data || [])
-        console.log("Metrics data:", data);
+      .then((data: SupervisorMetrics[]) => {
+        if (data.length <= 7) {
+          setDataSplitted([data]);
+        } else {
+          const numberOfCharts = Math.ceil(data.length / 7);
+          const itemsPerChart = Math.ceil(data.length / numberOfCharts);
+        
+          const splitCount = Math.ceil(data.length/itemsPerChart)
+          var splitData : SupervisorMetrics[][] = []
+          for(let i = 0; i < splitCount; i++) {
+            splitData.push(data.slice(i*itemsPerChart, i*itemsPerChart+itemsPerChart))
+          }
+          setDataSplitted(splitData)
+          setMetrics(data || [])
+          
+          }
       })
       .finally(() => setLoading(false))
   }, [])
+
+
+
+  const radialChartConfig = {
+    averageCompletionRate: {
+      label: "Porcentaje de Completitud",
+      color: "hsl(var(--chart-1))",
+    },
+  }
   
-  const totalEmployees = dataRadialChart.reduce((acc, dept) => acc + dept.totalEmployees, 0);
-  const totalCompleted = dataRadialChart.reduce((acc, dept) => acc + dept.completedEmployees, 0);
+  const totalEmployees = metrics.reduce((acc, item) => acc + item.totalEmployees, 0);
+  const totalCompleted = metrics.reduce((acc, item) => acc + item.totalFinalized, 0);
   const overallPercentage = Math.round((totalCompleted / totalEmployees) * 100);
 
 
-  // const totalEmployees = metrics.
-
+  if (loading) {
+    return (
+      <Skeleton className="w-full h-full"/>
+    );
+  }
   
   return (
     <Card className="flex flex-col w-full h-full">
@@ -56,12 +82,16 @@ export default function AdminMetricsProgressChart() {
         <CardDescription>Estado actual de entrenamiento de empleados</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
+
+      {dataSplitted.map((chart, index)=>{
+        return (
+           <ChartContainer
           config={radialChartConfig}
           className="mx-auto aspect-square max-h-[280px]"
+          key={`radial-chart-${index}`}
         >
           <RadialBarChart
-            data={dataRadialChart}
+            data={chart}
             startAngle={-90}
             endAngle={270}
             innerRadius={40}
@@ -75,18 +105,18 @@ export default function AdminMetricsProgressChart() {
                   return (
                     <div className="rounded-lg border bg-background p-3 shadow-md">
                       <div className="grid gap-2">
-                        <div className="font-semibold">{data.department}</div>
+                        <div className="font-semibold">{data.departmentName}</div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div className="flex items-center gap-1">
                             <div 
                               className="h-2 w-2 rounded-full" 
-                              style={{ backgroundColor: data.fill.replace('var(--color-', 'hsl(var(--chart-').replace(')', '))') }}
+                              style={{ backgroundColor: radialChartConfig.averageCompletionRate.color }}
                             />
-                            <span>{data.percentage}% completado</span>
+                            <span>{data.averageCompletionRate}% completado</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Users className="h-3 w-3" />
-                            <span>{data.completedEmployees}/{data.totalEmployees}</span>
+                            <span>{data.totalFinalized}/{data.totalEmployees}</span>
                           </div>
                         </div>
                       </div>
@@ -96,10 +126,10 @@ export default function AdminMetricsProgressChart() {
                 return null;
               }}
             />
-            <RadialBar dataKey="percentage" background cornerRadius={8}>
+            <RadialBar dataKey="averageCompletionRate" background cornerRadius={8}>
               <LabelList
                 position="insideStart"
-                dataKey="department"
+                dataKey="departmentName"
                 className="fill-white text-xs font-medium mix-blend-luminosity"
                 fontSize={10}
                 formatter={(value: string) => value.split(' ')[0]}
@@ -107,7 +137,9 @@ export default function AdminMetricsProgressChart() {
             </RadialBar>
           </RadialBarChart>
         </ChartContainer>
-        
+        )
+      })}
+
         <div className="grid grid-cols-2 gap-4 mt-4 text-center">
           <div className="space-y-1">
             <div className="text-2xl font-bold text-primary">{overallPercentage}%</div>
