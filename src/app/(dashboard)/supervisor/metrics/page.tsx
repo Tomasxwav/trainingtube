@@ -1,8 +1,9 @@
+import SupervisorMetrics from '@/partials/supervisor/Employees/metrics/SupervisorMetrics';
 
 export default function MetricsPage() {
   return (
     <div>
-      <h1>Métricas</h1>
+      <SupervisorMetrics />
     </div>
   )
 }
