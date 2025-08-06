@@ -5,11 +5,11 @@ export interface EmployeeMetricsData {
   employeeName: string;
   totalVideos: number;
   pendingVideos: number;
-  watchedVideos: number;
+  videosCompleted: number;
 }
 
 export const chartConfig = {
-  watchedVideos: {
+  videosCompleted: {
     label: "Videos Vistos",
     color: "hsl(var(--chart-1))",
   },
@@ -26,72 +26,21 @@ export const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const sampleEmployeeMetricsData: EmployeeMetricsData[] = [
-  {
-    employeeName: "María García",
-    totalVideos: 25,
-    pendingVideos: 3,
-    watchedVideos: 22,
-  },
-  {
-    employeeName: "Carlos Rodríguez",
-    totalVideos: 25,
-    pendingVideos: 5,
-    watchedVideos: 20,
-  },
-  {
-    employeeName: "Ana López",
-    totalVideos: 25,
-    pendingVideos: 7,
-    watchedVideos: 18,
-  },
-  {
-    employeeName: "Pedro Martínez",
-    totalVideos: 25,
-    pendingVideos: 10,
-    watchedVideos: 15,
-  },
-  {
-    employeeName: "Laura Sánchez",
-    totalVideos: 25,
-    pendingVideos: 12,
-    watchedVideos: 13,
-  },
-  {
-    employeeName: "Diego Fernández",
-    totalVideos: 25,
-    pendingVideos: 15,
-    watchedVideos: 10,
-  },
-  {
-    employeeName: "Sofia González",
-    totalVideos: 25,
-    pendingVideos: 18,
-    watchedVideos: 7,
-  },
-  {
-    employeeName: "Miguel Torres",
-    totalVideos: 25,
-    pendingVideos: 20,
-    watchedVideos: 5,
-  }
-].sort((a, b) => b.watchedVideos - a.watchedVideos); 
-
 export const processEmployeeMetricsData = (employees: any[]): EmployeeMetricsData[] => {
   const processedData = employees.map((employee) => {
     const totalVideos = employee.totalVideos || 0;
     const pendingVideos = employee.pendingVideos || 0;
-    const watchedVideos = totalVideos - pendingVideos;
+    const videosCompleted = totalVideos - pendingVideos;
 
     return {
       employeeName: employee.name || employee.employeeName || "Empleado",
       totalVideos,
       pendingVideos,
-      watchedVideos,
+      videosCompleted,
     };
   });
 
-  return processedData.sort((a, b) => b.watchedVideos - a.watchedVideos);
+  return processedData.sort((a, b) => b.videosCompleted - a.videosCompleted);
 };
 
 export const getShortEmployeeName = (name: string): string => {

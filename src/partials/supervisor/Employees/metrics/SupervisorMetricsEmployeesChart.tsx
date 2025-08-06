@@ -18,16 +18,33 @@ import {
 } from "@/components/ui/chart"
 import { 
   chartConfig, 
+  EmployeeMetricsData, 
   getShortEmployeeName,
-  sampleEmployeeMetricsData
 } from "./employeeMetricsConfig"
+import { useEffect, useState } from 'react'
+import { useMetricsActions } from '@/actions/useMetricsActons'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const description = "Gráfico de barras que muestra videos vistos por empleado"
 
 export function SupervisorMetricsEmployeesChart() {
-  const chartData = sampleEmployeeMetricsData;
+  const [loading, setLoading] = useState(true)
+  const [metrics, setMetrics] = useState<EmployeeMetricsData[]>()
+  const { getDepartmentProgress } = useMetricsActions()
 
-  const totalWatchedVideos = chartData.reduce((sum, employee) => sum + employee.watchedVideos, 0);
+   useEffect(() => {
+          setLoading(true)
+          getDepartmentProgress()
+            .then((data) => {
+              setMetrics(data)
+            })
+            .finally(() => setLoading(false))
+        }, [])
+
+
+  const chartData = metrics || [];
+
+  const totalWatchedVideos = metrics?.reduce((sum, employee) => sum + employee.videosCompleted, 0) || 0;
   const averageWatched = chartData.length > 0 ? Math.round(totalWatchedVideos / chartData.length) : 0;
 
   return (
@@ -39,7 +56,12 @@ export function SupervisorMetricsEmployeesChart() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[300px] w-full">
+        {loading ? (
+          <div className="h-[300px] w-full">
+            <Skeleton className="h-[300px] w-full"/>
+          </div>
+        ) : (
+          <ChartContainer config={chartConfig} className="h-[300px] w-full">
           <BarChart
             accessibilityLayer
             data={chartData}
@@ -97,6 +119,7 @@ export function SupervisorMetricsEmployeesChart() {
             </Bar>
           </BarChart>
         </ChartContainer>
+        )}
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 leading-none font-medium">
