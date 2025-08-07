@@ -68,8 +68,7 @@ export default function AdminMetricsProgressChart({ dataSplitted, metrics }: { d
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div className="flex items-center gap-1">
                             <div 
-                              className="h-2 w-2 rounded-full" 
-                              style={{ backgroundColor: radialChartConfig.averageCompletionRate.color }}
+                              className={`h-2 w-2 rounded-full bg-chart-${Math.floor(Math.random()) * 10 + 1}`} 
                             />
                             <span>{data.averageCompletionRate}% completado</span>
                           </div>
