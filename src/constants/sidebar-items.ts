@@ -35,7 +35,7 @@ export const navItems: Array<{
       name: 'Mis métricas',
       icon: Home,
       path: '/metrics',
-      showFor: ['canViewMyMetrics'],
+      showFor: ['ROLE_EMPLOYEE', 'ROLE_SUPERVISOR'],
     },
     {
       name: 'Métricas',
