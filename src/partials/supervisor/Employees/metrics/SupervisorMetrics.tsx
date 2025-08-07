@@ -8,10 +8,13 @@ import { useEffect, useState } from 'react';
 import { useMetricsActions } from '@/actions/useMetricsActons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { GeneralMetrics } from '@/types/employees';
+import { useVideoStore } from '@/stores/videoStore';
+import { sinceDate } from '@/utils/sinceDate';
 
 export default function SupervisorMetrics() {
   const { getDepartmentMetrics } = useMetricsActions()
   const { getAllComments } = useCommentsActions()
+  const { videos } = useVideoStore()
   const [loading, setLoading] = useState(true)
   const [metrics, setMetrics] = useState<GeneralMetrics>()
   const [comments, setComments] = useState<any[]>([])
@@ -110,15 +113,17 @@ export default function SupervisorMetrics() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {
+            {comments.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No hay comentarios</p>
+            ) : ( 
               comments.map((comment, index) => (
                 <div key={index} className="border-b border-muted py-2">
-                  <h2 className="text-sm font-medium text-foreground">{comment.employee} en {comment.video}</h2>
-                  <p className="text-sm text-muted-foreground">{comment.textComment}</p>
-                  <p className="text-xs text-muted-foreground">{comment.date}</p>
+                  <h2 className="text-sm font-medium text-foreground">{comment.employeeName} en {videos.find((video) => video.id === comment.videoId)?.title}</h2> 
+                  <p className="text-sm text-muted-foreground">{comment.commentText}</p>
+                  <p className="text-xs text-muted-foreground">{sinceDate(comment.createdAt)}</p> 
                 </div>
               ))
-            }
+            )}
           </CardContent>
         </Card>
       

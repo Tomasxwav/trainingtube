@@ -1,5 +1,5 @@
 import { TrendingUp, Users, Target } from "lucide-react"
-import { LabelList, RadialBar, RadialBarChart } from "recharts"
+import { Cell, LabelList, PolarAngleAxis, RadialBar, RadialBarChart } from "recharts"
 
 import {
   Card,
@@ -40,19 +40,22 @@ export default function AdminMetricsProgressChart({ dataSplitted, metrics }: { d
         </CardTitle>
         <CardDescription>Estado actual de entrenamiento de empleados</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className='flex flex-wrap justify-center gap-4'>
 
       {dataSplitted.map((chart, index)=>{
         return (
-           <ChartContainer
+        <ChartContainer
           config={radialChartConfig}
-          className="mx-auto aspect-square max-h-[280px]"
+          className="mx-8 aspect-square max-h-[280px] min-w-[280px]"
           key={`radial-chart-${index}`}
         >
           <RadialBarChart
-            data={chart}
-            startAngle={-90}
-            endAngle={270}
+            data={chart.map(item => ({
+              ...item,
+              pct: (item.averageCompletionRate / 100) * 100,
+            }))}
+            startAngle={0}
+            endAngle={360}
             innerRadius={40}
             outerRadius={140}
           >
@@ -62,13 +65,13 @@ export default function AdminMetricsProgressChart({ dataSplitted, metrics }: { d
                 if (active && payload && payload.length) {
                   const data = payload[0].payload;
                   return (
-                    <div className="rounded-lg border bg-background p-3 shadow-md">
+                    <div className="rounded-lg border bg-background p-3 shadow-md ">
                       <div className="grid gap-2">
                         <div className="font-semibold">{data.departmentName}</div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div className="flex items-center gap-1">
-                            <div 
-                              className={`h-2 w-2 rounded-full bg-chart-${Math.floor(Math.random()) * 10 + 1}`} 
+                            <div
+                              className={`h-2 w-2 rounded-full bg-chart-${Math.floor(Math.random() * 10) + 1}`}
                             />
                             <span>{data.averageCompletionRate}% completado</span>
                           </div>
@@ -84,13 +87,19 @@ export default function AdminMetricsProgressChart({ dataSplitted, metrics }: { d
                 return null;
               }}
             />
-            <RadialBar dataKey="averageCompletionRate" background cornerRadius={8}>
+            <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
+            <RadialBar
+              dataKey="pct"
+              background 
+              cornerRadius={8}
+              angleAxisId={0}
+              fill={`var(--chart-${Math.floor(Math.random() * 10) + 1})`}
+            >
               <LabelList
                 position="insideStart"
                 dataKey="departmentName"
-                className="fill-white text-xs font-medium mix-blend-luminosity"
+                className="fill-white text-xs font-medium mix-blend-luminosity text-foreground "
                 fontSize={10}
-                formatter={(value: string) => value.split(' ')[0]}
               />
             </RadialBar>
           </RadialBarChart>
@@ -98,7 +107,10 @@ export default function AdminMetricsProgressChart({ dataSplitted, metrics }: { d
         )
       })}
 
-        <div className="grid grid-cols-2 gap-4 mt-4 text-center">
+       
+      </CardContent>
+      <CardFooter className="flex-col gap-2 text-sm">
+         <div className="grid grid-cols-2 gap-4 mt-4 text-center">
           <div className="space-y-1">
             <div className="text-2xl font-bold text-primary">{overallPercentage}%</div>
             <div className="text-xs text-muted-foreground">Progreso General</div>
@@ -107,14 +119,6 @@ export default function AdminMetricsProgressChart({ dataSplitted, metrics }: { d
             <div className="text-2xl font-bold text-primary">{totalCompleted}/{totalEmployees}</div>
             <div className="text-xs text-muted-foreground">Empleados Capacitados</div>
           </div>
-        </div>
-      </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Incremento del 12% este mes <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Monitoreo continuo del progreso de capacitación
         </div>
       </CardFooter>
     </Card>

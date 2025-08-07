@@ -17,12 +17,22 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { videoMetricsData, videoChartConfig } from "./chartData"
 
 export const description = "Gráfico radial de progreso de videos"
 
 export function EmployeeMetricsVideoCount({pendingVideos, totalVideos}: {pendingVideos: number, totalVideos: number}) {
   const completedVideos = totalVideos - pendingVideos
+
+  const videoChartConfig = {
+      completed: {
+          label: "Videos Finalizados",
+          color: "var(--chart-1)",
+      },
+      pending: {
+          label: "Videos Pendientes", 
+          color: "var(--chart-2)",
+      },
+  }
 
   const chartData = [
     {

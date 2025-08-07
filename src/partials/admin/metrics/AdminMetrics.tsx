@@ -18,21 +18,25 @@ export default function AdminMetrics() {
       setLoading(true)
       getAdminMetrics()
         .then((data: SupervisorMetrics[]) => {
-          if (data.length <= 7) {
-            setDataSplitted([data]);
+          const allowedData = data.filter((item: SupervisorMetrics) => item.totalEmployees > 0)
+
+          console.log(allowedData)
+
+          if (allowedData.length <= 7) {
+            setDataSplitted([allowedData]);
+            setMetrics(data || [])
           } else {
-            const numberOfCharts = Math.ceil(data.length / 7);
-            const itemsPerChart = Math.ceil(data.length / numberOfCharts);
+            const numberOfCharts = Math.ceil(allowedData.length / 7);
+            const itemsPerChart = Math.ceil(allowedData.length / numberOfCharts);
           
-            const splitCount = Math.ceil(data.length/itemsPerChart)
+            const splitCount = Math.ceil(allowedData.length/itemsPerChart)
             const splitData : SupervisorMetrics[][] = []
             for(let i = 0; i < splitCount; i++) {
-              splitData.push(data.slice(i*itemsPerChart, i*itemsPerChart+itemsPerChart))
+              splitData.push(allowedData.slice(i*itemsPerChart, i*itemsPerChart+itemsPerChart))
             }
             setDataSplitted(splitData)
             setMetrics(data || [])
-            
-            }
+          }
         })
         .finally(() => setLoading(false))
     }, [])
@@ -42,7 +46,7 @@ export default function AdminMetrics() {
   return (
     <div className="p-8 space-y-8">
         <h1 className="text-2xl font-bold ">Métricas de Admins</h1>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-4">
           <div className=" w-full col-span-1">
             {loading ?
               <Skeleton className="h-[300px] w-full"/>

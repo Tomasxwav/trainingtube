@@ -21,15 +21,30 @@ import { SupervisorMetrics } from '@/types/employees'
 
 export const description = "Gráfico de distribución de videos por departamento"
 
-export function AdminMetricsVideoCountChart({metrics = []}: { metrics: SupervisorMetrics[] }) {
+export function AdminMetricsVideoCountChart({metrics}: { metrics: SupervisorMetrics[] }) {
+  if (!metrics || metrics.length === 0) {
+    return (
+      <Card className="flex flex-col">
+        <CardHeader className="items-center pb-0">
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="h-5 w-5" />
+            Distribución de Videos por Departamento
+          </CardTitle>
+          <CardDescription>No hay datos disponibles</CardDescription>
+        </CardHeader>
+        <CardContent className="flex-1 pb-0 h-fit">
+          <div className="text-center text-muted-foreground py-8">
+            No hay métricas de departamentos para mostrar
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   const totalVideosSummary = metrics.reduce((acc, dept) => acc + dept.totalVideos, 0);
   const departmentWithMostVideos = metrics.reduce((prev, current) => 
     prev.totalVideos > current.totalVideos ? prev : current
   );
-
-  console.log('Metrics Data:', metrics);
-  console.log('Total Videos:', totalVideosSummary);
-  console.log('Top Department:', departmentWithMostVideos);
 
   const pieChartConfig = {
     videoCount: {
@@ -49,7 +64,7 @@ export function AdminMetricsVideoCountChart({metrics = []}: { metrics: Superviso
       <CardContent className="flex-1 pb-0 h-fit">
          <ChartContainer
           config={pieChartConfig}
-          className="mx-auto h-[300px] pb-0"
+          className="mx-auto h-[300px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
           <PieChart>
             <ChartTooltip 
@@ -84,14 +99,16 @@ export function AdminMetricsVideoCountChart({metrics = []}: { metrics: Superviso
               data={metrics} 
               dataKey="totalVideos" 
               nameKey="departmentName"
+              className='text-white'
               cx="50%" 
               cy="50%" 
               outerRadius={100}
               label={({ departmentName, totalVideos }) => totalVideos > 0 ? `${departmentName.split(' ')[0]} (${(totalVideos/totalVideosSummary) * 100}%)` : ''}
               labelLine={false}
+              
             >
               {metrics.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={`var(--color-chart-${Math.floor(Math.random()) * 10 + 1})`}/>
+                <Cell key={`cell-${index}`} fill={`var(--color-chart-${Math.floor(Math.random()) * 10 + 1})`} />
               ))}
             </Pie>
           </PieChart>
