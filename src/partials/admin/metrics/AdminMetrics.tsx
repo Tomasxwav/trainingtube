@@ -25,7 +25,7 @@ export default function AdminMetrics() {
             const itemsPerChart = Math.ceil(data.length / numberOfCharts);
           
             const splitCount = Math.ceil(data.length/itemsPerChart)
-            var splitData : SupervisorMetrics[][] = []
+            const splitData : SupervisorMetrics[][] = []
             for(let i = 0; i < splitCount; i++) {
               splitData.push(data.slice(i*itemsPerChart, i*itemsPerChart+itemsPerChart))
             }
