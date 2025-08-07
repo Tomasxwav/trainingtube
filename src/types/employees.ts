@@ -30,5 +30,19 @@ export type EmployeeFormData = {
     role: Roles;
     department_id: number;
   };
+
+export type GeneralMetrics = {
+    totalEmployees?: number;
+    totalVideos?: number;
+    totalComments?: number;
+    totalFavorites?: number;
+    totalInteractions?: number;
+  };
   
-  
+export type SupervisorMetrics = {
+      departmentName: string;
+      totalEmployees: number;
+      totalFinalized: number;
+      averageCompletionRate: number;
+      totalVideos: number;
+    };
