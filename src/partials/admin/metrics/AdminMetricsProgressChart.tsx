@@ -90,7 +90,8 @@ export default function AdminMetricsProgressChart({ dataSplitted, metrics }: { d
             <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
             <RadialBar
               dataKey="pct"
-              background cornerRadius={8}
+              background 
+              cornerRadius={8}
               angleAxisId={0}
               fill={`var(--chart-${Math.floor(Math.random() * 10) + 1})`}
             >

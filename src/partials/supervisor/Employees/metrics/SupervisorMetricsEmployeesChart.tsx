@@ -12,13 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
+  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { 
-  chartConfig, 
-  EmployeeMetricsData, 
   getShortEmployeeName,
 } from "./employeeMetricsConfig"
 import { useEffect, useState } from 'react'
@@ -29,7 +28,7 @@ export const description = "Gráfico de barras que muestra videos vistos por emp
 
 export function SupervisorMetricsEmployeesChart() {
   const [loading, setLoading] = useState(true)
-  const [metrics, setMetrics] = useState<EmployeeMetricsData[]>()
+  const [metrics, setMetrics] = useState<{videosCompleted: number, employeeName: string}[]>([])
   const { getDepartmentProgress } = useMetricsActions()
 
    useEffect(() => {
@@ -37,12 +36,30 @@ export function SupervisorMetricsEmployeesChart() {
           getDepartmentProgress()
             .then((data) => {
               setMetrics(data)
+              console.log(data)
             })
             .finally(() => setLoading(false))
         }, [])
 
 
   const chartData = metrics || [];
+  const chartConfig = {
+  videosCompleted: {
+    label: "videos vistos",
+    color: "hsl(var(--chart-1))",
+  },
+  pendingVideos: {
+    label: "Videos Pendientes", 
+    color: "hsl(var(--chart-2))",
+  },
+  totalVideos: {
+    label: "Total Videos",
+    color: "hsl(var(--chart-3))",
+  },
+  label: {
+    color: "hsl(var(--background))",
+  },
+} satisfies ChartConfig;
 
   const totalWatchedVideos = metrics?.reduce((sum, employee) => sum + employee.videosCompleted, 0) || 0;
   const averageWatched = chartData.length > 0 ? Math.round(totalWatchedVideos / chartData.length) : 0;
@@ -82,20 +99,34 @@ export function SupervisorMetricsEmployeesChart() {
               tickFormatter={getShortEmployeeName}
             />
             <XAxis 
-              dataKey="watchedVideos" 
+              dataKey="videosCompleted" 
               type="number" 
               hide 
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent 
-                indicator="line" 
-                nameKey="employeeName"
-                labelFormatter={(label) => `Empleado: ${label}`}
-              />}
-            />
+              content={({ active, payload, label }) => {
+                if (active && payload && payload.length) {
+                  return (
+                    <div className="rounded-lg border bg-background p-2 shadow-sm flex">
+                      <div className='bg-blue-800/50 min-h-full w-1 rounded mr-2'></div>
+                      <div className="grid">
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className=" font-medium">Empleado: </span>{label}
+                        </div>
+                        <div className="text-sm">
+                          <span className="font-medium">Videos vistos: </span>
+                          <span>{payload[0].value}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            /> 
             <Bar
-              dataKey="watchedVideos"
+              dataKey="videosCompleted"
               layout="vertical"
               fill="var(--color-chart-1)"
               radius={4}
@@ -109,12 +140,16 @@ export function SupervisorMetricsEmployeesChart() {
                 formatter={getShortEmployeeName}
               />
               <LabelList
-                dataKey="watchedVideos"
+                dataKey="videosCompleted"
                 position="right"
                 offset={8}
                 className="fill-foreground"
                 fontSize={12}
-                formatter={(value: number) => `${value} vistos`}
+                formatter={(value: number) => {
+                  if (value === 0) return ''
+                  if (value === 1) return `${value} video visto`
+                  return `${value} videos vistos`
+                }}
               />
             </Bar>
           </BarChart>
