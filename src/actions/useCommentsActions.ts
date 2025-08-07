@@ -26,9 +26,19 @@ export const useCommentsActions = () => {
     return data;
   }
 
+  const getAllComments = async () => {
+    const response = await fetchWithToken('/comments')
+    if(!response.ok) {
+        return response.error
+    }
+    const data = await response.data
+    return data;
+  }
+
   return {
     getComments,
-    postComment
+    postComment,
+    getAllComments
   }
 
 }

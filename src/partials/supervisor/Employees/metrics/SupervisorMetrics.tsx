@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { SupervisorMetricsEmployeesChart } from './SupervisorMetricsEmployeesChart';
 import { Heart, MessageCircle, Users } from 'lucide-react';
-import { getDepartmentsLatestComments } from './employeeMetricsConfig';
+import { useCommentsActions } from '@/actions/useCommentsActions';
 import { useEffect, useState } from 'react';
 import { useMetricsActions } from '@/actions/useMetricsActons';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -11,8 +11,10 @@ import { GeneralMetrics } from '@/types/employees';
 
 export default function SupervisorMetrics() {
   const { getDepartmentMetrics } = useMetricsActions()
+  const { getAllComments } = useCommentsActions()
   const [loading, setLoading] = useState(true)
   const [metrics, setMetrics] = useState<GeneralMetrics>()
+  const [comments, setComments] = useState<any[]>([])
   useEffect(() => {
             setLoading(true)
             getDepartmentMetrics()
@@ -21,6 +23,15 @@ export default function SupervisorMetrics() {
               })
               .finally(() => setLoading(false))
           }, [])
+
+  useEffect(() => {
+          setLoading(true)
+          getAllComments()
+            .then((data) => {
+              setComments(data)
+            })
+            .finally(() => setLoading(false))
+        }, [])
 
   return (
     <div className="p-8 space-y-8">
@@ -100,7 +111,7 @@ export default function SupervisorMetrics() {
           </CardHeader>
           <CardContent>
             {
-              getDepartmentsLatestComments().map((comment, index) => (
+              comments.map((comment, index) => (
                 <div key={index} className="border-b border-muted py-2">
                   <h2 className="text-sm font-medium text-foreground">{comment.employee} en {comment.video}</h2>
                   <p className="text-sm text-muted-foreground">{comment.textComment}</p>
