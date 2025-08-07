@@ -29,7 +29,7 @@ export default function EmployeeMetricsActivityChart() {
   
   const chartConfig = {
     videosCompleted: {
-        label: "Videos Completados",
+        label: "Videos Completados:.",
         color: "var(--chart-1)",
     },
   } satisfies ChartConfig
