@@ -22,10 +22,14 @@ import { SupervisorMetrics } from '@/types/employees'
 export const description = "Gráfico de distribución de videos por departamento"
 
 export function AdminMetricsVideoCountChart({metrics = []}: { metrics: SupervisorMetrics[] }) {
-  const totalVideos = metrics.reduce((acc, dept) => acc + dept.totalVideos, 0);
+  const totalVideosSummary = metrics.reduce((acc, dept) => acc + dept.totalVideos, 0);
   const departmentWithMostVideos = metrics.reduce((prev, current) => 
     prev.totalVideos > current.totalVideos ? prev : current
   );
+
+  console.log('Metrics Data:', metrics);
+  console.log('Total Videos:', totalVideosSummary);
+  console.log('Top Department:', departmentWithMostVideos);
 
   const pieChartConfig = {
     videoCount: {
@@ -64,9 +68,9 @@ export function AdminMetricsVideoCountChart({metrics = []}: { metrics: Superviso
                             <span>Videos:</span>
                             <span className="font-medium">{data.totalVideos}</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Porcentaje:</span>
-                            <span className="font-medium">{data.percentage}%</span>
+                          <div className="flex justify-between gap-2">
+                            <span>Porcentaje: </span>
+                            <span className="font-medium"> {(data.totalVideos/totalVideosSummary) * 100}%</span>
                           </div>
                         </div>
                       </div>
@@ -78,16 +82,16 @@ export function AdminMetricsVideoCountChart({metrics = []}: { metrics: Superviso
             />
             <Pie 
               data={metrics} 
-              dataKey="videoCount" 
-              nameKey="department"
+              dataKey="totalVideos" 
+              nameKey="departmentName"
               cx="50%" 
               cy="50%" 
               outerRadius={100}
-              label={({ department, percentage }) => `${department.split(' ')[0]} (${percentage}%)`}
+              label={({ departmentName, totalVideos }) => totalVideos > 0 ? `${departmentName.split(' ')[0]} (${(totalVideos/totalVideosSummary) * 100}%)` : ''}
               labelLine={false}
             >
               {metrics.map((entry, index) => (
-                <Cell key={`cell-${index}`} /* fill={entry.fill}  *//>
+                <Cell key={`cell-${index}`} fill={`var(--color-chart-${Math.floor(Math.random()) * 10 + 1})`}/>
               ))}
             </Pie>
           </PieChart>
@@ -95,7 +99,7 @@ export function AdminMetricsVideoCountChart({metrics = []}: { metrics: Superviso
         
         <div className="grid grid-cols-2 gap-4 mt-4 text-center">
           <div className="space-y-1">
-            <div className="text-2xl font-bold text-primary">{totalVideos}</div>
+            <div className="text-2xl font-bold text-primary">{totalVideosSummary}</div>
             <div className="text-xs text-muted-foreground">Videos Totales</div>
           </div>
           <div className="space-y-1">
