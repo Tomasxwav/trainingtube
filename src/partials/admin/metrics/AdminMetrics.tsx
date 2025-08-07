@@ -18,21 +18,25 @@ export default function AdminMetrics() {
       setLoading(true)
       getAdminMetrics()
         .then((data: SupervisorMetrics[]) => {
-          if (data.length <= 7) {
-            setDataSplitted([data]);
+          const allowedData = data.filter((item: SupervisorMetrics) => item.totalEmployees > 0)
+
+          console.log(allowedData)
+
+          if (allowedData.length <= 7) {
+            setDataSplitted([allowedData]);
+            setMetrics(data || [])
           } else {
-            const numberOfCharts = Math.ceil(data.length / 7);
-            const itemsPerChart = Math.ceil(data.length / numberOfCharts);
+            const numberOfCharts = Math.ceil(allowedData.length / 7);
+            const itemsPerChart = Math.ceil(allowedData.length / numberOfCharts);
           
-            const splitCount = Math.ceil(data.length/itemsPerChart)
+            const splitCount = Math.ceil(allowedData.length/itemsPerChart)
             const splitData : SupervisorMetrics[][] = []
             for(let i = 0; i < splitCount; i++) {
-              splitData.push(data.slice(i*itemsPerChart, i*itemsPerChart+itemsPerChart))
+              splitData.push(allowedData.slice(i*itemsPerChart, i*itemsPerChart+itemsPerChart))
             }
             setDataSplitted(splitData)
             setMetrics(data || [])
-            
-            }
+          }
         })
         .finally(() => setLoading(false))
     }, [])

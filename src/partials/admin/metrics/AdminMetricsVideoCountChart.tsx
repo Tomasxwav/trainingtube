@@ -21,7 +21,26 @@ import { SupervisorMetrics } from '@/types/employees'
 
 export const description = "Gráfico de distribución de videos por departamento"
 
-export function AdminMetricsVideoCountChart({metrics = []}: { metrics: SupervisorMetrics[] }) {
+export function AdminMetricsVideoCountChart({metrics}: { metrics: SupervisorMetrics[] }) {
+  if (!metrics || metrics.length === 0) {
+    return (
+      <Card className="flex flex-col">
+        <CardHeader className="items-center pb-0">
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="h-5 w-5" />
+            Distribución de Videos por Departamento
+          </CardTitle>
+          <CardDescription>No hay datos disponibles</CardDescription>
+        </CardHeader>
+        <CardContent className="flex-1 pb-0 h-fit">
+          <div className="text-center text-muted-foreground py-8">
+            No hay métricas de departamentos para mostrar
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   const totalVideosSummary = metrics.reduce((acc, dept) => acc + dept.totalVideos, 0);
   const departmentWithMostVideos = metrics.reduce((prev, current) => 
     prev.totalVideos > current.totalVideos ? prev : current
