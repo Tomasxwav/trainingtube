@@ -53,8 +53,18 @@ export const useVideosActions = () => {
     console.log('updateVideo', video);
   };
 
-  const deleteVideo = (id: string) => {
-    console.log('deleteVideo', id);
+  const deleteVideo = async (id: string) => {
+    const response = await fetchWithToken(`/videos/admin/${id}`, {
+      method: 'DELETE',
+    });
+    const data = await response.data;
+    if (response.ok) {
+      toast.success(`Video eliminado exitosamente!`);
+      fetchVideos();
+      return data;
+    }
+    toast.error(`Error eliminando video: ${response.error}`);
+    return data;
   };
 
   const getAverageRating = (id: string) => {
@@ -129,6 +139,13 @@ export const useVideosActions = () => {
     return response.error
   } 
 
+  const getVideosCount = async () => {
+    const response = await fetchWithToken(`/videos/department/count`)
+    const data = await response.data
+    return data
+  }
+
+
   return {
     addVideo,
     updateVideo,
@@ -141,6 +158,7 @@ export const useVideosActions = () => {
     addLikedVideo,
     getAllVideos,
     getInteractions,
+    getVideosCount,
     updateVideoEmployeeInteractions,
     videos
   };

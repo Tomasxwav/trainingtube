@@ -1,12 +1,15 @@
 'use client'
 
+import { useCommentsActions } from '@/actions/useCommentsActions'
 import { useVideosActions } from '@/actions/useVideosActions'
+import { useSessionStore } from '@/stores/sessionStore'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
+import { Skeleton } from '@/components/ui/skeleton'
 import VideoPlayer from '@/components/VideoPlayer'
 import EmployeeVideoPlayerSkeleton from '@/partials/employee/videos/EmployeeVideoPlayerSkeleton'
 import { Interaction } from '@/types/videos'
@@ -31,7 +34,17 @@ export default function EmployeeVideoPlayer() {
     addFavoriteVideo,
     getInteractions,
     updateVideoEmployeeInteractions,
+    getVideosCount,
   } = useVideosActions()
+
+  const {
+    getComments,
+    postComment
+  } = useCommentsActions()
+  const { employee } = useSessionStore()
+
+
+
   const searchParams = useSearchParams()
   const videoUrl = searchParams.get('url')
     ? decodeURIComponent(searchParams.get('url')!)
@@ -45,17 +58,35 @@ export default function EmployeeVideoPlayer() {
     progress: 0,
   })
   const [loading, setLoading] = useState(true)
+  const [comments, setComments] = useState<{id: string, commentText:string, employeeName: string, createdAt: string}[]>([])
+  const [videosCount, setVideosCount] = useState(0)
+  const [loadingComments, setLoadingComments] = useState(true)
 
   useEffect(() => {
     const fetchInteractions = async () => {
       setLoading(true)
       if (video) {
         const data = await getInteractions(video.id)
+        const videosCount = await getVideosCount()
+        setVideosCount(videosCount)
         setInteractions(data)
         setLoading(false)
       }
     }
     fetchInteractions()
+  }, [])
+
+  useEffect(() => {
+    if (video) {
+      getComments(video.id)
+        .then((comments) => {
+          setComments(comments)
+          setLoadingComments(false)
+        })
+        .catch((error) => {
+          console.error('Error fetching comments:', error)
+        })
+    }
   }, [])
 
   const handleComplete = async () => {
@@ -175,8 +206,8 @@ export default function EmployeeVideoPlayer() {
                     <AvatarFallback>TC</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h3 className='font-semibold'>Tomasxwav</h3>
-                    <p className='text-sm text-muted-foreground'>125 videos</p>
+                    <h3 className='font-semibold'>{video?.department.name}</h3>
+                    <p className='text-sm text-muted-foreground'>{videosCount} videos</p>
                   </div>
                 </div>
               </div>
@@ -200,34 +231,69 @@ export default function EmployeeVideoPlayer() {
           <div className='p-4 border-b flex items-center justify-between'>
             <h1 className='text-2xl font-bold '>Comentarios </h1>
             <span className='text-sm text-foreground/40 flex gap-2 items-center'>
-              <MessageSquare className='size-4' />0 Comentarios
+              <MessageSquare className='size-4' />{comments.length} Comentarios
             </span>
           </div>
-          <div className='p-4'>
-            <div className='flex items-center gap-4'>
-              <img
-                src='https://avatars.githubusercontent.com/u/82981330?v=4'
-                alt='Avatar'
-                className='w-16 h-16 rounded-full'
-              />
-              <div className='flex flex-col'>
-                <div className='flex items-center justify-between w-full'>
-                  <div className='flex items-center space-x-2'>
-                    <h1 className='text-lg font-bold'>Tomasxwav</h1>
-                    <p className='text-sm text-foreground/40'>
-                      {video?.department.name}
-                    </p>
+          <div className='p-4 flex gap-4 flex-col'>
+            {loadingComments ? (
+              // Skeleton para comentarios cargando
+              Array.from({ length: 3 }).map((_, index) => (
+                <div className='flex items-center gap-4' key={index}>
+                  <Skeleton className='w-16 h-16 rounded-full' />
+                  <div className='flex flex-col w-full gap-2'>
+                    <div className='flex items-center justify-between w-full'>
+                      <div className='flex items-center space-x-2'>
+                        <Skeleton className='h-5 w-32' />
+                        <Skeleton className='h-4 w-24' />
+                      </div>
+                      <Skeleton className='h-4 w-16' />
+                    </div>
+                    <Skeleton className='h-4 w-full ml-2' />
+                    <Skeleton className='h-4 w-3/4 ml-2' />
                   </div>
-                  <span className='text-sm text-foreground/40'>
-                    {sinceDate(video?.uploadDate)}
-                  </span>
                 </div>
-                <p className='text-xs ml-2 mt-2'>
-                  Lorem ipsum dolor sit scing nec, ultricinas ligula massa, varius
-                  a, semper congue, euismod non, mi. Proin porttitor, orc
+              ))
+            ) : comments.length === 0 ? (
+              // Mensaje cuando no hay comentarios
+              <div className='flex flex-col items-center justify-center py-12 text-center'>
+                <MessageSquare className='w-12 h-12 text-muted-foreground mb-4' />
+                <h3 className='text-lg font-semibold text-muted-foreground mb-2'>
+                  No hay comentarios aún
+                </h3>
+                <p className='text-sm text-muted-foreground'>
+                  Sé el primero en comentar este video
                 </p>
               </div>
-            </div>
+            ) : (
+              // Comentarios existentes
+              comments.map((comment: {id: string, commentText: string, employeeName: string, createdAt: string}) => {
+                return (
+                  <div className='flex items-center gap-4' key={comment.id}>
+                    <img
+                      src='https://avatars.githubusercontent.com/u/82981330?v=4'
+                      alt='Avatar'
+                      className='w-16 h-16 rounded-full'
+                    />
+                    <div className='flex flex-col w-full'>
+                      <div className='flex items-center justify-between w-full'>
+                        <div className='flex items-center space-x-2'>
+                          <h1 className='text-lg font-bold'>{comment.employeeName}</h1>
+                          <p className='text-sm text-foreground/40'>
+                            {video?.department.name}
+                          </p>
+                        </div>
+                        <span className='text-sm text-foreground/40'>
+                          {sinceDate(comment?.createdAt)}
+                        </span>
+                      </div>
+                      <p className='text-sm ml-2 mt-2'>
+                        {comment.commentText}
+                      </p>
+                    </div>
+                  </div>
+                )
+              })
+            )}
           </div>
 
           <div className='space-y-3 p-8 '>
@@ -236,7 +302,23 @@ export default function EmployeeVideoPlayer() {
               className='min-h-[80px] resize-none'
             />
             <div className='flex justify-end'>
-              <Button size='sm'>
+              <Button 
+                size='sm'
+                onClick={async () => {
+                  if (!video) return;
+                  const commentText = document.querySelector('textarea')?.value;
+                  if (!commentText) return;
+                  const newComment = await postComment(video.id, commentText);
+                  setComments(prev => [...prev, {
+                    id: newComment.id,
+                    commentText: newComment.commentText,
+                    employeeName: employee?.name || 'Anónimo',
+                    createdAt: new Date().toISOString(),
+                    department: employee?.department || 'Departamento Desconocido',
+                  }]);
+                  document.querySelector('textarea')!.value = '';
+                }}  
+              >
                 <Send className='w-4 h-4 mr-2' />
                 Publicar
               </Button>

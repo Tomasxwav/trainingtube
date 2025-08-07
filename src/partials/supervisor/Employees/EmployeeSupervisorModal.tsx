@@ -3,8 +3,9 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Employee, Role, Roles } from '@/types/employees';
+import { Employee, Roles } from '@/types/employees';
 import { employeeSchema, EmployeeFormData } from '@/schema/employees/employeeSchema';
+import { useSessionStore } from '@/stores/sessionStore';
 import {
   Dialog,
   DialogContent,
@@ -36,6 +37,7 @@ interface EmployeeModalProps {
 
 export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeModalProps) {
   const departments = useDepartmentStore((state) => state.departments);
+  const { employee: currentEmployee } = useSessionStore();
   const {
     register,
     handleSubmit,
@@ -50,7 +52,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
       email: '',
       password: '',
       role: 'EMPLOYEE',
-      department_id: 0,
+      department_id: Number(currentEmployee?.department.id) || 0,
     },
   });
 
@@ -71,7 +73,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
         email: '',
         password: '',
         role: 'EMPLOYEE',
-        department_id: 0,
+        department_id: Number(currentEmployee?.department.id) || 0,
       });
     }
   }, [employee, reset]);
@@ -235,8 +237,12 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
           <div className="space-y-2">
             <Label>Departamento</Label>
             <Select
-              onValueChange={(value) => setValue('department_id', Number(value))}
-              defaultValue={String(employee?.department.id || '')}
+              disabled
+              onValueChange={(value) => {
+                setValue('department_id', Number(value))
+                console.log('Selected Department ID:', value);
+              }}
+              defaultValue={String(currentEmployee?.department.id || '')}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona un departamento" />
@@ -251,7 +257,7 @@ export function EmployeeModal({ isOpen, onClose, onSubmit, employee }: EmployeeM
             </Select>
             {errors.department_id && (
               <p className="text-sm text-destructive">{errors.department_id.message}</p>
-            )}  
+            )}
           </div>
 
           <DialogFooter className="flex gap-2 pt-4">

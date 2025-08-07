@@ -15,9 +15,10 @@ export const employeeSchema = z.object({
   role: z.enum(['ADMIN', 'EMPLOYEE', 'SUPERVISOR'], {
     required_error: 'El rol es obligatorio',
   }),
-  department: z
-    .string()
-    .min(1, 'El departamento es obligatorio')
+  department_id: z
+    .number()
+    .positive('El departamento es obligatorio')
+    .int(),
 });
 
 export const createEmployeeSchema = employeeSchema.required({

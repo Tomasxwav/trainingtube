@@ -3,24 +3,25 @@
 import { useEffect, useState } from 'react';
 import { Employee, EmployeeFormData, Role, Roles } from '@/types/employees';
 import { EmployeeTable } from '@/partials/admin/Employees/EmployeeTable';
-import { EmployeeModal } from '@/partials/admin/Employees/EmployeeModal';
+import { EmployeeModal } from '@/partials/supervisor/Employees/EmployeeSupervisorModal';
 import { Button } from '@/components/ui/button';
 import { Loader2, Plus, Users } from 'lucide-react';
 import { useEmployeesActions } from '@/actions/useEmployeesActions';
 import { toast } from 'sonner';
 import { useDepartmentStore } from '@/stores/departmentStore';
 
-export function EmployeeManagement() {
+export function EmployeeSupervisorManagement() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const departments = useDepartmentStore((state) => state.departments);
+  
 
-  const { getEmployees, createEmployee, updateEmployee, deleteEmployee } = useEmployeesActions();
+  const { getDepartmentEmployees, createDepartmentEmployee, updateDepartmentEmployee, deleteDepartmentEmployee } = useEmployeesActions();
   useEffect(() => {
     setIsLoading(true);
-    getEmployees().then(data => {
+    getDepartmentEmployees().then(data => {
       setEmployees(data);
       setIsLoading(false);
     });
@@ -30,7 +31,7 @@ export function EmployeeManagement() {
     try {
       const loadingToast = toast.loading('Creando empleado...');
 
-      await createEmployee(employeeData);
+      await createDepartmentEmployee(employeeData);
 
       const employeeToAdd: Employee = {
         ...employeeData,
@@ -65,7 +66,7 @@ export function EmployeeManagement() {
   const handleUpdateEmployee = (employeeData: EmployeeFormData) => {
     if (!editingEmployee) return;
 
-    updateEmployee(editingEmployee.id, employeeData).then(() => {
+    updateDepartmentEmployee(editingEmployee.id, employeeData).then(() => {
       setEmployees(prev =>
         prev.map(emp =>
           emp.id === editingEmployee.id
@@ -76,7 +77,11 @@ export function EmployeeManagement() {
                   ...emp.role,
                   name: employeeData.role as Roles,
                 },
-                department_id: employeeData.department_id,
+                department: {
+                  ...emp.department,
+                  id: employeeData.department_id.toString(),
+                  name: departments.find(dep => dep.id === employeeData.department_id.toString())?.name || 'Departamento Desconocido',
+                },
               }
             : emp
         )
@@ -90,7 +95,7 @@ export function EmployeeManagement() {
   };
 
   const handleDeleteEmployee = (id: string) => {
-    deleteEmployee(id).then(() => {
+    deleteDepartmentEmployee(id).then(() => {
       setEmployees(prev => prev.filter(emp => emp.id !== id));
     });
   };
