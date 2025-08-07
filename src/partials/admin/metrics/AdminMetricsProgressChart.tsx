@@ -1,5 +1,3 @@
-"use client"
-
 import { TrendingUp, Users, Target } from "lucide-react"
 import { LabelList, RadialBar, RadialBarChart } from "recharts"
 
@@ -17,42 +15,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { useMetricsActions } from '@/actions/useMetricsActons'
-import { useEffect, useState } from 'react'
-import { Skeleton } from '@/components/ui/skeleton'
 import { SupervisorMetrics } from '@/types/employees'
 
 
-export default function AdminMetricsProgressChart() {
-  const [loading, setLoading] = useState(true);
-  const [dataSplitted, setDataSplitted] = useState<SupervisorMetrics[][]>([]);
-  const [metrics, setMetrics] = useState<SupervisorMetrics[]>([]);
-
-  const { getAdminMetrics } = useMetricsActions();
-  useEffect(() => {
-    setLoading(true)
-    getAdminMetrics()
-      .then((data: SupervisorMetrics[]) => {
-        if (data.length <= 7) {
-          setDataSplitted([data]);
-        } else {
-          const numberOfCharts = Math.ceil(data.length / 7);
-          const itemsPerChart = Math.ceil(data.length / numberOfCharts);
-        
-          const splitCount = Math.ceil(data.length/itemsPerChart)
-          var splitData : SupervisorMetrics[][] = []
-          for(let i = 0; i < splitCount; i++) {
-            splitData.push(data.slice(i*itemsPerChart, i*itemsPerChart+itemsPerChart))
-          }
-          setDataSplitted(splitData)
-          setMetrics(data || [])
-          
-          }
-      })
-      .finally(() => setLoading(false))
-  }, [])
-
-
+export default function AdminMetricsProgressChart({ dataSplitted, metrics }: { dataSplitted: SupervisorMetrics[][], metrics: SupervisorMetrics[] }) {
 
   const radialChartConfig = {
     averageCompletionRate: {
@@ -65,13 +31,6 @@ export default function AdminMetricsProgressChart() {
   const totalCompleted = metrics.reduce((acc, item) => acc + item.totalFinalized, 0);
   const overallPercentage = Math.round((totalCompleted / totalEmployees) * 100);
 
-
-  if (loading) {
-    return (
-      <Skeleton className="w-full h-full"/>
-    );
-  }
-  
   return (
     <Card className="flex flex-col w-full h-full">
       <CardHeader className="items-center pb-0">

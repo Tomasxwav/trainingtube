@@ -44,4 +44,5 @@ export type SupervisorMetrics = {
       totalEmployees: number;
       totalFinalized: number;
       averageCompletionRate: number;
+      totalVideos: number;
     };
